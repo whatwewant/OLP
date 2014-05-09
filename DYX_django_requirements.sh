@@ -23,19 +23,42 @@ rm -rf $BuildDir
 mkdir $BuildDir	
 cd $BuildDir
 
+os=$(cat /etc/issue)
+
 # Before Installation, we need some download tools
 which pip > /dev/null
 if [ "$?" != "0" ]; then
-    sudo apt-get install -y python-pip python-dev
+	if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+		sudo pacman -S --noconfirm python-pip
+	elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+    	sudo apt-get install -y python-pip
+	fi
 fi
 
 which virtualenv > /dev/null
 if [ "$?" != "0" ]; then
-    sudo apt-get install -y python-virtualenv python-setuptools
+	if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+		sudo pacman -S --noconfirm python-virtualenv python-setuptools
+	elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+    	sudo apt-get install -y python-virtualenv python-setuptools
+	fi
 fi
 
 # git-flow
-sudo apt-get install git-flow
+if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+	##
+	# PIL : make need freetype/freetype.h
+	if [ ! -d "/usr/include/freetype" ]; then
+		sudo ln -s /usr/include/freetype2 /usr/include/freetype
+	fi
+	#
+	which git > /dev/null
+	if [ "$?" != "0" ]; then
+		sudo pacman -S --noconfirm git
+	fi
+elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+	sudo apt-get install git-flow python-dev
+fi
 
 # all installed packages
 packages=$(pip list)
