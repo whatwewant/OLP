@@ -29,7 +29,7 @@ def register(request):
         if not(len(nicename) >= 2 and len(nicename) <= 10):
             return render(request, "register.html", {"error": u"昵称只能是2-10个字符"})
 
-        mail = re.compile("[^\._-][\w\.-]+@(?:[A-Za-z0-9]+\.)+[A-Za-z]+$")
+        mail = re.compile()
         if not mail.match(email):
             return render(request, "register.html", {"error": u"无效的邮箱格式"})
 
@@ -37,7 +37,7 @@ def register(request):
             return render(request, "register.html", {"error": u"两次输入的密码不一致"})
 
         User.objects.create_user(username = username, password = password, email = email)
-        UserProfile.objects.create_user(nicename = nicename)
+        User.objects.create_user(nicename = nicename)
 
         #return HttpResponseRedirect("/login/")
         return render(request, "register_success.html")
