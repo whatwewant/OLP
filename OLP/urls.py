@@ -19,4 +19,6 @@ urlpatterns = patterns('',
     # account related 
     url(r'^account/login/$','account.views.login',name='login'),
 
+    url(r'^login/$','account.views.login',name='login')
+
 )
