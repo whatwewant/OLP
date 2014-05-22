@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render_to_response, render, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from account.models import UserProfile
 
 def index(request):    
@@ -64,4 +65,10 @@ def sign_up(request):
     return render(request, "account/sign_up.html", {"before": before})
 
 
-
+@login_required(login_url='sign_in')
+def sign_out(request):
+	'''
+		logout
+	'''
+	logout(request)
+	return redirect('index')
