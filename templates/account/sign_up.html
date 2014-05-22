@@ -4,10 +4,10 @@
 <form name="input" action="/sign_up/" method="post">
             {% csrf_token %}
             用户名: 
-            <input type="text" name="username" />
+            <input type="text" name="username" maxlength=10 />
             <br />
             昵称: 
-            <input type="text" name="nicename" />
+            <input type="text" name="nicename" maxlength=10/>
             <br/>
             密码：
             <input type="password" name="password" />
