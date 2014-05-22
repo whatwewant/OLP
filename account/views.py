@@ -18,6 +18,7 @@ def sign_in(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                '''ceshi'''
                 return HttpResponse('%d' % user.id)
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
@@ -59,7 +60,7 @@ def sign_up(request):
                 password=password, email=email)
         UserProfile.objects.create(user=user,
                 nicename=nicename)
-        #return HttpResponseRedirect("/login/")
+        #return HttpResponseRedirect("/sign_in/")
         return redirect('sign_in')
     before = request.GET.get("before", "/")
     return render(request, "account/sign_up.html", {"before": before})
