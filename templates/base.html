@@ -6,9 +6,10 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css">
     <script src="{{ STATIC_URL }}js/jquery.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+	{% block script %}{% endblock %}
     </head>
     <body>
-        {% block content %}
+        {% block body %}
         {% endblock%}
     </body>
 </html>
