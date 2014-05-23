@@ -1,4 +1,4 @@
-#coding=utf-8
+# -*- coding:utf-8 -*-
 import re
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from account.models import UserProfile
 
 def index(request):    
-    return render(request, 'index.html', {})
+	user = request.user.username
+	return render(request, 'index.html', {'user':user})
 
 def sign_in(request):
     if request.method == 'POST':
@@ -19,7 +20,7 @@ def sign_in(request):
             if user.is_active:
                 login(request, user)
                 '''ceshi'''
-                return HttpResponse('%d' % user.id)
+                return redirect('blog_index')
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
         error = u'用户名或密码错误'
@@ -34,7 +35,7 @@ def sign_up(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
         re_password = request.POST.get("re_password")
-        nicename = request.POST.get("nicename")
+        # nicename = request.POST.get("nicename")
 
         if not (len(username) >= 3 and len(username) <= 10):
             return render(request, "account/sign_up.html",
@@ -46,9 +47,9 @@ def sign_up(request):
         if User.objects.filter(username = username).exists():
             return render(request, "account/sign_up.html",
                     {"error": u"用户名已经存在"})
-        if not(len(nicename) >= 2 and len(nicename) <= 10):
-            return render(request, "account/sign_up.html",
-                    {"error": u"昵称只能是2-10个字符"})
+        # if not(len(nicename) >= 2 and len(nicename) <= 10):
+        #    return render(request, "account/sign_up.html",
+        #            {"error": u"昵称只能是2-10个字符"})
         mail = re.compile("[^\._-][\w\.-]+@(?:[A-Za-z0-9]+\.)+[A-Za-z]+$")
         if not mail.match(email):
             return render(request, "account/sign_up.html",

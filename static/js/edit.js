@@ -15,6 +15,7 @@ KindEditor.ready(function(K) {
 	});
 });
 
+/*
 KindEditor.ready(function(K) {
         K.create('#text', {
                 uploadJson : '../jsp/upload_json.jsp',
@@ -22,9 +23,30 @@ KindEditor.ready(function(K) {
                 allowFileManager : true,
 				imageUploadJson : '/',
         });
-});
+});*/
 
 //KindEditor.ready(function(K) {
 //	var str = K.unescape($("#editResult").text());
 //	$("#editResult").html(str);
 //});
+
+$(document).ready(function() {
+	$("form").submit(function (e) {
+		var title 	= $("#title").val();
+			content	= $("#content").val();
+			excerpt	= $("#excerpt").val();
+			// content_type = $("#content_type").val();
+		if(!title || !content || !excerpt) {
+			e.preventDefault();
+			$(".error").css("color", "red");
+			if(!title)
+				$("span").show();
+		}
+	});
+});
+
+$(document).ready(function() {
+	$("#title").change(function() {
+		$("span").hide();
+	});
+});

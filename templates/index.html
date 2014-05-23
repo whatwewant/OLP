@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Test
+Home Page
 {% endblock%}
+
+{% block body %}
+<div id="container">
+	<div id="sign">
+		{% if not user %}
+		<a href="{%url 'sign_in' %}">登入</a> | <a href="{%url 'sign_up' %}">注册</a>
+		{% else %}
+		<a href="{%url 'blog_index' %}">{{user}}</a> | <a href="{% url 'sign_out'%}">退出</a>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

@@ -14,19 +14,25 @@
 		{% csrf_token %}
 		<div>
 			<p> Title: </p>
-			<input type="text" name="title" />
+			<input type="text" name="title" id="title" />
+			<span class="error" style="display:none">* Cannot Be Empty.</span>
 		</div>
 		<div>
 			<p> Content: </p>
 			<textarea id="content" style="width: 700px; height: 400px;" name="content"></textarea>
+			<span class="error" style="display:none">* Cannot Be Empty.</span>
 		</div>
+		<!--
 		<div>
 			<p> Content-Type: </p>
-			<input type="text" style="width: 700px;" name="content_type"/>
+			<input type="text" style="width: 700px;" name="content_type" id="content_type" />
+			<span class="error" style="display:none">* Cannot Be Empty.</span>
 		</div>
+		-->
 		<div>
 			<p> Content-Excerpt: </p>
-			<textarea name="excerpt" style="width: 700px; height: 100px"></textarea>
+			<textarea name="excerpt" id="excerpt" style="width: 700px; height: 100px"></textarea>
+			<span class="error" style="display:none">* Cannot Be Empty.</span>
 		</div>
 		<input type="submit" value="发布" />
 	</form>
