@@ -39,7 +39,7 @@ def sign_up(request):
         if not (len(username) >= 3 and len(username) <= 10):
             return render(request, "account/sign_up.html",
                     {"error": u"用户名只能是3-10个字符"})
-        name = re.compile("^[_A-Za-z0-9\u4e00-\u9fa5]+$")
+        name = re.compile(ur'[a-zA-Z0-9_]|[\u4e00-\u9fa5]+$')
         if not name.match(username):
             return render(request, "account/sign_up.html",
                     {"error": u'用户名只能是数字、英文字符、下划线和汉字'})
