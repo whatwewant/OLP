@@ -34,8 +34,8 @@ def sign_up(request):
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
-        re_password = request.POST.get("re_password")
-        # nicename = request.POST.get("nicename")
+        re_password = request.POST.get("dopassword")
+        nicename = request.POST.get("nickname")
 
         if not (len(username) >= 3 and len(username) <= 10):
             return render(request, "account/sign_up.html",
@@ -47,9 +47,9 @@ def sign_up(request):
         if User.objects.filter(username = username).exists():
             return render(request, "account/sign_up.html",
                     {"error": u"用户名已经存在"})
-        # if not(len(nicename) >= 2 and len(nicename) <= 10):
-        #    return render(request, "account/sign_up.html",
-        #            {"error": u"昵称只能是2-10个字符"})
+        if not(len(nicename) >= 2 and len(nicename) <= 10):
+            return render(request, "account/sign_up.html",
+                    {"error": u"昵称只能是2-10个字符"})
         mail = re.compile("[^\._-][\w\.-]+@(?:[A-Za-z0-9]+\.)+[A-Za-z]+$")
         if not mail.match(email):
             return render(request, "account/sign_up.html",
