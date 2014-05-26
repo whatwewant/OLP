@@ -1,5 +1,125 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ user.capitalize }}'s Blog{% endblock %}
+{% block title %}在线交流--个人博客{% endblock %}
 
-{% block body%}{% endblock %}
+{% block script%}
+<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel = "stylesheet">
+<link href="{{ STATIC_URL }}css/myblog.css" rel="stylesheet">
+{% endblock %}
+    
+{% block body %}
+        <div class = "container" id="page-up">
+            <div id="up-left">
+                <h1 class="page-header">
+                    Personal blog
+                </h1>
+            </div>
+            
+            <div id="up-right">
+                <div class="btn-group" id="guidance">
+                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">写新博客</button>
+                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">目录视图</button>
+                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">摘要视图</button>
+                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">管理博客</button>
+                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">管理博客</button>
+                    
+                </div>
+            </div>
+            
+            <div id="log_in">
+                    <ul class="nav navbar-nav navbar-right" id="nav_right">  
+                        <li><a  href="{%url 'sign_in' %}">登录</a></li>
+                        <li><a href="{%url 'sign_up' %}">注册</a></li>
+                    </ul>
+            </div>
+        </div>
+        
+        <div class = "container" id="page-mid">
+            <div id="page-mid-left">
+                <div id="article-example">
+                     <h3 class="page-header" id="article-example-headfont">
+                        <a href="#" id="article-name-color">Article name</a>
+                     </h3>
+                    
+                    <h3 class="page-header" id="article-example-bodyfont">
+                        <small>Article explain:                          fgyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;gyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;
+                        </small>
+                     </h3>
+                </div>
+                
+                <div id="article-example">
+                      <h3 class="page-header" id="article-example-headfont">
+                        <a href="#" id="article-name-color">Article name</a>
+                     </h3>
+                    
+                    <h3 class="page-header" id="article-example-bodyfont">
+                        <small>Article explain:                          fgyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;gyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;
+                        </small>
+                     </h3>
+                </div>
+                
+                <div id="article-example">
+                      <h3 class="page-header" id="article-example-headfont">
+                        <a href="#" id="article-name-color">Article name</a>
+                     </h3>
+                    
+                    <h3 class="page-header" id="article-example-bodyfont">
+                        <small>Article explain:                          fgyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;gyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;
+                        </small>
+                     </h3>
+                </div>
+                
+                <div id="article-example">
+                      <h3 class="page-header" id="article-example-headfont">
+                        <a href="#" id="article-name-color">Article name</a>
+                     </h3>
+                    
+                    <h3 class="page-header" id="article-example-bodyfont">
+                        <small>Article explain:                          fgyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;gyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;
+                        </small>
+                     </h3>
+                </div>
+                
+                <div id="article-example">
+                      <h3 class="page-header" id="article-example-headfont">
+                        <a href="#" id="article-name-color">Article name</a>
+                     </h3>
+                    
+                    <h3 class="page-header" id="article-example-bodyfont">
+                        <small>Article explain:                          fgyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;gyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;
+                        </small>
+                     </h3>
+                </div>
+            </div>
+            
+            <div id="page-mid-right">
+                <div class = "container"id="mid-right-up">
+                    
+                </div>
+                
+                <div id="mid-right-down">
+                      <div id="information">
+                        <p>昵称：</p>
+                        <p>等级：</p>
+                        <p>积分：</p>
+                        <p>访问：</p>
+                        <p>排名：</p>
+                    </div>
+                        
+                    <div class = "btn-group-vertical" id="article-categray">
+                       <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray">文章分类</button>
+                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
+                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
+                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
+                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
+                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
+                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
+                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
+                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
+                    </div>
+                </div>
+                </div>
+        
+            </div>
+        </div>
+{% endblock %}

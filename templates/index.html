@@ -1,17 +1,248 @@
 {% extends 'base.html' %}
 
-{% block title %}
-Home Page
-{% endblock%}
+{% block title %}青岛大学在线学习交流平台{% endblock %}
+
+{% block script %}
+<link href ="{{ STATIC_URL }}css/page_2.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/nav.css" rel="stylesheet">
+<link href= "{{ STATIC_URL }}css/bootstrap.css" rel = "stylesheet">
+<link rel='stylesheet' id='theme-css'  href='http://jasonbradley.me/wp-content/themes/lean/style.css?ver=2.0.3' type='text/css' media='all' />
+<script type='text/javascript' src='http://jasonbradley.me/wp-includes/js/jquery/jquery.js?ver=1.11.0'></script>
+<script type='text/javascript' src='http://jasonbradley.me/wp-content/themes/lean/js/theme.main.min.js?ver=2.0.3'></script> 
+{% endblock %}
 
 {% block body %}
-<div id="container">
-	<div id="sign">
-		{% if not user %}
-		<a href="{%url 'sign_in' %}">登入</a> | <a href="{%url 'sign_up' %}">注册</a>
-		{% else %}
-		<a href="{%url 'blog_index' %}">{{user}}</a> | <a href="{% url 'sign_out'%}">退出</a>
-		{% endif %}
-	</div>
-</div>
+        <div id="whole_container">
+            <div id="page-up">
+
+                <nav class="navbar navbar-default" role="navigation" style="background: white;">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="button_1" >
+                    <a href="#" id="Online-C">Online Communication</a>
+                  </button>
+              </div>
+
+              <!-- Collect the nav links, forms, and other content for toggling -->
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+               <div class="btn-group" id="various-btns">
+                  <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="button_other" >Home</button>
+                  <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="button_other" >Blog</button>
+                  <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="button_other" >Oj</button>
+                  <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="button_other" >Ppt</button>
+                   <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="button_other" >Dcum</button>
+                
+                   
+                   <div id="search-box">
+                    <form class="navbar-form navbar-left" role="search" id="search-box">
+                    <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Any problem? search!">
+                    </div>
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                 </div>
+              </div>
+                  
+               <div id="log">
+               
+                   <a href="{%url 'sign_in' %}" >登录</a>
+                   
+                   <a href="{%url 'sign_up' %}">注册</a>
+                  </div>
+                <!-- <span class="glyphicon glyphicon-user"></span> -->
+              </div><!-- /.navbar-collapse -->
+            </nav>  
+                
+            </div>
+            <div class="container" id = "page-mid-and-down">
+            <div id="page-mid">
+                <div id="mid-left">
+               
+                    <div id="myCarousel" class="carousel slide  col-md-offset-2 col-md-8">
+
+                        <ol class="carousel-indicators">
+
+                                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#myCarousel" data-slide-to="1"></li>
+                                <li data-target="#myCarousel" data-slide-to="2"></li>
+
+                        </ol>
+
+                    <div class="carousel-inner">
+
+                        <div class="item active">
+
+                            <img src="{{ STATIC_URL }}images/1.png" alt="">
+
+                            <div class="container">
+
+                                <div class="carousel-caption">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="item">
+
+                            <img src="http://jasonbradley.me/wp-content/themes/lean/images/slide-02.jpg" alt="">
+
+                            <div class="container">
+
+                                <div class="carousel-caption">
+
+                                    <h1>Another example headline.</h1>
+
+                                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+
+                                    <p><a class="btn btn-large btn-primary" href="#">Learn more</a></p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="item">
+
+                            <img src="http://jasonbradley.me/wp-content/themes/lean/images/slide-03.jpg" alt="">
+
+                            <div class="container">
+
+                                <div class="carousel-caption">
+
+                                    <h1>One more for good measure.</h1>
+
+                                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+
+                                    <p><a class="btn btn-large btn-primary" href="#">Browse gallery</a></p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                </div>
+
+                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">      <span class="fa fa-angle-left"></span></a>
+
+                        <a class="right carousel-control" href="#myCarousel" data-slide="next">     <span class="fa fa-angle-right"></span></a>
+
+            </div><!-- /.carousel -->
+
+                </div>
+                
+                <div id="mid-middle">
+                
+                    <ul class="nav nav-pills nav-stacked" id="hot">
+                        <li class="active"><a href="#">Hot</a></li>
+                        <li><a href="#">Profilefvgbyhjnuklcfvghbxcfvghbjnkmlcvgbhjnj</a></li>
+                        <li><a href="#">Messages</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Messages</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Messages</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Messages</a></li>
+                        <li><a href="#">Messages</a></li>
+                    </ul>
+                    
+            </div>
+                
+            <div id="mid-right">
+                    
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="#">New</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Messages</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Messages</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Messages</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Messages</a></li>
+                    <li><a href="#">Messages</a></li>
+                </ul>     
+            </div>
+    </div>
+  
+           <div id="page-down">
+                <div id="page-down-first">
+                    <div id="page-down-fourth-one"></div>
+                    <div id="page-down-fourth-two">
+						<p id="wordhead">
+							 <a href="#" target="_blank">head</a>
+						</p>
+						<p id="wordbody">
+							gsdgdwgewgggggggggrwgewtgfwefs
+						</p>
+                    </div>
+                    <div id="page-down-fourth-three">
+						<button type="submit" class="btn btn-danger" id="button">Blog</button>
+                    </div>
+                </div>
+                
+                <div id="page-down-second">
+                    <div id="page-down-fourth-one"></div>
+                    <div id="page-down-fourth-two">
+						<p id="wordhead">
+							<a href="#" target="_blank">head</a>
+						</p>
+						<p id="wordbody">
+							gsdgdwgewgggggggggrwgewtgfwefs
+						</p>
+                    </div>
+                    <div id="page-down-fourth-three">
+						<button type="submit" class="btn btn-primary" id="button">Oj</button>
+                    </div>
+                </div>
+                
+                <div id="page-down-third">
+                    <div id="page-down-fourth-one"></div>
+                    <div id="page-down-fourth-two">
+						<p id="wordhead">
+							<a href="#" target="_blank">head</a>
+						</p>
+						<p id="wordbody">
+							gsdgdwgewgggggggggrwgewtgfwefs
+						</p>
+                    </div>
+                    <div id="page-down-fourth-three">
+						<button type="submit" class="btn btn-success" id="button">Public class</button>
+                    </div>
+                </div>
+                
+                <div id="page-down-fourth">
+                    <div id="page-down-fourth-one"></div>
+                    <div id="page-down-fourth-two">
+						<p id="wordhead">
+							<a href="#" target="_blank">head</a>
+						</p>
+						<p id="wordbody">
+							gsdgdwgewgggggggggrwgewtgfwefs
+						</p>
+                    </div>
+                    <div id="page-down-fourth-three">
+						<button type="submit" class="btn btn-warning" id="button">Pdt</button>
+                    </div>
+                </div>
+                
+                <div id="page-down-fifth">
+                    
+                </div>
+            </div>
+           
+        </div>
+         <p id="pright">
+            	<a href="#" target="_self">返回顶部</a>
+        </p>
+
 {% endblock %}
