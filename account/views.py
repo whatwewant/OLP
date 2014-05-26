@@ -1,4 +1,4 @@
-#coding=utf-8
+# -*- coding:utf-8 -*-
 import re
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from account.models import UserProfile
 
 def index(request):    
-    return render(request, 'index.html', {})
+	user = request.user.username
+	return render(request, 'index.html', {'user':user})
 
 def sign_in(request):
     if request.method == 'POST':
@@ -19,7 +20,7 @@ def sign_in(request):
             if user.is_active:
                 login(request, user)
                 '''ceshi'''
-                return HttpResponse('%d' % user.id)
+                return redirect('blog_index')
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
         error = u'用户名或密码错误'
@@ -33,13 +34,13 @@ def sign_up(request):
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
-        re_password = request.POST.get("re_password")
-        nicename = request.POST.get("nicename")
+        re_password = request.POST.get("dopassword")
+        nicename = request.POST.get("nickname")
 
         if not (len(username) >= 3 and len(username) <= 10):
             return render(request, "account/sign_up.html",
                     {"error": u"用户名只能是3-10个字符"})
-        name = re.compile("^[_A-Za-z0-9\u4e00-\u9fa5]+$")
+        name = re.compile(ur'[a-zA-Z0-9_]|[\u4e00-\u9fa5]+$')
         if not name.match(username):
             return render(request, "account/sign_up.html",
                     {"error": u'用户名只能是数字、英文字符、下划线和汉字'})
