@@ -7,20 +7,27 @@ class Post(models.Model):
 
     author = models.ForeignKey(UserProfile)
     date = models.DateField(auto_now_add=True)
+	# @TODO
     date_gmt = models.DateField(null=True)
     content = models.TextField()
     title = models.CharField(max_length=200)
     excerpt = models.CharField(max_length=500)
+	# @TODO
     status = models.CharField(max_length=20, null=True)
+	# @TODO
     comment_status = models.CharField(max_length=20, null=True)
     password = models.CharField(max_length=20, null=True)
 
     modified_date = models.DateField(null=True)
     modified_date_gmt = models.DateField(null=True)
+	# @TODO
     content_filtered = models.CharField(max_length=200, null=True)
+	# @TODO
     parent = models.BigIntegerField(null=True)
+	# @TODO
     menu_order = models.IntegerField(null=True)
     content_type = models.CharField(max_length=20, null=True)
+	# @TODO
     content_mime_type = models.CharField(max_length=255, null=True)
     comment_count = models.IntegerField(default=0)
 
