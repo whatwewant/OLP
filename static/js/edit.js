@@ -29,7 +29,7 @@ KindEditor.ready(function(K) {
 //	var str = K.unescape($("#editResult").text());
 //	$("#editResult").html(str);
 //});
-
+/*
 $(document).ready(function() {
 	$("form").submit(function (e) {
 		var title 	= $("#title").val();
@@ -50,3 +50,4 @@ $(document).ready(function() {
 		$("span").hide();
 	});
 });
+*/
