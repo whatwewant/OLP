@@ -1,0 +1,19 @@
+#scan1{
+    padding-left: 30px;
+    padding-right: 15px;
+}
+
+#scan2{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#nav_right{
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: 15px;    
+}
+
+a:link{
+    color: orange;
+}
