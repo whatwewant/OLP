@@ -50,6 +50,10 @@ def sign_up(request):
         if not(len(nicename) >= 2 and len(nicename) <= 10):
             return render(request, "account/sign_up.html",
                     {"error": u"昵称只能是2-10个字符"})
+        name = re.compile("^[_A-Za-z0-9\u4e00-\u9fa5]+$")
+        if not name.match(nicename):
+            return render(request, "account/sign_up.html",
+                    {"error": u'ni cheng 只能是数字、英文字符、下划线和汉字'})
         mail = re.compile("[^\._-][\w\.-]+@(?:[A-Za-z0-9]+\.)+[A-Za-z]+$")
         if not mail.match(email):
             return render(request, "account/sign_up.html",
