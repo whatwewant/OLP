@@ -27,5 +27,5 @@ urlpatterns = patterns('',
     url(r'^blog/$', 'blog.views.homePage'),
     url(r'^blog/index/$', 'blog.views.homePage'),
     url(r'^blog/write/$', 'blog.views.write', name='blog_write'),
-    url(r'blog/(?P<author>\w*)/$', 'blog.view.personPage', name="blog_index"),
+    url(r'blog/(?P<author>\w*)/$', 'blog.views.personPage', name="blog_index"),
 )
