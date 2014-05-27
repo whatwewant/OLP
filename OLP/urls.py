@@ -20,9 +20,12 @@ urlpatterns = patterns('',
 	# user 
     url(r'^sign_in/$','account.views.sign_in', name='sign_in'),
     url(r'^sign_up/$', 'account.views.sign_up', name='sign_up'),
-	url(r'^sign_out/$', 'account.views.sign_out', name='sign_out'),
+    url(r'^sign_out/$', 'account.views.sign_out', name='sign_out'),
 
 	# blog
-	url(r'^blog/index/$', 'blog.views.index', name='blog_index'),
-	url(r'^blog/write/$', 'blog.views.write', name='blog_write'),
+	url(r'^$', 'blog.views.homePage', name="homepage"),
+    url(r'^blog/$', 'blog.views.homePage'),
+    url(r'^blog/index/$', 'blog.views.homePage'),
+    url(r'^blog/write/$', 'blog.views.write', name='blog_write'),
+    url(r'blog/(?P<author>\w*)/$', 'blog.view.personPage', name="blog_index"),
 )

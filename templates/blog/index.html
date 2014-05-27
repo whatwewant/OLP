@@ -17,7 +17,7 @@
             
             <div id="up-right">
                 <div class="btn-group" id="guidance">
-                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">写新博客</button>
+                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns" id="write_blog" >写新博客</a>
                     <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">目录视图</button>
                     <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">摘要视图</button>
                     <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">管理博客</button>
@@ -36,16 +36,19 @@
         
         <div class = "container" id="page-mid">
             <div id="page-mid-left">
+				{% for array in arrays %}
                 <div id="article-example">
                      <h3 class="page-header" id="article-example-headfont">
-                        <a href="#" id="article-name-color">Article name</a>
+                        <a href="#" id="article-name-color">{{ array.title }}</a>
                      </h3>
                     
                     <h3 class="page-header" id="article-example-bodyfont">
-                        <small>Article explain:                          fgyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;gyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;
+                        <small>
+						{{ array.content | safe }}
                         </small>
                      </h3>
                 </div>
+				{% endfor %}
                 
                 <div id="article-example">
                       <h3 class="page-header" id="article-example-headfont">
@@ -99,7 +102,7 @@
                 
                 <div id="mid-right-down">
                       <div id="information">
-                        <p>昵称：</p>
+                        <p>昵称：{{ user }}</p>
                         <p>等级：</p>
                         <p>积分：</p>
                         <p>访问：</p>
