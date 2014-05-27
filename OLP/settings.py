@@ -196,4 +196,4 @@ if DEBUG:
         #'DISABLE_PANELS' : False,
     }
 
-    DATABASE_ENGINE = 'sqlite3'
+DATABASE_ENGINE = 'sqlite3'
