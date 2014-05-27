@@ -53,10 +53,33 @@ def edit(request, id):
 	edit view
     '''
     if request.method == "POST":
-        pass
-    
+        author = request.user.userprofile
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        excerpt = request.POST.get('excerpt')
+        # password= request.POST.get('password')
+        modified_date = date.today()
+        modified_date_gmt = timezone.now()
+        # content_type = request.POST.get('content_type')
+        if not title or not content or not excerpt:
+            return redirect('blog_index')
+        
+        array = Post.objects.get(author=author, id=id)
+        print dir(array)
+
+        array.title = title
+        array.content = content
+        array.excerpt = excerpt
+        array.modified_date = modified_date
+        array.modified_date_gmt = modified_date_gmt
+        array.save()
+
+        return redirect('/blog/'+request.user.username+'/')
+
     author = request.user.userprofile
     if Post.objects.filter(author=author, id=id).exists():
         array = Post.objects.get(author=author, id=id)
+        print id
+        print array
         return render(request, 'blog/edit.html', {'array':array})
     raise Http404
