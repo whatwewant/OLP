@@ -73,8 +73,8 @@ def sign_up(request):
 
 @login_required(login_url='sign_in')
 def sign_out(request):
-	'''
-		logout
-	'''
-	logout(request)
-	return redirect('index')
+    '''
+        logout
+    '''
+    logout(request)
+    return redirect('index')
