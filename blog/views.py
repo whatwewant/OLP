@@ -4,7 +4,7 @@ from blog.models import Post, Comment
 from account.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.utils import timezone
 from datetime import date
@@ -77,9 +77,5 @@ def edit(request, id):
         return redirect('/blog/'+request.user.username+'/')
 
     author = request.user.userprofile
-    if Post.objects.filter(author=author, id=id).exists():
-        array = Post.objects.get(author=author, id=id)
-        print id
-        print array
-        return render(request, 'blog/edit.html', {'array':array})
-    raise Http404
+    array = get_object_or_404(Post, author=author, id=id)
+    return render(request, 'blog/edit.html', {'array':array})
