@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} Write Page {% endblock %}
+
+{% block script %}
+<script src="{{ STATIC_URL }}js/editor/kindeditor-all-min.js"></script>
+<script src="{{ STATIC_URL }}js/edit.js"></script>
+{% endblock %}
+
+{% block body %} 
+<div id="container">
+	<div id="editText">
+	<form action="" method="post">
+		{% csrf_token %}
+		<div>
+			<p> Title: </p>
+			<input type="text" name="title" id="title" value="{{ array.title }}" />
+			<span class="error" style="display:none">* Cannot Be Empty.</span>
+		</div>
+		<div>
+			<p> Content: </p>
+			<textarea id="content" style="width: 700px; height: 400px;" name="content">{{ array.content }}</textarea>
+			<span class="error" style="display:none">* Cannot Be Empty.</span>
+		</div>
+		<!--
+		<div>
+			<p> Content-Type: </p>
+			<input type="text" style="width: 700px;" name="content_type" id="content_type" />
+			<span class="error" style="display:none">* Cannot Be Empty.</span>
+		</div>
+		-->
+		<div>
+			<p> Content-Excerpt: </p>
+			<textarea name="excerpt" id="excerpt" style="width: 700px; height: 100px">{{ array.excerpt }}</textarea>
+			<span class="error" style="display:none">* Cannot Be Empty.</span>
+		</div>
+		<input type="submit" value="编辑" />
+	</form>
+	</div>
+<div>
+{% endblock %}
