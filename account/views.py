@@ -20,7 +20,7 @@ def sign_in(request):
             if user.is_active:
                 login(request, user)
                 '''ceshi'''
-                return redirect('blog_index')
+                return redirect('/blog/'+request.user.username+'/')
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
         error = u'用户名或密码错误'
@@ -74,7 +74,7 @@ def sign_up(request):
 @login_required(login_url='sign_in')
 def sign_out(request):
     '''
-    	logout
+    logout
     '''
     logout(request)
     return redirect('index')
