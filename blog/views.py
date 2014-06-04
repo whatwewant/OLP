@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from blog.models import Post, Comment
+from blog.models import Post, Category
 from account.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -10,7 +10,11 @@ from django.utils import timezone
 from datetime import date
 
 def homePage(request):
-    return render(request, 'index.html', {})
+    print request.user.is_authenticated()
+    authenticated = request.user.is_authenticated()
+    user = request.user.username
+    return render(request, 'index.html', {'authenticated':authenticated,
+                                        'user':user})
 
 def personPage(request, author=False):
     '''
@@ -20,9 +24,10 @@ def personPage(request, author=False):
         author_user = User.objects.get(username=author)
         if UserProfile.objects.filter(user=author_user).exists():
             author_profile = UserProfile.objects.get(user=author_user)
-            arrays = Post.objects.filter(author=author_profile)
+            articles = Post.objects.filter(author=author_profile)
             return render(request, 'blog/index.html', {'user': author_profile.nicename,
-                'arrays':arrays})
+                        'articles':articles, 
+                        'authenticated':request.user.is_authenticated()})
         raise Http404
     raise Http404
 
@@ -44,11 +49,11 @@ def write(request):
                             modified_date=modified_date,
                             modified_date_gmt=modified_date_gmt)
 
-        return redirect('/blog/'+request.user.username+'/')
-    return render(request, 'blog/write.html', {})
+        return redirect('/blog/{username}/'.format(username=request.user.username))
+    return render(request, 'blog/write.html', {'authenticated':True})
 	
-@login_required()
-def edit(request, id):
+@login_required(login_url='sign_in')
+def edit(request, pk):
     '''
 	edit view
     '''
@@ -64,18 +69,25 @@ def edit(request, id):
         if not title or not content or not excerpt:
             return redirect('blog_index')
         
-        array = Post.objects.get(author=author, id=id)
-        print dir(array)
+        article = Post.objects.get(author=author, id=id)
+        print dir(article)
 
-        array.title = title
-        array.content = content
-        array.excerpt = excerpt
-        array.modified_date = modified_date
-        array.modified_date_gmt = modified_date_gmt
-        array.save()
+        article.title = title
+        article.content = content
+        article.excerpt = excerpt
+        article.modified_date = modified_date
+        article.modified_date_gmt = modified_date_gmt
+        article.save()
 
-        return redirect('/blog/'+request.user.username+'/')
+        return redirect('/blog/{username}/'.format(username=request.user.username))
 
     author = request.user.userprofile
-    array = get_object_or_404(Post, author=author, id=id)
-    return render(request, 'blog/edit.html', {'array':array})
+    article = get_object_or_404(Post, author=author, pk=pk)
+    return render(request, 'blog/edit.html', {'article':article, 
+                                              'authenticated':True})
+
+def post(request, pk):
+    author=request.user.userprofile
+    article = get_object_or_404(Post, author=author, pk=pk) 
+    return render(request, 'blog/article.html', {'articles':article, 
+        'post':True, 'authenticated':request.user.is_authenticated()})

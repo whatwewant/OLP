@@ -48,13 +48,11 @@
                     </form>
                  </div>
               </div>
-                  
-               <div id="log">
-               
-                   <a href="{%url 'sign_in' %}" >登录</a>
-                   
-                   <a href="{%url 'sign_up' %}">注册</a>
-                  </div>
+            {% if not authenticated %}
+            {% include 'account/_sign_in.html' %}
+            {% else %}
+            {% include 'account/_user_info.html' %}
+            {% endif%}  
                 <!-- <span class="glyphicon glyphicon-user"></span> -->
               </div><!-- /.navbar-collapse -->
             </nav>  
