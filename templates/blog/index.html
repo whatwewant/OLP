@@ -25,29 +25,15 @@
                     
                 </div>
             </div>
-            
-            <div id="log_in">
-                    <ul class="nav navbar-nav navbar-right" id="nav_right">  
-                        <li><a  href="{%url 'sign_in' %}">登录</a></li>
-                        <li><a href="{%url 'sign_up' %}">注册</a></li>
-                    </ul>
-            </div>
-        </div>
-        
+        {% if not authenticated %}
+        {% include 'account/_sign_in.html' %}
+        {% else %}
+        {% include 'account/_user_info.html' %}
+        {% endif%}
         <div class = "container" id="page-mid">
             <div id="page-mid-left">
-				{% for array in arrays %}
-                <div id="article-example">
-                     <h3 class="page-header" id="article-example-headfont">
-                        <a href="#" id="article-name-color">{{ array.title }}</a>
-                     </h3>
-                    
-                    <h3 class="page-header" id="article-example-bodyfont">
-                        <small>
-						{{ array.content | safe }}
-                        </small>
-                     </h3>
-                </div>
+				{% for article in articles %}
+                  {% include 'blog/_article.html' %}
 				{% endfor %}
                 
                 <div id="article-example">

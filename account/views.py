@@ -20,7 +20,7 @@ def sign_in(request):
             if user.is_active:
                 login(request, user)
                 '''ceshi'''
-                return redirect('/blog/'+request.user.username+'/')
+                return redirect('/blog/{username}/'.format(username=request.user.username))
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
         error = u'用户名或密码错误'
@@ -31,11 +31,11 @@ def sign_in(request):
 def sign_up(request):
     if request.method == "POST":
 
-        username = request.POST.get("username")
-        email = request.POST.get("email")
+        username = request.POST.get("username").strip()
+        email = request.POST.get("email").strip()
         password = request.POST.get("password")
         re_password = request.POST.get("dopassword")
-        nicename = request.POST.get("nickname")
+        nicename = request.POST.get("nickname").strip()
 
         if not (len(username) >= 3 and len(username) <= 10):
             return render(request, "account/sign_up.html",

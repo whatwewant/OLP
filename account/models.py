@@ -24,4 +24,5 @@ class UserMeta(models.Model):
 
     def __unicode__(self):
 
-        return u'user name is %s and mete_key is %s' %(self.user_id.user.username, meta_key)
+        return u'user name is %s and mete_key is %s' %(self.user_id.user.username,
+                                                       self.meta_key)

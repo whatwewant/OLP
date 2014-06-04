@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _   
 
@@ -7,27 +8,27 @@ class Post(models.Model):
 
     author = models.ForeignKey(UserProfile)
     date = models.DateField(auto_now_add=True)
-	# @TODO
+    # @TODO
     date_gmt = models.DateField(null=True)
     content = models.TextField()
     title = models.CharField(max_length=200)
     excerpt = models.CharField(max_length=500)
-	# @TODO
+    # @TODO
     status = models.CharField(max_length=20, null=True)
-	# @TODO
+    # @TODO
     comment_status = models.CharField(max_length=20, null=True)
     password = models.CharField(max_length=20, null=True)
 
     modified_date = models.DateField(null=True)
     modified_date_gmt = models.DateField(null=True)
-	# @TODO
+    # @TODO
     content_filtered = models.CharField(max_length=200, null=True)
-	# @TODO
+    # @TODO
     parent = models.BigIntegerField(null=True)
-	# @TODO
+    # @TODO
     menu_order = models.IntegerField(null=True)
     content_type = models.CharField(max_length=20, null=True)
-	# @TODO
+    # @TODO
     content_mime_type = models.CharField(max_length=255, null=True)
     comment_count = models.IntegerField(default=0)
 
@@ -36,6 +37,10 @@ class Post(models.Model):
     class Meta:
         verbose_name = _('Post')
         verbose_name_plural = _('Posts')
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('post', (), {'pk':self.pk})
 
 
 class PostMeta(models.Model):
@@ -66,10 +71,9 @@ class Comment(models.Model):
         return self.content
 
     class Meta:
+        ordering = ['-id']
         verbose_name = _('Comment')
         verbose_name_plural = _('Comments')
-
-
 
 class CommentMeta(models.Model):
     comment_id = models.ForeignKey(Comment)
@@ -80,4 +84,12 @@ class CommentMeta(models.Model):
     def __unicode__(self):
         return str(self.meta_key)
 
+class Category(models.Model):
+    name = models.CharField(u'文章分类', max_length=64)
 
+    class Meta:
+        ordering = ['-id']
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('category', (), {'pk':self.pk})
