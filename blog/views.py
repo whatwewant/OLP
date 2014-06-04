@@ -11,9 +11,9 @@ from datetime import date
 
 def homePage(request):
     authenticated = request.user.is_authenticated()
-    user = request.user
+    userprofile = request.user.userprofile
     return render(request, 'index.html', {'authenticated':authenticated,
-                                        'user':user})
+                                        'user':userprofile})
 
 def personPage(request, author=False):
     '''
@@ -22,9 +22,12 @@ def personPage(request, author=False):
     if User.objects.filter(username=author).exists():
         author_user = User.objects.get(username=author)
         if UserProfile.objects.filter(user=author_user).exists():
-            author_profile = UserProfile.objects.get(user=author_user)
-            articles = Post.objects.filter(author=author_profile)
-            return render(request, 'blog/index.html', {'user': author_profile, 'articles':articles, 'authenticated':request.user.is_authenticated()})
+            userprofile = UserProfile.objects.get(user=author_user)
+            articles = Post.objects.filter(author=userprofile)
+            authenticated = request.user.is_authenticated()
+            return render(request, 'blog/index.html', {'user': userprofile, 
+                                                       'articles':articles, 
+                                                       'authenticated':authenticated})
         raise Http404
     raise Http404
 
@@ -46,7 +49,7 @@ def write(request):
                             modified_date=modified_date,
                             modified_date_gmt=modified_date_gmt)
 
-        return redirect('/blog/{username}/'.format(username=request.user.username))
+        return redirect('blog_index', request.user.username)
     return render(request, 'blog/write.html', {'authenticated':True})
 	
 @login_required(login_url='sign_in')
@@ -64,7 +67,7 @@ def edit(request, pk):
         modified_date_gmt = timezone.now()
         # content_type = request.POST.get('content_type')
         if not title or not content or not excerpt:
-            return redirect('blog_index')
+            return redirect('blog_index', request.user.username)
         
         article = Post.objects.get(author=author, id=id)
         print dir(article)
@@ -76,7 +79,7 @@ def edit(request, pk):
         article.modified_date_gmt = modified_date_gmt
         article.save()
 
-        return redirect('/blog/{username}/'.format(username=request.user.username))
+        return redirect('blog_index', request.user.username)
 
     author = request.user.userprofile
     article = get_object_or_404(Post, author=author, pk=pk)
