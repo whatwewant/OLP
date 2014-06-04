@@ -22,7 +22,8 @@ def sign_in(request):
             if user.is_active:
                 login(request, user)
                 '''ceshi'''
-                return redirect('/blog/{username}/'.format(username=request.user.username))
+                # return redirect('/blog/{username}/'.format(username=request.user.username))
+                return redirect('blog_index', request.user.username)
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
         error = u'用户名或密码错误'
