@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    nicename = models.CharField(max_length=30)
+    nickname = models.CharField(max_length=30)
     integral = models.IntegerField(null=False, default=0)
     registration = models.BooleanField(default=False)
     blog_num = models.IntegerField(default=0)

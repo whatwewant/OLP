@@ -3,6 +3,26 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _   
 
 from account.models import UserProfile
+# from django.contrib.auth.models import User
+
+class Category(models.Model):
+    '''文章分类'''
+
+    author = models.ForeignKey(UserProfile)
+    name = models.CharField(u'文章分类', max_length=64)
+    date = models.DateField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-pk']
+
+    def __unicode__(self):
+        return self.name
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('category', (), {'pk':self.pk})
+
+
 class Post(models.Model):
     '''blog '''
 
@@ -31,10 +51,15 @@ class Post(models.Model):
     # @TODO
     content_mime_type = models.CharField(max_length=255, null=True)
     comment_count = models.IntegerField(default=0)
+    # 文章分类
+    po_type = models.ForeignKey(Category, verbose_name=u'文章分类', 
+                                blank=True, null=True)
 
     def __unicode__(self):
         return self.title
+
     class Meta:
+        ordering = ['-pk']
         verbose_name = _('Post')
         verbose_name_plural = _('Posts')
 
@@ -52,7 +77,6 @@ class PostMeta(models.Model):
     
     def __unicode__(self):
         return set(self.meta_key)
-
 
 class Comment(models.Model):
     
@@ -85,12 +109,3 @@ class CommentMeta(models.Model):
     def __unicode__(self):
         return str(self.meta_key)
 
-class Category(models.Model):
-    name = models.CharField(u'文章分类', max_length=64)
-
-    class Meta:
-        ordering = ['-id']
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ('category', (), {'pk':self.pk})

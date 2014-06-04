@@ -10,8 +10,11 @@ from django.utils import timezone
 from datetime import date
 
 def homePage(request):
+    print dir(request.user)
     authenticated = request.user.is_authenticated()
-    userprofile = request.user.userprofile
+    userprofile = None
+    if authenticated:
+        userprofile = request.user.userprofile
     return render(request, 'index.html', {'authenticated':authenticated,
                                         'user':userprofile})
 
@@ -25,9 +28,14 @@ def personPage(request, author=False):
             userprofile = UserProfile.objects.get(user=author_user)
             articles = Post.objects.filter(author=userprofile)
             authenticated = request.user.is_authenticated()
-            return render(request, 'blog/index.html', {'user': userprofile, 
+            categories = None
+            if Category.objects.filter(author=userprofile).exists():
+                categories = Category.objects.filter(author=userprofile)
+            # categories = Category.objects.all()
+            return render(request, 'blog/index.html', {'user':userprofile, 
                                                        'articles':articles, 
-                                                       'authenticated':authenticated})
+                                                       'authenticated':authenticated,
+                                                       'categories':categories})
         raise Http404
     raise Http404
 
@@ -69,8 +77,7 @@ def edit(request, pk):
         if not title or not content or not excerpt:
             return redirect('blog_index', request.user.username)
         
-        article = Post.objects.get(author=author, id=id)
-        print dir(article)
+        article = Post.objects.get(author=author, pk=pk)
 
         article.title = title
         article.content = content
@@ -83,6 +90,7 @@ def edit(request, pk):
 
     author = request.user.userprofile
     article = get_object_or_404(Post, author=author, pk=pk)
+    print article
     return render(request, 'blog/edit.html', {'article':article, 
                                               'authenticated':True})
 
@@ -93,6 +101,8 @@ def post(request, author, pk):
             author = UserProfile.objects.get(user=user)
             article = get_object_or_404(Post, author=author, pk=pk) 
             return render(request, 'blog/article.html', {'article':article, 
-                'post':True, 'authenticated':request.user.is_authenticated()})
+                'post':True, 
+                'authenticated':request.user.is_authenticated()})
         raise Http404
     raise Http404
+
