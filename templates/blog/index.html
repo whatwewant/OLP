@@ -88,7 +88,7 @@
                 
                 <div id="mid-right-down">
                       <div id="information">
-                        <p>昵称：{{ user }}</p>
+                        <p>昵称：{{ user.nickname }}</p>
                         <p>等级：</p>
                         <p>积分：</p>
                         <p>访问：</p>
@@ -97,14 +97,9 @@
                         
                     <div class = "btn-group-vertical" id="article-categray">
                        <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray">文章分类</button>
-                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
-                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
-                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
-                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
-                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
-                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
-                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
-                        <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray"></button>
+                       {% for category in categories %}
+                       <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray">{{ category }}</button>
+                       {% endfor %}
                     </div>
                 </div>
                 </div>

@@ -14,12 +14,12 @@
 		{% csrf_token %}
 		<div>
 			<p> Title: </p>
-			<input type="text" name="title" id="title" value="{{ array.title }}" />
+			<input type="text" name="title" id="title" value="{{ article.title }}" />
 			<span class="error" style="display:none">* Cannot Be Empty.</span>
 		</div>
 		<div>
 			<p> Content: </p>
-			<textarea id="content" style="width: 700px; height: 400px;" name="content">{{ array.content }}</textarea>
+			<textarea id="content" style="width: 700px; height: 400px;" name="content">{{ article.content }}</textarea>
 			<span class="error" style="display:none">* Cannot Be Empty.</span>
 		</div>
 		<!--
@@ -31,7 +31,7 @@
 		-->
 		<div>
 			<p> Content-Excerpt: </p>
-			<textarea name="excerpt" id="excerpt" style="width: 700px; height: 100px">{{ array.excerpt }}</textarea>
+			<textarea name="excerpt" id="excerpt" style="width: 700px; height: 100px">{{ article.excerpt }}</textarea>
 			<span class="error" style="display:none">* Cannot Be Empty.</span>
 		</div>
 		<input type="submit" value="编辑" />
