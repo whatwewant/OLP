@@ -10,9 +10,8 @@ from django.utils import timezone
 from datetime import date
 
 def homePage(request):
-    print request.user.is_authenticated()
     authenticated = request.user.is_authenticated()
-    user = request.user.username
+    user = request.user
     return render(request, 'index.html', {'authenticated':authenticated,
                                         'user':user})
 
@@ -25,9 +24,7 @@ def personPage(request, author=False):
         if UserProfile.objects.filter(user=author_user).exists():
             author_profile = UserProfile.objects.get(user=author_user)
             articles = Post.objects.filter(author=author_profile)
-            return render(request, 'blog/index.html', {'user': author_profile.nicename,
-                        'articles':articles, 
-                        'authenticated':request.user.is_authenticated()})
+            return render(request, 'blog/index.html', {'user': author_profile, 'articles':articles, 'authenticated':request.user.is_authenticated()})
         raise Http404
     raise Http404
 
@@ -86,8 +83,13 @@ def edit(request, pk):
     return render(request, 'blog/edit.html', {'article':article, 
                                               'authenticated':True})
 
-def post(request, pk):
-    author=request.user.userprofile
-    article = get_object_or_404(Post, author=author, pk=pk) 
-    return render(request, 'blog/article.html', {'articles':article, 
-        'post':True, 'authenticated':request.user.is_authenticated()})
+def post(request, author, pk):
+    if User.objects.filter(username=author).exists():
+        user = User.objects.get(username=author)
+        if UserProfile.objects.filter(user=user).exists():
+            author = UserProfile.objects.get(user=user)
+            article = get_object_or_404(Post, author=author, pk=pk) 
+            return render(request, 'blog/article.html', {'article':article, 
+                'post':True, 'authenticated':request.user.is_authenticated()})
+        raise Http404
+    raise Http404

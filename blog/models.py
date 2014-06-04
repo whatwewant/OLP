@@ -40,7 +40,8 @@ class Post(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('post', (), {'pk':self.pk})
+        return ('post', (), 
+                {'author':self.author.user.username, 'pk':self.pk})
 
 
 class PostMeta(models.Model):
