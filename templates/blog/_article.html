@@ -2,7 +2,7 @@
   <h3 class="page-header" class="article-example-headfont">
       <a href="{{ article.get_absolute_url | urlencode }}">{{ article.title }}</a>
   </h3>
-  <div class="info">{{ article.author.username }} / {{ article.date | date:"Y/m/d H:i" }}</div>
+  <div class="info">{{ article.author.user.username }} / {{ article.date }}</div>
   <div class="page-header" class="article-example-bodyfont">
       <small>
         {{ article.content | safe }}

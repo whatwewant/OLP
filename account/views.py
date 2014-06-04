@@ -1,8 +1,7 @@
 # -*- coding:utf-8 -*-
 import re
-from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render_to_response, render, redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from account.models import UserProfile
@@ -12,6 +11,9 @@ def index(request):
 	return render(request, 'index.html', {'user':user})
 
 def sign_in(request):
+    # 已经登入，直接跳转到主页
+    if request.user.is_authenticated():
+        return redirect('homepage')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')

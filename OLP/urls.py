@@ -29,5 +29,5 @@ urlpatterns = patterns('',
     url(r'^blog/edit/(?P<id>\d+)/$', 'blog.views.edit', name='blog_edit'),
     url(r'blog/(?P<author>\w*)/$', 'blog.views.personPage', name='blog_index'),
     # article
-    url(r'^post/(?P<author>\w+)/(?P<pk>\d+)/$', 'blog.views.post', name='post'),
+    url(r'^(?P<author>\w+)/article/(?P<pk>\d+)/$', 'blog.views.post', name='post'),
 )
