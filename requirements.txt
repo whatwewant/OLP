@@ -5,5 +5,6 @@
 sudo apt-get install git-flow
 
 # Potter
- south
+ south (0.8.4)
  ipython
+ linaro-django-pagination (2.0.2)

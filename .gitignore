@@ -45,3 +45,6 @@ docs/_build/
 *.swp
 *.db
 *~
+
+# south
+account
