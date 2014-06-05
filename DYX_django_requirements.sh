@@ -56,7 +56,7 @@ fi
 pip install south
 
 # 5 linaro-django-pagination 第三方分页插件
-pip instakk linaro-django-pagination
+pip install linaro-django-pagination
 
 # Clear
 cd $CurrentDir
