@@ -3,6 +3,9 @@
       <a href="{{ article.get_absolute_url | urlencode }}">{{ article.title }}</a>
   </h3>
   <div class="info">{{ article.author.user.username }} / {{ article.date }}</div>
+  {% for category in article.get_categories %}
+  <div class="info">{{ category.name }} </div>
+  {% endfor %}
   <div class="page-header" class="article-example-bodyfont">
       <small>
         {{ article.content | safe }}

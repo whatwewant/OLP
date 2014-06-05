@@ -52,7 +52,7 @@ class Post(models.Model):
     content_mime_type = models.CharField(max_length=255, null=True)
     comment_count = models.IntegerField(default=0)
     # 文章分类
-    po_type = models.ForeignKey(Category, verbose_name=u'文章分类', 
+    po_type = models.ManyToManyField(Category, through='PostToCategory',
                                 blank=True, null=True)
 
     def __unicode__(self):
@@ -67,6 +67,16 @@ class Post(models.Model):
     def get_absolute_url(self):
         return ('post', (), 
                 {'author':self.author.user.username, 'pk':self.pk})
+
+    def get_categories(self):
+        return self.po_type.all()
+
+
+class PostToCategory(models.Model):
+    '''Build MemberShip Between Post And Category'''
+    post = models.ForeignKey(Post)
+    category = models.ForeignKey(Category)
+    date_joined = models.DateField(auto_now_add=True)
 
 
 class PostMeta(models.Model):
