@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load pagination_tags %}
 
 {% block title %}在线交流--个人博客{% endblock %}
 
@@ -32,53 +33,11 @@
         {% endif%}
         <div class = "container" id="page-mid">
             <div id="page-mid-left">
+                {% autopaginate articles %}
 				{% for article in articles %}
                   {% include 'blog/_article.html' %}
 				{% endfor %}
-                
-                <div id="article-example">
-                      <h3 class="page-header" id="article-example-headfont">
-                        <a href="#" id="article-name-color">Article name</a>
-                     </h3>
-                    
-                    <h3 class="page-header" id="article-example-bodyfont">
-                        <small>Article explain:                          fgyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;gyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;
-                        </small>
-                     </h3>
-                </div>
-                
-                <div id="article-example">
-                      <h3 class="page-header" id="article-example-headfont">
-                        <a href="#" id="article-name-color">Article name</a>
-                     </h3>
-                    
-                    <h3 class="page-header" id="article-example-bodyfont">
-                        <small>Article explain:                          fgyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;gyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;
-                        </small>
-                     </h3>
-                </div>
-                
-                <div id="article-example">
-                      <h3 class="page-header" id="article-example-headfont">
-                        <a href="#" id="article-name-color">Article name</a>
-                     </h3>
-                    
-                    <h3 class="page-header" id="article-example-bodyfont">
-                        <small>Article explain:                          fgyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;gyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;
-                        </small>
-                     </h3>
-                </div>
-                
-                <div id="article-example">
-                      <h3 class="page-header" id="article-example-headfont">
-                        <a href="#" id="article-name-color">Article name</a>
-                     </h3>
-                    
-                    <h3 class="page-header" id="article-example-bodyfont">
-                        <small>Article explain:                          fgyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;gyuhjikol;fgyhujikohbjnkml,ghujikl;ghujklo;ghjkl;fghjkrtyuio5t6789fghjkl56yu7iotyuiop567890-tyujkilyuiotyhjuklyuiol;
-                        </small>
-                     </h3>
-                </div>
+                {% paginate %}
             </div>
             
             <div id="page-mid-right">

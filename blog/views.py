@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from blog.models import Post, Category
+from blog.models import Post, Category, PostToCategory
 from account.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -10,7 +10,6 @@ from django.utils import timezone
 from datetime import date
 
 def homePage(request):
-    print dir(request.user)
     authenticated = request.user.is_authenticated()
     userprofile = None
     if authenticated:
@@ -43,19 +42,25 @@ def personPage(request, author=False):
 def write(request):
     if request.method == "POST" :
         author = request.user.userprofile
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        excerpt = request.POST.get('excerpt')
+        title = request.POST.get('title').strip()
+        content = request.POST.get('content').strip()
+        excerpt = request.POST.get('excerpt').strip()
+        # new 文章分类
+        categorylist = request.POST.get('category').strip().split(',')
         # password= request.POST.get('password')
         modified_date = date.today()
         modified_date_gmt = timezone.now()
         # content_type = request.POST.get('content_type')
         if not title or not content or not excerpt:
             return redirect('blog_index')
-        Post.objects.create(author=author, title=title,
+
+        for i in categorylist:
+            cp, ccreated = Category.objects.get_or_create(author=author, name=i)
+            pp, pcreated = Post.objects.get_or_create(author=author, title=title,
                             content=content, excerpt=excerpt,
                             modified_date=modified_date,
                             modified_date_gmt=modified_date_gmt)
+            PostToCategory.objects.get_or_create(post=pp, category=cp)
 
         return redirect('blog_index', request.user.username)
     return render(request, 'blog/write.html', {'authenticated':True})
@@ -67,24 +72,33 @@ def edit(request, pk):
     '''
     if request.method == "POST":
         author = request.user.userprofile
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        excerpt = request.POST.get('excerpt')
+        title = request.POST.get('title').strip()
+        content = request.POST.get('content').strip()
+        excerpt = request.POST.get('excerpt').strip()
+        # new 文章分类
+        categorylist = request.POST.get('category').strip().split(',')
         # password= request.POST.get('password')
         modified_date = date.today()
         modified_date_gmt = timezone.now()
         # content_type = request.POST.get('content_type')
         if not title or not content or not excerpt:
             return redirect('blog_index', request.user.username)
-        
-        article = Post.objects.get(author=author, pk=pk)
 
-        article.title = title
-        article.content = content
-        article.excerpt = excerpt
-        article.modified_date = modified_date
-        article.modified_date_gmt = modified_date_gmt
-        article.save()
+        for i in categorylist:
+            cp, ccreated = Category.objects.get_or_create(author=author, name=i)
+
+            article = Post.objects.get(author=author, pk=pk)
+            # @TODO 判断是否和旧内容相同，如果相同就不用增加数据库存储负担
+            # @TODO 不让空数据传存入数据库
+            article.title = title
+            article.content = content
+            article.excerpt = excerpt
+            article.categorylist = categorylist
+            article.modified_date = modified_date
+            article.modified_date_gmt = modified_date_gmt
+            article.save()
+
+            PostToCategory.objects.get_or_create(post=article, category=cp)
 
         return redirect('blog_index', request.user.username)
 
