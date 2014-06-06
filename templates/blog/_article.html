@@ -8,7 +8,11 @@
   {% endfor %}
   <div class="page-header" class="article-example-bodyfont">
       <small>
-        {{ article.content | safe }}
+        {% if post %}
+        {{ article.get_full_of_article | safe }}
+        {% else %}
+        {{ article.get_excerpt_of_article | safe }}
+        {% endif %}
       </small>
   </div>
 </div>

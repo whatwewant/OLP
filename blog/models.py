@@ -54,6 +54,8 @@ class Post(models.Model):
     # 文章分类
     po_type = models.ManyToManyField(Category, through='PostToCategory',
                                 blank=True, null=True)
+    # 默认显示， 用于删除文章进入垃圾箱
+    show = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.title
@@ -70,6 +72,14 @@ class Post(models.Model):
 
     def get_categories(self):
         return self.po_type.all()
+
+    def get_full_of_article(self):
+        return self.content
+
+    def get_excerpt_of_article(self):
+        return self.excerpt
+
+    # 重载delete方法
 
 
 class PostToCategory(models.Model):
