@@ -12,7 +12,7 @@ from datetime import date
 def homePage(request):
     authenticated = request.user.is_authenticated()
     userprofile = None
-    articles = Post.objects.all()[:9]
+    articles = Post.objects.filter(show=True)[:9]
     if authenticated:
         userprofile = request.user.userprofile
     return render(request, 'index.html', {'authenticated':authenticated,
@@ -23,16 +23,21 @@ def personPage(request, author=False):
         Person Blog Home Page
     '''
     if User.objects.filter(username=author).exists():
+        # articles author
         author_user = User.objects.get(username=author)
+        # realuser
+        realuser = get_object_or_404(User, username=request.user.username)
         if UserProfile.objects.filter(user=author_user).exists():
             userprofile = UserProfile.objects.get(user=author_user)
+            realuserprofile = UserProfile.objects.get(user=realuser)
             articles = Post.objects.filter(author=userprofile, show=True)
             authenticated = request.user.is_authenticated()
             categories = None
             if Category.objects.filter(author=userprofile).exists():
                 categories = Category.objects.filter(author=userprofile)
             # categories = Category.objects.all()
-            return render(request, 'blog/index.html', {'user':userprofile, 
+            return render(request, 'blog/index.html', {'author':userprofile, 
+                                                       'user': realuserprofile,
                                                        'articles':articles, 
                                                        'authenticated':authenticated,
                                                        'categories':categories})
