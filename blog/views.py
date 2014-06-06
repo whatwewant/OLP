@@ -25,7 +25,7 @@ def personPage(request, author=False):
         author_user = User.objects.get(username=author)
         if UserProfile.objects.filter(user=author_user).exists():
             userprofile = UserProfile.objects.get(user=author_user)
-            articles = Post.objects.filter(author=userprofile)
+            articles = Post.objects.filter(author=userprofile, show=True)
             authenticated = request.user.is_authenticated()
             categories = None
             if Category.objects.filter(author=userprofile).exists():
@@ -51,8 +51,11 @@ def write(request):
         modified_date = date.today()
         modified_date_gmt = timezone.now()
         # content_type = request.POST.get('content_type')
-        if not title or not content or not excerpt:
+        if not title or not content:
             return redirect('blog_index')
+
+        if not excerpt:
+            excerpt = content[:300]
 
         for i in categorylist:
             cp, ccreated = Category.objects.get_or_create(author=author, name=i)
@@ -81,13 +84,16 @@ def edit(request, pk):
         modified_date = date.today()
         modified_date_gmt = timezone.now()
         # content_type = request.POST.get('content_type')
-        if not title or not content or not excerpt:
+        if not title or not content:
             return redirect('blog_index', request.user.username)
+
+        if not excerpt:
+            excerpt = content[:300]
 
         for i in categorylist:
             cp, ccreated = Category.objects.get_or_create(author=author, name=i)
 
-            article = Post.objects.get(author=author, pk=pk)
+            article = Post.objects.get(author=author, pk=pk, show=True)
             # @TODO 判断是否和旧内容相同，如果相同就不用增加数据库存储负担
             # @TODO 不让空数据传存入数据库
             article.title = title
@@ -103,10 +109,34 @@ def edit(request, pk):
         return redirect('blog_index', request.user.username)
 
     author = request.user.userprofile
-    article = get_object_or_404(Post, author=author, pk=pk)
+    article = get_object_or_404(Post, author=author, pk=pk, show=True)
     print article
     return render(request, 'blog/edit.html', {'article':article, 
                                               'authenticated':True})
+
+@login_required(login_url='sign_in')
+# @TODO 缺省参数deepdelete ???
+def delete(request, pk, deepdelete=True):
+    author = request.user.userprofile
+    # @TODO 永远不能进入
+    if deepdelete:
+        article = get_object_or_404(Post, author=author, pk=pk)
+        article.delete()
+        return redirect('blog_index', request.user.username)
+        
+    return redirect('blog_index', request.user.username)
+    article = get_object_or_404(Post, author=author, pk=pk, show=True)
+    article.show = False
+    article.save()
+    return redirect('blog_index', request.user.username)
+        
+@login_required(login_url='sign_in')
+def undelete(request, pk):
+    author = request.user.userprofile
+    article = get_object_or_404(Post, author=author, pk=pk)
+    article.show = True
+    article.save()
+    return redirect('blog_index', request.user.username)
 
 def post(request, author, pk):
     if User.objects.filter(username=author).exists():

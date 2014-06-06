@@ -30,4 +30,7 @@ urlpatterns = patterns('',
     url(r'^blog/(?P<author>\w*)/$', 'blog.views.personPage', name='blog_index'),
     # article
     url(r'^(?P<author>\w+)/article/(?P<pk>\d+)/$', 'blog.views.post', name='post'),
+    url(r'^blog/delete/(?P<pk>\d+)/$', 'blog.views.delete', name='delete'),
+    url(r'^blog/undelete/(?P<pk>\d+)/$', 'blog.views.undelete', name='undelete'),
+    url(r'^blog/delete/(?P<pk>\d+)?deepdelete=(?P<deepdelete>\w+)/$', 'blog.views.delete', name='delete'),
 )
