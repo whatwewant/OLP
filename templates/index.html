@@ -144,7 +144,7 @@
                 
                     <ul class="nav nav-pills nav-stacked" id="hot">
                         <li class="active"><a href="#">Hot</a></li>
-                        <li><a href="#">Profilefvgbyhjnuklcfvghbxcfvghbjnkmlcvgbhjnj</a></li>
+                        <li><a href="#">Profile</a></li>
                         <li><a href="#">Messages</a></li>
                         <li><a href="#">Profile</a></li>
                         <li><a href="#">Messages</a></li>
@@ -161,15 +161,9 @@
                     
                 <ul class="nav nav-pills nav-stacked">
                     <li class="active"><a href="#">New</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Messages</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Messages</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Messages</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Messages</a></li>
-                    <li><a href="#">Messages</a></li>
+                    {% for article in articles %}
+                    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
                 </ul>     
             </div>
     </div>

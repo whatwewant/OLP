@@ -12,10 +12,11 @@ from datetime import date
 def homePage(request):
     authenticated = request.user.is_authenticated()
     userprofile = None
+    articles = Post.objects.all()[:9]
     if authenticated:
         userprofile = request.user.userprofile
     return render(request, 'index.html', {'authenticated':authenticated,
-                                        'user':userprofile})
+                                          'user':userprofile, 'articles':articles})
 
 def personPage(request, author=False):
     '''
