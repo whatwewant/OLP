@@ -21,6 +21,9 @@ class Category(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('category', (), {'pk':self.pk})
+    
+    def get_post_count(self):
+        return self.post_set.count()
 
 
 class Post(models.Model):

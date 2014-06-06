@@ -5,6 +5,7 @@ from account.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_list_or_404
 from django.http import Http404
 from django.utils import timezone
 from datetime import date
@@ -22,27 +23,25 @@ def personPage(request, author=False):
     '''
         Person Blog Home Page
     '''
-    if User.objects.filter(username=author).exists():
-        # articles author
-        author_user = User.objects.get(username=author)
-        # realuser
-        realuser = get_object_or_404(User, username=request.user.username)
-        if UserProfile.objects.filter(user=author_user).exists():
-            userprofile = UserProfile.objects.get(user=author_user)
-            realuserprofile = UserProfile.objects.get(user=realuser)
-            articles = Post.objects.filter(author=userprofile, show=True)
-            authenticated = request.user.is_authenticated()
-            categories = None
-            if Category.objects.filter(author=userprofile).exists():
-                categories = Category.objects.filter(author=userprofile)
-            # categories = Category.objects.all()
-            return render(request, 'blog/index.html', {'author':userprofile, 
-                                                       'user': realuserprofile,
-                                                       'articles':articles, 
-                                                       'authenticated':authenticated,
-                                                       'categories':categories})
-        raise Http404
-    raise Http404
+    print author
+    print dir(request.user)
+    print request.user.is_authenticated()
+    # user
+    userprofile = None
+    authenticated = False
+    if request.user.is_authenticated():
+        userprofile = request.user.userprofile
+        authenticated = True #request.user.is_authenticated()
+    # articles author
+    author = get_object_or_404(User, username=author)
+    authorprofile = UserProfile.objects.get(user=author)
+    articles = Post.objects.filter(author=authorprofile, show=True)
+    categories = Category.objects.filter(author=authorprofile)
+    return render(request, 'blog/index.html', {'author':authorprofile, 
+                                        'user': userprofile,
+                                        'articles':articles, 
+                                        'authenticated':authenticated,
+                                        'categories':categories})
 
 @login_required(login_url='sign_in')
 def write(request):
@@ -146,9 +145,9 @@ def undelete(request, pk):
 
 def post(request, author, pk):
     if User.objects.filter(username=author).exists():
-        user = User.objects.get(username=author)
-        if UserProfile.objects.filter(user=user).exists():
-            author = UserProfile.objects.get(user=user)
+        author = User.objects.get(username=author)
+        if UserProfile.objects.filter(user=author).exists():
+            author = UserProfile.objects.get(user=author)
             article = get_object_or_404(Post, author=author, pk=pk) 
             return render(request, 'blog/article.html', {'article':article, 
                 'post':True, 
@@ -156,3 +155,15 @@ def post(request, author, pk):
         raise Http404
     raise Http404
 
+def category(request, author, pk):
+    # 登入用户
+    user = None
+    if request.user.is_authenticated():
+        user = request.user.userprofile
+    author = get_object_or_404(User, username=author)
+    authorprofile = get_object_or_404(UserProfile, user=author)
+    categories = get_list_or_404(Category, author=authorprofile)
+    category = get_object_or_404(Category, author=authorprofile, pk=pk)
+    articles = category.post_set.all()
+    return render(request, 'blog/category.html', {'user':user, 'articles':articles,
+                                                  'categories':categories})
