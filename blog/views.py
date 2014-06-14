@@ -11,6 +11,7 @@ from django.utils import timezone
 from datetime import date
 
 def homePage(request):
+    # print dir(request)
     authenticated = request.user.is_authenticated()
     userprofile = None
     articles = Post.objects.filter(show=True)[:9]
@@ -23,9 +24,11 @@ def personPage(request, author=False):
     '''
         Person Blog Home Page
     '''
-    print author
-    print dir(request.user)
-    print request.user.is_authenticated()
+    for k, v in request.META.items():
+        print k,':',v
+    # print author
+    # print dir(request.user)
+    # print request.user.is_authenticated()
     # user
     userprofile = None
     authenticated = False

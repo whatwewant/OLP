@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from account.models import UserProfile
+from datetime import date
 
 def index(request):    
 	user = request.user.username
@@ -18,6 +19,8 @@ def sign_in(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        login_ip = request.META['REMOTE_ADDR']
+        login_date     = date.today()
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
@@ -31,6 +34,13 @@ def sign_in(request):
     return render(request, 'account/sign_in.html', {})
 
 
+def handle_uploaded_file(file, filename):
+    with open(filename, 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+
+
+# @TODO
 def sign_up(request):
     if request.method == "POST":
 
@@ -53,6 +63,7 @@ def sign_up(request):
         if not(len(nickname) >= 2 and len(nickname) <= 10):
             return render(request, "account/sign_up.html",
                     {"error": u"昵称只能是2-10个字符"})
+        # @TODO
         name = re.compile("^[_A-Za-z0-9\u4e00-\u9fa5]+$")
         if not name.match(nickname):
             return render(request, "account/sign_up.html",
