@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block body %}
+        {% if error %}
+        <div>{{ error  }}</div>
+        {% endif %}
 		<div id="container">
 			<div id="login">
 			<form role="form" action="" method="post">
