@@ -20,7 +20,7 @@ def sign_in(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         login_ip = request.META['REMOTE_ADDR']
-        login_date     = date.today()
+        login_date = date.today()
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
@@ -90,4 +90,20 @@ def sign_out(request):
     logout
     '''
     logout(request)
+    return redirect('index')
+
+
+@login_required(login_url='index')
+def change_password(request):
+    if request.method == 'POST':
+        oldpassword = request.POST.get('oldpassword')
+        newpassword = request.POST.get('newpassword')
+        do_newpassword = request.POST.get('do_newpassword')
+        if not newpassword or not do_newpassword or (newpassword != do_newpassword):
+            return redirect('index')
+        user = request.user.user
+        if user.check_password(oldpassword):
+            user.set_password(newpassword)
+            user.save()
+            return redirect('index')
     return redirect('index')

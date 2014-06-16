@@ -11,6 +11,7 @@ KindEditor.ready(function(K) {
 			'hr', 'fontsize',  'fontname',
 			'italic', 'bold',
 			'image',
+            'media',
 		]
 	});
 });
