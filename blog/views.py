@@ -10,7 +10,7 @@ from django.http import Http404
 from django.utils import timezone
 from datetime import date
 
-from utils import ke_upload_image, ke_upload_audio
+#from utils import ke_upload_image, ke_upload_audio
 
 def homePage(request):
     # print dir(request)
