@@ -17,14 +17,7 @@
             </div>
             
             <div id="up-right">
-                <div class="btn-group" id="guidance">
-                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns" id="write_blog" >写新博客</a>
-                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">目录视图</button>
-                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">摘要视图</button>
-                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">管理博客</button>
-                    <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btns">管理博客</button>
-                    
-                </div>
+                    {% include 'blog/_nav_bar.html'%}
             </div>
         {% if not authenticated %}
         {% include 'account/_sign_in.html' %}
@@ -46,22 +39,8 @@
                 </div>
                 
                 <div id="mid-right-down">
-                      <div id="information">
-                        <p>昵称：{{ author.nickname }}</p>
-                        <p>等级：</p>
-                        <p>积分：</p>
-                        <p>访问：</p>
-                        <p>排名：</p>
-                    </div>
-                        
-                    <div class = "btn-group-vertical" id="article-categray">
-                       <button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray">文章分类</button>
-                       {% for category in categories %}
-                       <button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray">
-                           {{ category.name }}({{ category.get_post_count }})-{{ category.pk }}
-                       </button>
-                       {% endfor %}
-                    </div>
+                     {% include 'blog/_resource.html' %}
+                     {% include 'blog/_blog_category.html' %} 
                 </div>
                 </div>
         
