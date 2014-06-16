@@ -36,6 +36,6 @@ urlpatterns = patterns('',
     # category
     url(r'(?P<author>\w+)/category/(?P<pk>\d+)/$', 'blog.views.category', name='category'),
     # upload
-    url(r'uploadimage/$', 'blog.views.ke_upload_image', name='upload_image'),
-    url(r'uploadaudio/$', 'blog.views.ke_upload_audio', name='upload_audio'),
+    #url(r'uploadimage/$', 'blog.views.ke_upload_image', name='upload_image'),
+    #url(r'uploadaudio/$', 'blog.views.ke_upload_audio', name='upload_audio'),
 )
