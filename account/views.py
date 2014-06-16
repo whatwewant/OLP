@@ -1,11 +1,12 @@
 # -*- coding:utf-8 -*-
 import re
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from account.models import UserProfile
 from datetime import date
+from django.http import Http404
 
 def index(request):    
 	user = request.user.username
@@ -93,7 +94,7 @@ def sign_out(request):
     return redirect('index')
 
 
-@login_required(login_url='index')
+@login_required(login_url='sign_up')
 def change_password(request):
     if request.method == 'POST':
         oldpassword = request.POST.get('oldpassword')
@@ -101,9 +102,22 @@ def change_password(request):
         do_newpassword = request.POST.get('do_newpassword')
         if not newpassword or not do_newpassword or (newpassword != do_newpassword):
             return redirect('index')
-        user = request.user.user
+        user = request.user.userprofile.user
         if user.check_password(oldpassword):
             user.set_password(newpassword)
             user.save()
             return redirect('index')
     return redirect('index')
+
+@login_required(login_url='sign_up')
+def get_user_info(request):
+    if not request.user.is_authenticated():
+        return redirect('sign_up')
+
+    userprofile = request.user.userprofile
+    userinfo = get_object_or_404(UserProfile, userprofile=userprofile)
+    if request.method == 'POST':
+        # @TODO
+        return render(request, '', {'userinfo':userinfo})
+    return render(request, '', {'userinfo':userinfo})
+
