@@ -10,6 +10,8 @@ from django.http import Http404
 from django.utils import timezone
 from datetime import date
 
+from utils import ke_upload_image, ke_upload_audio
+
 def homePage(request):
     # print dir(request)
     authenticated = request.user.is_authenticated()
@@ -98,8 +100,9 @@ def edit(request, pk):
         if not excerpt:
             excerpt = content[:300]
 
-        for i in categorylist:
-            cp, ccreated = Category.objects.get_or_create(author=author, name=i)
+        if categorylist:
+            for i in categorylist:
+                cp, ccreated = Category.objects.get_or_create(author=author, name=i)
 
             article = Post.objects.get(author=author, pk=pk, show=True)
             # @TODO 判断是否和旧内容相同，如果相同就不用增加数据库存储负担
