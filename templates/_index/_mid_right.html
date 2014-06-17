@@ -1,0 +1,6 @@
+<ul class="nav nav-pills nav-stacked">
+    <li class="active"><a href="#">New</a></li>
+    {% for article in articles %}
+    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+    {% endfor %}
+</ul> 
