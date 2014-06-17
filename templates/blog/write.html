@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "blog/blog_base.html" %}
 
 {% block title %} Write Page {% endblock %}
 
@@ -7,7 +7,7 @@
 <script src="{{ STATIC_URL }}js/edit.js"></script>
 {% endblock %}
 
-{% block body %} 
+{% block page_mid_left%}
 <div id="container">
 	<div id="editText">
 	<form action="" method="post">
