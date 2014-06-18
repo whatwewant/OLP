@@ -1,0 +1,204 @@
+#font-bac{
+    background: #403a3a;
+}
+
+#myCarousel{
+    height: 400px;
+    width: 600px;
+    float: left;
+    margin: 0px 0px;
+}
+
+#usr-name{
+    background: white;
+    height: 52px;
+    width: 200px;
+    float: left;
+}
+
+
+#scan1{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#scan2{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#nav_right{
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: 15px;    
+}
+
+#head-font{
+    color: white;
+    font-size: 18px;
+    margin: 0px 15px;
+}
+
+#head-font1{
+    font-size: 24px;
+    color: white;
+    background: black;
+    padding: 15px 0px 0px 0px;
+}
+
+.nav navbar-nav a{
+    display: block;
+    height: 40px;
+    width: 50px;
+    background: black;
+}
+
+a:link{
+    color: black;
+}
+
+a:visited{
+    color: black;
+}
+
+a:hover{
+    color: black;
+}
+
+a:active{
+    color: green;
+}
+
+#whole_container{
+    width: 1360px;
+    height: 1200px;
+    background: white;
+}
+
+#page-up{
+    height: 52px;
+    width: 1360px;
+}
+
+#page-mid-and-down{
+    height: 800px;
+    width: 1100px;
+    background: white;
+}
+
+#page-mid{
+    height: 450px;
+    width: 1100px;
+    margin: 20px 0px;
+}
+
+#mid-left{
+    height: 400px;
+    width: 600px;
+    float: left;
+    background: gray;
+    margin: 0px 20px 0px 10px;
+}
+
+#mid-middle{
+    height: 400px;
+    width: 190px;
+    float: left;
+    margin: 0px 10px 0px 0px;
+}
+
+#mid-right{
+    height: 400px;
+    width: 190px;
+    float: left;
+    margin: 0px 0px 0px 10px;
+}
+
+
+#page-down{
+    height: 550px;
+    width: 1100px;
+    margin: 20px 0px;
+}
+
+#page-down-first{
+    height: 450px;
+    width: 240px;
+    background: gray;
+    margin: 0px 10px;
+    float: left;
+}
+
+#page-down-second{
+    height: 450px;
+    width: 240px;
+    background: gray;
+    margin: 0px 10px;
+    float: left;
+}
+
+#page-down-third{
+    height: 450px;
+    width: 240px;
+    background: gray;
+    margin: 0px 10px;
+    float: left;
+}
+
+#page-down-fourth{
+    height: 450px;
+    width: 240px;
+    background: gray;
+    margin: 0px 10px;
+    float: left;
+}
+
+#pright
+{
+	text-align:right;
+	padding-right: 50px;
+	margin-top: -100px;
+}
+
+#page-down-fourth-one
+{
+	height: 130;
+	width:220;
+	background:pink;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+#page-down-fourth-two
+{
+	height: 200;
+	width:220;
+	background:white;
+	margin-left: 10px;
+	margin-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	word-break:break-all;
+}
+#page-down-fourth-three
+{
+	height: 80;
+	width:220;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+#button
+{
+	width:200px;
+	height:60px;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+#wordhead
+{
+	text-align:center;
+	font-size:40px;
+}
+#wordbody
+{
+	font-size:20px;
+}
