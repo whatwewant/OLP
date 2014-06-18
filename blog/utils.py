@@ -26,7 +26,8 @@ def ke_upload_image(request):
     ext_allowed = ['gif', 'jpg', 'jpeg', 'png']
     max_size = 2621440
     today = datetime.datetime.today()
-    save_dir = 'upload/images/%d/%d/%d/' % (today.year, today.month, today.day)
+    save_dir = 'upload/images/%s/%d/%d/%d/' % (request.user.username, 
+                                    today.year, today.month, today.day)
     save_path = settings.MEDIA_ROOT+save_dir
     # @TODO
     # save_url = settings.MEDIA_URL+save_dir
@@ -72,7 +73,8 @@ def ke_upload_audio(request):
     # max_size = 10485760 # 10 MB
     max_size = 1048576000 # 1000 MB
     today = datetime.datetime.today()
-    save_dir = 'upload/audios/%d/%d/%d/' % (today.year, today.month, today.day)
+    save_dir = 'upload/audios/%s/%d/%d/%d/' % (request.user.username,
+                                    today.year, today.month, today.day)
     save_path = settings.MEDIA_ROOT+save_dir
     # @TODO
     # save_url = settings.MEDIA_URL+save_dir
