@@ -10,8 +10,7 @@ KindEditor.ready(function(K) {
 			'justifyleft', 'justifycenter', 'justifyright',
 			'hr', 'fontsize',  'fontname',
 			'italic', 'bold',
-			'image',
-            'media',
+			'image', 'media', 'insertfile',
 		]
 	});
 });

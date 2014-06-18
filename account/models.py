@@ -37,6 +37,8 @@ class UserMeta(models.Model):
 # @TODO
 class UserInfo(models.Model):
     # @TODO
+    sex = models.CharField(u'性别', default='None', max_length='5')
+    age = models.IntegerField(u'年龄', default=0, max_length=3)
     userprofile = models.ForeignKey(UserProfile)
     hometown = models.CharField(u'家乡', max_length=255, blank=True)
     zip_code = models.IntegerField(u'邮编', max_length=7, blank=True)
@@ -52,12 +54,12 @@ class UserInfo(models.Model):
 
         return u'{username}\'s Detailed UserInfo'.format(username=self.userprofile.user.username)
 
+
 class UserLoginHistory(models.Model):
     user = models.ForeignKey(User)
     date = models.DateField(u'当前时间', auto_now_add=True)
-    current_login_ip = models.CharField(u'当前登入ip', max_length=255, blank=True)
-    date_before = models.DateField(u'上次登入时间', blank=True)
-    last_login_ip = models.CharField(u'最后登入ip', max_length=255, blank=True)
+    login_ip = models.CharField(u'当前登入ip', max_length=255, blank=True)
+    login_address = models.CharField(u'当前地点', max_length=255, default=u'未知')
     
     def __unicode__(self):
 

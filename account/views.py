@@ -4,15 +4,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from account.models import UserProfile
+from account.models import UserProfile, UserInfo, UserLoginHistory
 from datetime import date
-from django.http import Http404
+
+# from utils import transform_ip_to_address
 
 def index(request):    
 	user = request.user.username
 	return render(request, 'index.html', {'user':user})
 
 def sign_in(request):
+    '''登录'''
     # 已经登入，直接跳转到主页
     if request.user.is_authenticated():
         return redirect('homepage')
@@ -22,11 +24,16 @@ def sign_in(request):
         password = request.POST.get('password')
         login_ip = request.META['REMOTE_ADDR']
         login_date = date.today()
+        # login_address = transform_ip_to_address(login_ip)
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
-                '''ceshi'''
+                UserLoginHistory.objects.create(
+                    user=user,
+                    login_ip=login_ip,
+                #    login_address=login_address,
+                    date=login_date)
                 return redirect('blog_index', request.user.username)
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
@@ -43,6 +50,7 @@ def handle_uploaded_file(file, filename):
 
 # @TODO
 def sign_up(request):
+    '''注册'''
     if request.method == "POST":
 
         username = request.POST.get("username").strip()
@@ -80,22 +88,24 @@ def sign_up(request):
                 password=password, email=email)
         UserProfile.objects.create(user=user,
                 nickname=nickname)
-        return redirect('sign_in')
+
+        login(request, user)
+        return redirect('blog_index', request.user.username)
+        #return redirect('sign_in')
     before = request.GET.get("before", "/")
     return render(request, "account/sign_up.html", {"before": before})
 
 
 @login_required(login_url='sign_in')
 def sign_out(request):
-    '''
-    logout
-    '''
+    '''logout'''
     logout(request)
     return redirect('index')
 
 
 @login_required(login_url='sign_up')
 def change_password(request):
+    '''修改密码'''
     if request.method == 'POST':
         oldpassword = request.POST.get('oldpassword')
         newpassword = request.POST.get('newpassword')
@@ -105,19 +115,70 @@ def change_password(request):
         user = request.user.userprofile.user
         if user.check_password(oldpassword):
             user.set_password(newpassword)
-            user.save()
             return redirect('index')
+        return redirect('index')
     return redirect('index')
 
 @login_required(login_url='sign_up')
-def get_user_info(request):
-    if not request.user.is_authenticated():
-        return redirect('sign_up')
+def user_info(request):
+    '''获取/修改个人信息'''
+    # if not request.user.is_authenticated():
+    #    return redirect('sign_up')
 
     userprofile = request.user.userprofile
-    userinfo = get_object_or_404(UserProfile, userprofile=userprofile)
+    userinfo = get_object_or_404(UserInfo, userprofile=userprofile)
     if request.method == 'POST':
         # @TODO
-        return render(request, '', {'userinfo':userinfo})
-    return render(request, '', {'userinfo':userinfo})
+        sex = request.POST.get('sex').strip()
+        age = request.POST.get('age').strip()
+        hometown = request.POST.get('hometown').strip()
+        zip_code = request.POST.get('zip_code').strip()
+        qq = request.POST.get('qq').strip()
+        phone = request.POST.get('phone').strip()
+        country = request.POST.get('country').strip()
+        country_code = request.POST.get('country_code').strip()
+        language = request.POST.get('language').strip()
+        recovery_mail = request.POST.get('recovery_mail').strip()
+        web_site = request.POST.get('web_site').strip()
+
+        userinfo.sex = sex
+        userinfo.age = age
+        userinfo.hometown = hometown
+        userinfo.zip_code = zip_code
+        userinfo.qq = qq
+        userinfo.phone = phone
+        userinfo.country = country
+        userinfo.country_code = country_code
+        userinfo.language = language
+        userinfo.recovery_mail = recovery_mail
+        userinfo.web_site = web_site
+
+        # temp_info = {'sex': sex,
+        #             'age': age,
+        #             'hometown': hometown,
+        #             'zip_code': zip_code,
+        #             'qq': qq,
+        #             'phone': phone,
+        #             'country': country,
+        #             'country_code': country_code,
+        #             'language': language,
+        #             'recovery_mail': recovery_mail,
+        #             'web_site': web_site
+        #            }
+        #
+        #userinfo_dict = userinfo.__dict__
+        #for key, value in temp_info.items():
+        #    if userinfo_dict[key] != value:
+        #        userinfo_dict[key] = value
+             
+        userinfo.save()
+        return render(request, 'account/user_info.html', {'userinfo':userinfo})
+    return render(request, 'account/user_info.html', {'userinfo':userinfo})
+
+@login_required(login_url='sign_in')
+def get_user_login_history(request):
+    '''登入历史'''
+    user = request.user.userprofile.user
+    history = UserLoginHistory.objects.filter(user=user)[:10]
+    return render(request, 'account/login_history.html', {'history': history})
 
