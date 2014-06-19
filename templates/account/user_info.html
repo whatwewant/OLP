@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}User Information{% endblock %}
+
+{% block body %}
+  <form action="" method="post">
+  {% csrf_token %}
+  性别:<input type="text" name="sex" value="{{ userinfo.sex }}" /><br />
+  年龄:<input type="text" name="age" value="{{ userinfo.age }}" /><br />
+  家乡:<input type="text" name="hometown" value="{{ userinfo.hometown }}" /><br />
+  邮编:<input type="text" name="zip_code" value="{{ userinfo.zip_code }}" /><br />
+  QQ:<input type="text" name="qq" value="{{ userinfo.qq }}" /><br />
+  Phone:<input type="text" name="phone" value="{{ userinfo.phone }}" /><br />
+  国籍:<input type="text" name="country" value="{{ userinfo.country }}" /><br />
+  国家代码:<input type="text" name="country_code" value="{{ userinfo.country_code }}" /><br />
+  语言:<input type="text" name="language" value="{{ userinfo.language }}" /><br />
+  辅助邮箱:<input type="email" name="recovery_email" value="{{ userinfo.recovery_email }}" /><br />
+  个人网址:<input type="text" name="web_site" value="{{ userinfo.web_site }}" /><br />
+  <input type="submit" value="Submit"/>
+  </form>
+{% endblock %}
