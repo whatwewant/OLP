@@ -126,20 +126,20 @@ def user_info(request):
     #    return redirect('sign_up')
 
     userprofile = request.user.userprofile
-    userinfo = get_object_or_404(UserInfo, userprofile=userprofile)
+    userinfo, userinfo_created = UserInfo.objects.get_or_create(userprofile=userprofile)
     if request.method == 'POST':
         # @TODO
-        sex = request.POST.get('sex').strip()
-        age = request.POST.get('age').strip()
-        hometown = request.POST.get('hometown').strip()
-        zip_code = request.POST.get('zip_code').strip()
-        qq = request.POST.get('qq').strip()
-        phone = request.POST.get('phone').strip()
-        country = request.POST.get('country').strip()
-        country_code = request.POST.get('country_code').strip()
-        language = request.POST.get('language').strip()
-        recovery_mail = request.POST.get('recovery_mail').strip()
-        web_site = request.POST.get('web_site').strip()
+        sex = request.POST.get('sex')
+        age = request.POST.get('age')
+        hometown = request.POST.get('hometown')
+        zip_code = request.POST.get('zip_code')
+        qq = request.POST.get('qq')
+        phone = request.POST.get('phone')
+        country = request.POST.get('country')
+        country_code = request.POST.get('country_code')
+        language = request.POST.get('language')
+        recovery_email = request.POST.get('recovery_email')
+        web_site = request.POST.get('web_site')
 
         userinfo.sex = sex
         userinfo.age = age
@@ -150,9 +150,22 @@ def user_info(request):
         userinfo.country = country
         userinfo.country_code = country_code
         userinfo.language = language
-        userinfo.recovery_mail = recovery_mail
+        userinfo.recovery_email = recovery_email
         userinfo.web_site = web_site
-
+        userinfo.save()
+        
+        # userinfo.sex = sex
+        # userinfo.age = age
+        # userinfo.hometown = hometown
+        # userinfo.zip_code = zip_code
+        # userinfo.qq = qq
+        # userinfo.phone = phone
+        # userinfo.country = country
+        # userinfo.country_code = country_code
+        # userinfo.language = language
+        # userinfo.recovery_mail = recovery_mail
+        # userinfo.web_site = web_site
+        #
         # temp_info = {'sex': sex,
         #             'age': age,
         #             'hometown': hometown,
@@ -170,8 +183,8 @@ def user_info(request):
         #for key, value in temp_info.items():
         #    if userinfo_dict[key] != value:
         #        userinfo_dict[key] = value
-             
-        userinfo.save()
+        #     
+        #userinfo.save()
         return render(request, 'account/user_info.html', {'userinfo':userinfo})
     return render(request, 'account/user_info.html', {'userinfo':userinfo})
 
