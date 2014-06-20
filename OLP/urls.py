@@ -41,4 +41,7 @@ urlpatterns = patterns('',
     # upload
     url(r'uploadimage/$', 'blog.views.ke_upload_image', name='upload_image'),
     url(r'uploadaudio/$', 'blog.views.ke_upload_audio', name='upload_audio'),
+
+    # Mail
+    url(r'^sendmail/$', 'blog.views.send_one_mail', name='send_one_mail'),
 )
