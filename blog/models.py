@@ -11,7 +11,7 @@ class Category(models.Model):
     author = models.ForeignKey(UserProfile)
     name = models.CharField(u'文章分类', max_length=64)
     date = models.DateField(auto_now_add=True)
-    post_count = models.IntegerField(u'文章数统计', default=0)
+    # post_count = models.IntegerField(u'文章数统计', default=0)
 
     class Meta:
         ordering = ['-pk']
