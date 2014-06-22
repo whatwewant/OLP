@@ -63,13 +63,18 @@ def write(request):
         # content_type = request.POST.get('content_type')
         if not title or not content:
             return redirect('blog_index')
+        
+        name = title
+        if len(name) > 10:
+            name = name[:10]+'...'
 
         if not excerpt:
             excerpt = content[:300]
 
         for i in categorylist:
             cp, ccreated = Category.objects.get_or_create(author=author, name=i)
-            pp, pcreated = Post.objects.get_or_create(author=author, title=title,
+            pp, pcreated = Post.objects.get_or_create(author=author, 
+                            title=title, name = name,
                             content=content, excerpt=excerpt,
                             modified_date=modified_date,
                             modified_date_gmt=modified_date_gmt)
