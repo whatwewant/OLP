@@ -37,27 +37,29 @@ class UserMeta(models.Model):
 # @TODO
 class UserInfo(models.Model):
     # @TODO
+    sex = models.CharField(u'性别', default='None', max_length='5')
+    age = models.IntegerField(u'年龄', default=0, max_length=3)
     userprofile = models.ForeignKey(UserProfile)
-    hometown = models.CharField(u'家乡', max_length=255, blank=True)
-    zip_code = models.IntegerField(u'邮编', max_length=7, blank=True)
-    qq = models.IntegerField(u'QQ', max_length=25, blank=True)
-    phone = models.IntegerField(u'Phone', max_length=255, blank=True)
-    country = models.CharField(u'国家', max_length=255, blank=True)
+    hometown = models.CharField(u'家乡', max_length=255, null=True)
+    zip_code = models.IntegerField(u'邮编', max_length=7, null=True)
+    qq = models.IntegerField(u'QQ', max_length=25, null=True)
+    phone = models.IntegerField(u'Phone', max_length=255, null=True)
+    country = models.CharField(u'国家', max_length=255, null=True)
     country_code = models.CharField(u'国家代号', max_length=3, default='+86')
     language = models.CharField(u'语言', max_length=255, default='Chinese')
-    recovery_email = models.EmailField(u'辅助邮箱', max_length=255, blank=True)
-    web_site = models.URLField(u'个人网站', max_length=255, blank=True)
+    recovery_email = models.EmailField(u'辅助邮箱', max_length=255, null=True)
+    web_site = models.URLField(u'个人网站', max_length=255, null=True)
 
     def __unicode__(self):
 
         return u'{username}\'s Detailed UserInfo'.format(username=self.userprofile.user.username)
 
+
 class UserLoginHistory(models.Model):
     user = models.ForeignKey(User)
     date = models.DateField(u'当前时间', auto_now_add=True)
-    current_login_ip = models.CharField(u'当前登入ip', max_length=255, blank=True)
-    date_before = models.DateField(u'上次登入时间', blank=True)
-    last_login_ip = models.CharField(u'最后登入ip', max_length=255, blank=True)
+    login_ip = models.CharField(u'当前登入ip', max_length=255, null=True)
+    login_address = models.CharField(u'当前地点', max_length=255, default=u'未知')
     
     def __unicode__(self):
 

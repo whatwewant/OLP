@@ -20,6 +20,8 @@ urlpatterns = patterns('',
     url(r'^sign_in/$','account.views.sign_in', name='sign_in'),
     url(r'^sign_up/$', 'account.views.sign_up', name='sign_up'),
     url(r'^sign_out/$', 'account.views.sign_out', name='sign_out'),
+    url(r'^userinfo/$', 'account.views.user_info', name='user_info'),
+    url(r'^loginhistory/$', 'account.views.get_user_login_history', name='history'),
 
     # blog
     url(r'^$', 'blog.views.homePage', name='homepage'),
@@ -27,7 +29,8 @@ urlpatterns = patterns('',
     url(r'^blog/index/$', 'blog.views.homePage'),
     url(r'^blog/write/$', 'blog.views.write', name='blog_write'),
     url(r'^blog/edit/(?P<pk>\d+)/$', 'blog.views.edit', name='blog_edit'),
-    url(r'^blog/(?P<author>\w+)/$', 'blog.views.personPage', name='blog_index'),
+    url(r'^blog/(?P<author>\w+)/$', 'blog.views.personPage', name='blog_author'),
+    url(r'^(?P<author>\w+)/$', 'blog.views.personPage', name='blog_index'),
     # article
     url(r'^(?P<author>\w+)/article/(?P<pk>\d+)/$', 'blog.views.post', name='post'),
     url(r'^blog/delete/(?P<pk>\d+)/$', 'blog.views.delete', name='delete'),
@@ -38,4 +41,7 @@ urlpatterns = patterns('',
     # upload
     url(r'uploadimage/$', 'blog.views.ke_upload_image', name='upload_image'),
     url(r'uploadaudio/$', 'blog.views.ke_upload_audio', name='upload_audio'),
+
+    # Mail
+    url(r'^sendmail/$', 'blog.views.send_one_mail', name='send_one_mail'),
 )
