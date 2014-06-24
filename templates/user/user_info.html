@@ -1,6 +1,6 @@
 {% extends "blog/blog_base.html" %}
 
-{% block title %} Home Page {% endblock %}
+{% block title %} User Information {% endblock %}
 
 {% block script %}
 <script src="{{ STATIC_URL }}js/edit.js"></script>
@@ -15,7 +15,7 @@
   </div>
   <div class="row bigblock">
       <ul class="nav nav-tabs">
-        <li class="active"><a href="{%url 'blog_index' author.user.username %}">Home</a></li>
+        <li><a href="{%url 'blog_index' author.user.username %}">Home</a></li>
         <li><a href="{%url 'blog_index' author.user.username %}">Profile</a></li>
         <li><a href="{%url 'blog_write'%}">Write</a></li>
         <li><a href="#">Messages</a></li>
@@ -31,87 +31,44 @@
   <div class="row">
     <h1></h1>
   </div>
-    
+
+  <!-- body -->
   <div class="row">
+    <!-- big left -->
     <div class="col-md-10  bigblock">
-      <!-- left side begin -->
-      <div class="col-md-2">
-        <div class="sort">
-            <h2 class="subtitle">文章分类</h2>
-            <table class="table table-striped">
-                {% for category in categories %}
-            <tr>
-                <td>{{ category.name}}:</td><td>{{ category.get_post_count }}</td>
-            </tr>
-                {% endfor %}
-            </table>
-        </div>
-        
-        <div class="sort">
-            <h2 class="subtitle">文章存档</h2>
-            <table class="table table-striped">
-            <tr>
-                <td>等级:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>积分:</td><td>120</td>
-            </tr>
-            <tr>
-                <td>文章:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>访问:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>排名:</td><td>12312</td>
-            </tr>
-            </table>
-        </div>
-        
-        <div class="sort">
-            <h2 class="subtitle">阅读排行</h2>
-            <table class="table table-striped">
-            <tr>
-                <td>等级:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>积分:</td><td>120</td>
-            </tr>
-            <tr>
-                <td>文章:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>访问:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>排名:</td><td>12312</td>
-            </tr>
-            </table>
-        </div> 
-        
-      </div>
-      <!-- left side end -->
-      <!-- right side begin -->
-      <div class="col-md-8">
-          <div class="main">
-          {% if articles %}
-            {% for article in articles %}
-            <div class="article-title"><a href="{{ article.get_absolute_url }}"><h3>{{ article.title }}</h3></a></div>
-            <div class="article-author">
-                <span>{{ article.author.user }}</span> / <span>{{ article.date }}</span>
-            </div>
-            <div class="article-comment">{{ article.comment }}</div>
-            <div class="article-excerpt">{{ article.excerpt | safe }}</div>
-            <hr>
-            
-            {% endfor %}
-          {% else %}
-          <div class="info">亲，来一篇吧</div>
-          {% endif %}
-          </div>
-      </div>
-      <!-- right side end -->
+     <div class="row head-title">
+        <h1>{{ author.user.username.capitalize }}'s Personal Information</h1>   
      </div>
+    
+     <div class="row">
+        <form role="form" class="form-group">
+         <label for="InputText">Name:</label> 
+         <input type="text" class="form-control userinfo" placeholder="Name" value=""/><br />
+        
+        <label for="InputText">性别: </label>
+        <input type="text" class="form-control userinfo" value="{{ userinfo.sex }}"/><br />
+         
+        <label for="InputText">年龄: </label>
+         <input type="text" class="form-control userinfo" value="{{ userinfo.age }}"/><br />
+        
+         <label for="InputText">家乡: </label></label>
+         <input type="text" class="form-control userinfo" value="{{ userinfo.hometown }}"/><br />
+        
+         <label for="InputText">邮编: </label>
+         <input type="text" class="form-control userinfo" value="{{ userinfo.zip_code }}"/><br />
+         
+          <label for="InputText">QQ: </label>
+         <input type="text" class="form-control userinfo" value="{{ userinfo.qq }}"/><br />
+         
+          <label for="InputText">手机: </label>
+         <input type="text" class="form-control userinfo" value="{{ userinfo.phone }}"/><br />
+         
+          <label for="InputText">国籍: </label>
+         <input type="text" class="form-control userinfo" value="{{ userinfo.country }}"/><br />
+        </form>
+     </div>
+    </div>
+    <!-- big left end -->
       
       <div class="col-md-2 bigblock">
         <!-- Portrait begin -->
@@ -133,7 +90,7 @@
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="{%url 'user_info'%}">个人信息</a></li>
+                    <li><a href="">个人信息</a></li>
                     <li><a href="">主页</a></li>
                     <li><a href="">系统消息</a></li>
                     <li class="divider"></li>

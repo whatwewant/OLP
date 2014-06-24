@@ -185,8 +185,10 @@ def user_info(request):
         #        userinfo_dict[key] = value
         #     
         #userinfo.save()
-        return render(request, 'account/user_info.html', {'userinfo':userinfo})
-    return render(request, 'account/user_info.html', {'userinfo':userinfo})
+        return render(request, 'user/user_info.html', {'userinfo':userinfo, 
+                                                       'author':userprofile})
+    return render(request, 'user/user_info.html', {'userinfo':UserInfo,
+                                                'author':userprofile})
 
 @login_required(login_url='sign_in')
 def get_user_login_history(request):
