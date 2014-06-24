@@ -37,6 +37,9 @@ fi
 # git-flow
 sudo apt-get install git-flow
 
+# 缺少Python.h
+sudo apt-get install python-dev
+
 # all installed packages
 packages=$(pip list)
 
