@@ -50,8 +50,8 @@ def personPage(request, author=False):
 
 @login_required(login_url='sign_in')
 def write(request):
+    author = request.user.userprofile
     if request.method == "POST" :
-        author = request.user.userprofile
         title = request.POST.get('title').strip()
         content = request.POST.get('content').strip()
         excerpt = request.POST.get('excerpt').strip()
@@ -81,7 +81,8 @@ def write(request):
             PostToCategory.objects.get_or_create(post=pp, category=cp)
 
         return redirect('blog_index', request.user.username)
-    return render(request, 'blog/write.html', {'authenticated':True})
+    return render(request, 'blog/write.html', {'author':author,
+                                               'authenticated':True})
 	
 @login_required(login_url='sign_in')
 def edit(request, pk):
@@ -162,6 +163,7 @@ def post(request, author, pk):
             article = get_object_or_404(Post, author=author, pk=pk) 
             return render(request, 'blog/article.html', {'article':article, 
                 'post':True, 
+                'author': author,
                 'authenticated':request.user.is_authenticated()})
         raise Http404
     raise Http404

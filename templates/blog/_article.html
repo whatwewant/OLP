@@ -1,3 +1,4 @@
+{% load markup %}
 <div class="article-example">
   <h3 class="page-header" class="article-example-headfont">
       <a href="{{ article.get_absolute_url | urlencode }}">{{ article.title }}</a>
@@ -9,9 +10,9 @@
   <div class="page-header" class="article-example-bodyfont">
       <small>
         {% if post %}
-        {{ article.get_full_of_article | safe }}
+        {{ article.get_full_of_article | safe}}
         {% else %}
-        {{ article.get_excerpt_of_article | safe }}
+        {{ article.get_excerpt_of_article | safe}}
         {% endif %}
       </small>
   </div>

@@ -1,0 +1,13 @@
+{% extends 'blog/blog_base_bar.html' %}
+{% block title %}在线交流--个人博客{% endblock %}
+
+{% load pagination_tags %}
+
+
+{% block page_mid_left%}
+    {% autopaginate articles %}
+    {% for article in articles %}
+    {% include 'blog/_article.html' %}
+    {% endfor %}
+    {% paginate %}
+{% endblock %}
