@@ -1,9 +1,4 @@
 <!-- login section start -->
-<div id="log_in">
-    <ul class="nav navbar-nav navbar-right" id="nav_right">  
-        <li><a  href="{% url 'blog_index' user.user.username %}">{{ user.nickname }}</a></li>
-        <li><a href="{%url 'sign_out' %}">退出</a></li>
-    </ul>
-</div>
+Sign in as <a href="{%url 'blog_index' author.user.username%}" class="navbar-link">{{ author.user.username }}</span></a>
 <!-- login section end -->
 

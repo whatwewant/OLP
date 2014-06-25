@@ -1,0 +1,98 @@
+{% extends "blog/blog_base.html" %}
+
+{% block title %} Write Page {% endblock %}
+
+{% block script %}
+<script src="{{ STATIC_URL }}js/edit.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/hjh.css" />
+{% endblock %}
+
+{% block page_mid_left%}
+<div id="container">
+  <div class="row">
+    <h1></h1>
+  </div>
+  <div class="row">
+      <ul class="nav nav-tabs">
+        <li ><a href="{%url 'blog_index' author.user.username %}">Home</a></li>
+        <li><a href="{%url 'blog_index' author.user.username %}">Profile</a></li>
+        <li class="active"><a href="{%url 'blog_write'%}">Write</a></li>
+        <li><a href="#">Messages</a></li>
+      </ul>
+  </div>
+    
+  <div class="row">
+    <div class="col-md-12" style="text-align:center;">
+        <h1>Edit Page</h1>  
+    </div>  
+  </div>
+
+  <div class="row">
+    <h1></h1>
+  </div>
+    
+    
+      <div class="col-md-2 bigblock">
+        <!-- Portrait begin -->
+        <div class="row">
+            <img class="portrait img-circle" alt="..." title="Portrait" src="{{ STATIC_URL }}images/1.png" style="width:100px; height:100px;" />
+        </div>
+        <!-- Portrait end -->
+          
+        <div class="row">
+            <h1></h1>
+        </div>
+        
+        <!-- username button begin -->
+        <div class="row">
+            <div class="btn-group center">
+                <button type="button" class="btn btn-default" >Username</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">&ensp;  
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="">个人信息</a></li>
+                    <li><a href="">主页</a></li>
+                    <li><a href="">系统消息</a></li>
+                    <li class="divider"></li>
+                    <li><a href="">友链</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- username button end -->
+          
+        <div class="row">
+            <h1></h1>
+        </div>
+          
+        <!-- userinfo begin -->
+        <div class="row">
+          <table class="table table-striped">
+            <tr>
+                <td>等级:</td><td>12312</td>
+            </tr>
+            <tr>
+                <td>积分:</td><td>120</td>
+            </tr>
+            <tr>
+                <td>文章:</td><td>12312</td>
+            </tr>
+            <tr>
+                <td>访问:</td><td>12312</td>
+            </tr>
+            <tr>
+                <td>排名:</td><td>12312</td>
+            </tr>
+          </table>
+        </div>
+        <!-- userinfo end -->
+        </div>
+    </div>
+    
+    <div class="row footer">
+        &copy;2014 Potter
+    </div>
+<div>
+{% endblock %}

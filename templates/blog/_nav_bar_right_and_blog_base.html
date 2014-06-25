@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load pagination_tags %}
 
 {% block script %}
 <script src="{{ STATIC_URL }}js/editor/kindeditor-all.js"></script>
@@ -33,7 +32,7 @@
         <div class="col-md-10  bigblock">
         <!-- Page index/write/article diff begin -->
         {% block page %}
-        {%include 'blog/_blog_index_category.html'%}
+        {%include 'blog/_blog_index.html'%}
         {% endblock %}
         <!-- Page index/write/article diff end -->
         </div>

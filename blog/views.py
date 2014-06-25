@@ -62,7 +62,7 @@ def write(request):
         modified_date_gmt = timezone.now()
         # content_type = request.POST.get('content_type')
         if not title or not content:
-            return redirect('blog_index')
+            return redirect('blog_index', request.user.username)
         
         name = title
         if len(name) > 10:
@@ -128,7 +128,8 @@ def edit(request, pk):
     author = request.user.userprofile
     article = get_object_or_404(Post, author=author, pk=pk, show=True)
     print article
-    return render(request, 'blog/edit.html', {'article':article, 
+    return render(request, 'blog/edit.html', {'author':author,
+                                              'article':article, 
                                               'authenticated':True})
 
 @login_required(login_url='sign_in')
@@ -161,8 +162,10 @@ def post(request, author, pk):
         if UserProfile.objects.filter(user=author).exists():
             author = UserProfile.objects.get(user=author)
             article = get_object_or_404(Post, author=author, pk=pk) 
+            categories = get_list_or_404(Category, author=author)
             return render(request, 'blog/article.html', {'article':article, 
                 'post':True, 
+                'categories':categories,
                 'author': author,
                 'authenticated':request.user.is_authenticated()})
         raise Http404
@@ -178,5 +181,7 @@ def category(request, author, pk):
     categories = get_list_or_404(Category, author=authorprofile)
     category = get_object_or_404(Category, author=authorprofile, pk=pk)
     articles = category.post_set.all()
-    return render(request, 'blog/category.html', {'user':user, 'articles':articles,
+    return render(request, 'blog/category.html', {'author':authorprofile,
+                                                  'user':user, 
+                                                  'articles':articles,
                                                   'categories':categories})

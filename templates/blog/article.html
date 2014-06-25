@@ -1,173 +1,62 @@
-{% extends "blog/blog_base.html" %}
-
-{% block title %} Home Page {% endblock %}
+{% extends "base.html" %}
 
 {% block script %}
+<script src="{{ STATIC_URL }}js/editor/kindeditor-all.js"></script>
 <script src="{{ STATIC_URL }}js/edit.js"></script>
 <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/hjh.css" />
 {% endblock %}
 
-{% block page_mid_left%}
-<div id="container">
-  <div class="row">
-    <h1></h1>
-  </div>
-  <div class="row">
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="{%url 'blog_index' author.user.username %}">Home</a></li>
-        <li><a href="{%url 'blog_index' author.user.username %}">Profile</a></li>
-        <li><a href="{%url 'blog_write'%}">Write</a></li>
-        <li><a href="#">Messages</a></li>
-      </ul>
-  </div>
-    
-  <div class="row">
-    <div class="col-md-12" style="text-align:center;">
-        <h1>Home Page</h1>  
-    </div>  
-  </div>
+{% block body %}
+<!-- nav bar left side begin -->
+{%include 'blog/_nav_bar_left.html'%}
+<!-- nav bar left side end -->
 
-  <div class="row">
-    <h1></h1>
-  </div>
+<!-- nav bar right side begin -->
+
+<div class="container">
+    <!-- right_top for sign in/up/out begin -->
+    {%include 'blog/_nav_bar_right_top.html'%}
+    <!-- right_top for sign in/up/out end -->
     
-  <div class="row">
-    <div class="col-md-10">
-      <!-- left side begin -->
-      <div class="col-md-2">
-        <div class="sort">
-            <h2 class="subtitle">文章分类</h2>
-            <table class="table table-striped">
-            <tr>
-                <td>等级:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>积分:</td><td>120</td>
-            </tr>
-            <tr>
-                <td>文章:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>访问:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>排名:</td><td>12312</td>
-            </tr>
-            </table>
+    <!-- blog navbar beigin -->
+    {%include 'blog/_nav_bar_right_top_blog_nav.html'%}
+    <!-- blog navbar end -->
+  
+    
+    <!-- blog name begin -->
+    {%include 'blog/_nav_bar_right_top_blog_name.html'%}
+    <!-- blog name end -->
+
+    <div class="row">
+        <div class="col-md-10  bigblock">
+        <!-- Page index/write/article diff begin -->
+        {% block page %}
+        {%include 'blog/_blog_index_article.html'%}
+        {% endblock %}
+        <!-- Page index/write/article diff end -->
         </div>
-        
-        <div class="sort">
-            <h2 class="subtitle">文章存档</h2>
-            <table class="table table-striped">
-            <tr>
-                <td>等级:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>积分:</td><td>120</td>
-            </tr>
-            <tr>
-                <td>文章:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>访问:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>排名:</td><td>12312</td>
-            </tr>
-            </table>
-        </div>
-        
-        <div class="sort">
-            <h2 class="subtitle">阅读排行</h2>
-            <table class="table table-striped">
-            <tr>
-                <td>等级:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>积分:</td><td>120</td>
-            </tr>
-            <tr>
-                <td>文章:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>访问:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>排名:</td><td>12312</td>
-            </tr>
-            </table>
-        </div> 
-        
-      </div>
-      <!-- left side end -->
-      <!-- right side begin -->
-      <div class="col-md-8">
-          {%include 'blog/_article.html' %}  
-      </div>
-      <!-- right side end -->
-     </div>
       
-      <div class="col-md-2">
-        <!-- Portrait begin -->
-        <div class="row">
-            <img class="portrait img-circle" alt="..." title="Portrait" src="{{ STATIC_URL }}images/1.png" style="width:100px; height:100px;" />
-        </div>
-        <!-- Portrait end -->
-          
-        <div class="row">
-            <h1></h1>
-        </div>
-        
-        <!-- username button begin -->
-        <div class="row">
-            <div class="btn-group center">
-                <button type="button" class="btn btn-default" >Username</button>
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">&ensp;  
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="">个人信息</a></li>
-                    <li><a href="">主页</a></li>
-                    <li><a href="">系统消息</a></li>
-                    <li class="divider"></li>
-                    <li><a href="">友链</a></li>
-                </ul>
-            </div>
-        </div>
-        <!-- username button end -->
-          
-        <div class="row">
-            <h1></h1>
-        </div>
-          
-        <!-- userinfo begin -->
-        <div class="row">
-          <table class="table table-striped">
-            <tr>
-                <td>等级:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>积分:</td><td>120</td>
-            </tr>
-            <tr>
-                <td>文章:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>访问:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>排名:</td><td>12312</td>
-            </tr>
-          </table>
-        </div>
-        <!-- userinfo end -->
+        <div class="col-md-2 bigblock">
+            <!-- Portrait begin -->
+              {%include 'blog/_blog_portrait.html'%}
+            <!-- Portrait end -->
+
+
+            <!-- username button begin -->
+              {%include 'blog/_blog_portrait_info.html'%}
+            <!-- username button end -->
+
+            <!-- userinfo begin -->
+            {%include 'blog/_blog_user_info.html'%}
+            <!-- userinfo end -->
         </div>
     </div>
     
     <div class="row footer">
         &copy;2014 Potter
     </div>
-<div>
+</div>
+    
+<!-- nav bar right side end -->
 {% endblock %}

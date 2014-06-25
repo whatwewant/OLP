@@ -155,7 +155,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',)
 
 # default value 20
-PAGINATION_DEFAULT_PAGINATION = 2
+PAGINATION_DEFAULT_PAGINATION = 5
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

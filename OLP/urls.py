@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^index/$', 'account.views.index', name='index'),
+    # url(r'^index/$', 'account.views.index', name='index'),
 
     # user 
     url(r'^sign_in/$','account.views.sign_in', name='sign_in'),
@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     url(r'^loginhistory/$', 'account.views.get_user_login_history', name='history'),
 
     # blog
-    url(r'^$', 'blog.views.homePage', name='homepage'),
+    url(r'^$', 'blog.views.homePage', name='index'),
     url(r'^blog/$', 'blog.views.homePage'),
     url(r'^blog/index/$', 'blog.views.homePage'),
     url(r'^blog/write/$', 'blog.views.write', name='blog_write'),
