@@ -37,6 +37,7 @@ class UserMeta(models.Model):
 # @TODO
 class UserInfo(models.Model):
     # @TODO
+    name = models.CharField(u'真实姓名', max_length=255, null=True)
     sex = models.CharField(u'性别', default='None', max_length='5')
     age = models.IntegerField(u'年龄', default=0, max_length=3)
     userprofile = models.ForeignKey(UserProfile)

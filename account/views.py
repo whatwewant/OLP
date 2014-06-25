@@ -129,6 +129,7 @@ def user_info(request):
     userinfo, userinfo_created = UserInfo.objects.get_or_create(userprofile=userprofile)
     if request.method == 'POST':
         # @TODO
+        name = request.POST.get('name')
         sex = request.POST.get('sex')
         age = request.POST.get('age')
         hometown = request.POST.get('hometown')
@@ -141,12 +142,13 @@ def user_info(request):
         recovery_email = request.POST.get('recovery_email')
         web_site = request.POST.get('web_site')
 
+        userinfo.name = name
         userinfo.sex = sex
-        userinfo.age = age
+        userinfo.age = int(age)
         userinfo.hometown = hometown
-        userinfo.zip_code = zip_code
-        userinfo.qq = qq
-        userinfo.phone = phone
+        userinfo.zip_code = int(zip_code)
+        userinfo.qq = int(qq)
+        userinfo.phone = int(phone)
         userinfo.country = country
         userinfo.country_code = country_code
         userinfo.language = language
