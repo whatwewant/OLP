@@ -81,6 +81,10 @@ def write(request):
                             modified_date_gmt=modified_date_gmt)
             PostToCategory.objects.get_or_create(post=pp, category=cp)
 
+        # 文章数 +1
+        author.blog_num += 1
+        author.save()
+
         return redirect('blog_index', request.user.username)
     return render(request, 'blog/write.html', {'author':author,
                                                'authenticated':True})
