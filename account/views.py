@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from account.models import UserProfile, UserInfo, UserLoginHistory
-from datetime import date
+import time
 
 # from utils import transform_ip_to_address
 
@@ -17,13 +17,13 @@ def sign_in(request):
     '''登录'''
     # 已经登入，直接跳转到主页
     if request.user.is_authenticated():
-        return redirect('homepage')
+        return redirect('index')
 
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         login_ip = request.META['REMOTE_ADDR']
-        login_date = date.today()
+        login_date = time.ctime
         # login_address = transform_ip_to_address(login_ip)
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -32,8 +32,9 @@ def sign_in(request):
                 UserLoginHistory.objects.create(
                     user=user,
                     login_ip=login_ip,
-                #    login_address=login_address,
-                    date=login_date)
+                    # login_address=login_address,
+                    date=login_date
+                    )
                 return redirect('blog_index', request.user.username)
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
@@ -127,6 +128,7 @@ def user_info(request):
 
     userprofile = request.user.userprofile
     userinfo, userinfo_created = UserInfo.objects.get_or_create(userprofile=userprofile)
+    # userinfo = UserInfo.objects.get(userprofile=userprofile)
     if request.method == 'POST':
         # @TODO
         name = request.POST.get('name')
@@ -141,6 +143,19 @@ def user_info(request):
         language = request.POST.get('language')
         recovery_email = request.POST.get('recovery_email')
         web_site = request.POST.get('web_site')
+
+        print name
+        print sex
+        print age
+        print hometown
+        print zip_code
+        print qq
+        print phone
+        print country
+        print country_code
+        print language
+        print recovery_email
+        print web_site
 
         userinfo.name = name
         userinfo.sex = sex
@@ -189,13 +204,16 @@ def user_info(request):
         #userinfo.save()
         return render(request, 'user/user_info.html', {'userinfo':userinfo, 
                                                        'author':userprofile})
-    return render(request, 'user/user_info.html', {'userinfo':UserInfo,
+    return render(request, 'user/user_info.html', {'userinfo':userinfo,
                                                 'author':userprofile})
 
 @login_required(login_url='sign_in')
 def get_user_login_history(request):
     '''登入历史'''
-    user = request.user.userprofile.user
-    history = UserLoginHistory.objects.filter(user=user)[:10]
-    return render(request, 'account/login_history.html', {'history': history})
+    author = request.user.userprofile
+    user = author.user
+    histories = UserLoginHistory.objects.filter(user=user)[:10]
+    return render(request, 'user/user_login_history.html', {'histories': histories,
+                                                            'author':author,
+                                                            'authenticated':True})
 

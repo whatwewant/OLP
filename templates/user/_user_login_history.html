@@ -1,0 +1,13 @@
+    <div class="row head-title">
+        <h1>{{ author.user.username.capitalize }}'s Personal Information</h1>   
+    </div>
+    
+    <div class="row">
+        <table class="table">
+        {% for history in histories %}
+        <tr>
+            <td>{{ history.date }}</td><td>{{ history.login_ip }}</td><td>{{ history.login_address }}</td>    
+        </tr>
+        {% endfor %}
+        </table>
+    </div>

@@ -58,9 +58,12 @@ class UserInfo(models.Model):
 
 class UserLoginHistory(models.Model):
     user = models.ForeignKey(User)
-    date = models.DateField(u'当前时间', auto_now_add=True)
+    date = models.DateTimeField(u'当前时间', auto_now_add=True)
     login_ip = models.CharField(u'当前登入ip', max_length=255, null=True)
     login_address = models.CharField(u'当前地点', max_length=255, default=u'未知')
+
+    class Meta:
+        ordering = ['-date']
     
     def __unicode__(self):
 
