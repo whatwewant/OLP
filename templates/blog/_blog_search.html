@@ -1,61 +1,17 @@
 {% load pagination_tags %}
 <!-- left side begin -->
       <div class="col-md-2">
-        <div class="sort">
-            <h2 class="subtitle">文章分类</h2>
-            <table class="table table-striped">
-                {% for category in categories %}
-            <tr>
-                <td>
-                    <a href="{{ category.get_absolute_url | safe }}">{{ category.name}}</a>:
-                </td>
-                <td>{{ category.get_post_count }}</td>
-            </tr>
-                {% endfor %}
-            </table>
-        </div>
+        <!-- nav blog by category begin -->
+          {%include 'blog/_nav_blog_by_category.html'%}
+        <!-- nav blog category end -->
         
-        <div class="sort">
-            <h2 class="subtitle">文章存档</h2>
-            <table class="table table-striped">
-            <tr>
-                <td>等级:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>积分:</td><td>120</td>
-            </tr>
-            <tr>
-                <td>文章:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>访问:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>排名:</td><td>12312</td>
-            </tr>
-            </table>
-        </div>
+        <!-- nav blog by date begin -->
+          {%include 'blog/_nav_blog_by_date.html'%}
+        <!-- nav blog by date end -->
         
-        <div class="sort">
-            <h2 class="subtitle">阅读排行</h2>
-            <table class="table table-striped">
-            <tr>
-                <td>等级:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>积分:</td><td>120</td>
-            </tr>
-            <tr>
-                <td>文章:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>访问:</td><td>12312</td>
-            </tr>
-            <tr>
-                <td>排名:</td><td>12312</td>
-            </tr>
-            </table>
-        </div> 
+        <!-- nav blog by visit begin -->
+          {%include 'blog/_nav_blog_by_visit.html'%}
+        <!-- nav blog by visit end -->
         
       </div>
 <!-- left side end -->

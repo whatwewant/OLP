@@ -1,8 +1,0 @@
-<div class = "btn-group-vertical" id="article-categray">
-	<button type="button" class="btn btn-info dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray">文章分类</button>
-	{% for category in categories %}
-	<button type="button" class="btn btn-default dropdown-toggle"data-toggle = "dropdown" id="btn-article-categray">
-	   {{ category.name }}({{ category.get_post_count }})-{{ category.pk }}
-	</button>
-	{% endfor %}
-</div>
