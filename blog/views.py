@@ -216,13 +216,14 @@ def post(request, author, pk):
         author = User.objects.get(username=author)
         if UserProfile.objects.filter(user=author).exists():
             author = UserProfile.objects.get(user=author)
-            permission = None
+            permission = False
             user = None
             authenticated = request.user.is_authenticated() 
             if authenticated :
                 user = request.user.userprofile
-                if author == User:
+                if author == user:
                     permission = True
+            print permission
             article = get_object_or_404(Post, author=author, pk=pk) 
             categories = get_list_or_404(Category, author=author)
             return render(request, 'blog/article.html', {'article':article, 
