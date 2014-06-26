@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block script %}
-<script src="{{ STATIC_URL }}js/editor/kindeditor-all.js"></script>
-<script src="{{ STATIC_URL }}js/edit.js"></script>
-<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
-<link rel="stylesheet" href="{{ STATIC_URL }}css/hjh.css" />
+{% load static %}
+<script src="{% static 'js/editor/kindeditor-all.js' %}"></script>
+<script src="{% static 'js/edit.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+<link rel="stylesheet" href="{% static 'css/hjh.css' %}" />
 {% endblock %}
 
 {% block body %}
