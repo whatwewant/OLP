@@ -8,6 +8,7 @@ class UserProfile(models.Model):
     nickname = models.CharField(max_length=30, default=u'Just arrived')
     integral = models.IntegerField(null=False, default=0)
     registration = models.BooleanField(default=False)
+    register_date = models.DateField(u'注册时间', auto_now_add=True)
     blog_num = models.IntegerField(u'文章数量', default=0)
     grade = models.CharField(u'等级', max_length=9, default='--- --- ---')
     visits = models.IntegerField(u'访问量', default=0)
