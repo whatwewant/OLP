@@ -26,8 +26,8 @@ def personPage(request, author=False):
     '''
         Person Blog Home Page
     '''
-    for k, v in request.META.items():
-        print k,':',v
+    #for k, v in request.META.items():
+    #    print k,':',v
     # print author
     # print dir(request.user)
     # print request.user.is_authenticated()
@@ -46,7 +46,8 @@ def personPage(request, author=False):
                                         'user': userprofile,
                                         'articles':articles, 
                                         'authenticated':authenticated,
-                                        'categories':categories})
+                                        'categories':categories
+                                        })
 
 @login_required(login_url='sign_in')
 def write(request):
@@ -131,6 +132,34 @@ def edit(request, pk):
     return render(request, 'blog/edit.html', {'author':author,
                                               'article':article, 
                                               'authenticated':True})
+
+def search(request, authorname):
+
+    keyword = request.GET.get('search')
+
+    if keyword == "":
+        return redirect('blog_index', authorname)
+
+    userprofile = None
+    authenticated = False
+    if request.user.is_authenticated():
+        userprofile = request.user.userprofile
+        authenticated = True #request.user.is_authenticated()
+
+    author = get_object_or_404(User, username=authorname)
+    authorprofile = get_object_or_404(UserProfile, user=author)
+
+    articles = get_list_or_404(Post, author=authorprofile, title__contains=keyword, show=True)
+    categories = Category.objects.filter(author=authorprofile)
+    return render(request, 'blog/search.html', {'author':authorprofile, 
+                                        'user': userprofile,
+                                        'articles':articles, 
+                                        'authenticated':authenticated,
+                                        'categories':categories
+                                        })
+
+    
+
 
 @login_required(login_url='sign_in')
 # @TODO 缺省参数deepdelete ???

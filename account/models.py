@@ -17,12 +17,18 @@ class UserProfile(models.Model):
     #                                  height_field=100, width_field=100,
                                       max_length=255)
 
-    def __unicode__(self):
-        return u'user name is %s, id = %s' %(self.user.username, self.id)
-
     class Meta:
         verbose_name = _('UserProfile')
         verbose_name_plural = _('UserProfiles')
+
+    def __unicode__(self):
+        return u'user name is %s, id = %s' %(self.user.username, self.id)
+
+    # 获取本作者家目录提交的search
+    @models.permalink
+    def get_search_url(self):
+        return ('search', (), {'authorname':self.user.username})
+
 
 class UserMeta(models.Model):
     user_id = models.ForeignKey(UserProfile)
