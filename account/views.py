@@ -90,6 +90,7 @@ def sign_up(request):
         UserProfile.objects.create(user=user,
                 nickname=nickname)
 
+        user = authenticate(username=username, password=password)
         login(request, user)
         return redirect('blog_index', request.user.username)
         #return redirect('sign_in')
