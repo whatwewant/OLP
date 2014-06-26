@@ -18,22 +18,8 @@
 
       <!-- right side begin -->
       <div class="col-md-8">
-          <div class="main">
-        {% if articles %}
-          {% autopaginate articles %}
-            {% for article in articles %}
-            <div class="article-title"><a href="{{ article.get_absolute_url }}"><h3>{{ article.title }}</h3></a></div>
-            <div class="article-author">
-                <span>{{ article.author.user }}</span> / <span>{{ article.date }}</span>
-            </div>
-            <div class="article-comment">{{ article.comment }}</div>
-            <div class="article-excerpt">{{ article.excerpt | safe }}</div>
-            <hr>
-            {% endfor %}
-          {% paginate %}
-        {% else %}
-          <div class="info">亲，来一篇吧</div>
-          {% endif %}
-          </div>
+          <!-- blog articles in page begin -->
+          {%include 'blog/_blog_articles_in_a_page.html'%}
+          <!-- blog articles in page end -->
       </div>
 <!-- right side end -->

@@ -1,0 +1,20 @@
+{% load markup %}
+
+<div class="article-example">
+  <h3 class="page-header" class="article-example-headfont">
+      <a href="{{ article.get_absolute_url | urlencode }}">{{ article.title }}</a>
+  </h3>
+  <div class="info">
+      <span>{{ article.author.user.username }}</span> / 
+      <span>{{ article.date }}</span>
+      <span>words: {{ article.content | wordcount }}</span>
+  </div>
+  {% for category in article.get_categories %}
+  <div class="info">{{ category.name }} </div>
+  {% endfor %}
+  <div class="page-header" class="article-example-bodyfont">
+      <small>
+        {{ article.get_full_of_article | safe }}
+      </small>
+  </div>
+</div>

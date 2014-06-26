@@ -11,6 +11,7 @@ from django.utils import timezone
 from datetime import date
 
 from utils import ke_upload_image, ke_upload_audio, send_one_mail
+from utils import html_tags_filter
 
 def homePage(request):
     # print dir(request)
@@ -70,21 +71,31 @@ def write(request):
             name = name[:10]+'...'
 
         if not excerpt:
-            excerpt = content[:300]
+            excerpt = html_tags_filter(content)[:300]
 
-        for i in categorylist:
-            cp, ccreated = Category.objects.get_or_create(author=author, name=i)
-            pp, pcreated = Post.objects.get_or_create(author=author, 
+        # 
+        pp, pcreated = Post.objects.get_or_create(author=author, 
                             title=title, name = name,
                             content=content, excerpt=excerpt,
                             modified_date=modified_date,
                             modified_date_gmt=modified_date_gmt)
+
+        if categorylist[0] != "":
+            for new_category_name in categorylist:
+                new_category_name = new_category_name.strip()
+                if not new_category_name or new_category_name == "" :
+                    continue
+                cp, ccreated = Category.objects.get_or_create(author=author, name=new_category_name)
+                PostToCategory.objects.get_or_create(post=pp, category=cp)
+        else:
+            new_category_name = u'未分类'
+            cp, ccreated = Category.objects.get_or_create(author=author, name=new_category_name)
             PostToCategory.objects.get_or_create(post=pp, category=cp)
+
 
         # 文章数 +1
         author.blog_num += 1
         author.save()
-
         return redirect('blog_index', request.user.username)
     return render(request, 'blog/write.html', {'author':author,
                                                'authenticated':True})
@@ -109,7 +120,7 @@ def edit(request, pk):
             return redirect('blog_index', request.user.username)
 
         if not excerpt:
-            excerpt = content[:300]
+            excerpt = html_tags_filter(content)[:300]
 
         if categorylist:
             for i in categorylist:
@@ -139,7 +150,7 @@ def edit(request, pk):
 
 def search(request, authorname):
 
-    keyword = request.GET.get('search')
+    keyword = request.GET.get('search').strip()
 
     if keyword == "":
         return redirect('blog_index', authorname)
@@ -197,7 +208,6 @@ def post(request, author, pk):
             article = get_object_or_404(Post, author=author, pk=pk) 
             categories = get_list_or_404(Category, author=author)
             return render(request, 'blog/article.html', {'article':article, 
-                'post':True, 
                 'categories':categories,
                 'author': author,
                 'authenticated':request.user.is_authenticated()})
@@ -207,8 +217,10 @@ def post(request, author, pk):
 def category(request, author, pk):
     # 登入用户
     user = None
+    authenticated = None
     if request.user.is_authenticated():
         user = request.user.userprofile
+        authenticated = True
     author = get_object_or_404(User, username=author)
     authorprofile = get_object_or_404(UserProfile, user=author)
     categories = get_list_or_404(Category, author=authorprofile)
@@ -216,5 +228,6 @@ def category(request, author, pk):
     articles = category.post_set.all()
     return render(request, 'blog/category.html', {'author':authorprofile,
                                                   'user':user, 
+                                                  'authenticated':authenticated,
                                                   'articles':articles,
                                                   'categories':categories})
