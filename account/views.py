@@ -121,7 +121,7 @@ def change_password(request):
         return redirect('index')
     return redirect('index')
 
-@login_required(login_url='sign_up')
+@login_required(login_url='sign_in')
 def user_info(request):
     '''获取/修改个人信息'''
     # if not request.user.is_authenticated():

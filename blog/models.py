@@ -76,6 +76,22 @@ class Post(models.Model):
         return ('post', (), 
                 {'author':self.author.user.username, 'pk':self.pk})
 
+    @models.permalink
+    def get_edit_url(self):
+        return ('article_edit', (), {'pk':self.pk})
+
+    @models.permalink
+    def get_delete_url(self):
+        return ('article_delete', (), {'pk':self.pk})
+
+    @models.permalink
+    def get_undelete_url(self):
+        return ('article_undelete', (), {'pk':self.pk})
+    
+    @models.permalink
+    def get_deepdelete_url(self):
+        return ('article_deep_delete', (), {'pk':self.pk, 'deepdelete':True})
+
     def get_categories(self):
         return self.po_type.all()
 

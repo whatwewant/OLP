@@ -5,6 +5,7 @@
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
+        {% if permission %}
         <ul class="dropdown-menu" role="menu">
             <li><a href="{%url 'user_info'%}">个人信息</a></li>
             <li><a href="{%url 'history'%}">登录历史</a></li>
@@ -13,6 +14,7 @@
             <li class="divider"></li>
             <li><a href="">友链</a></li>
         </ul>
+        {% endif %}
     </div>
 </div>
 

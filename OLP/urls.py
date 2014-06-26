@@ -28,14 +28,14 @@ urlpatterns = patterns('',
     url(r'^blog/$', 'blog.views.homePage'),
     url(r'^blog/index/$', 'blog.views.homePage'),
     url(r'^blog/write/$', 'blog.views.write', name='blog_write'),
-    url(r'^blog/edit/(?P<pk>\d+)/$', 'blog.views.edit', name='blog_edit'),
     url(r'^blog/(?P<author>\w+)/$', 'blog.views.personPage', name='blog_author'),
     url(r'^(?P<author>\w+)/$', 'blog.views.personPage', name='blog_index'),
     # article
+    url(r'^blog/edit/(?P<pk>\d+)/$', 'blog.views.edit', name='article_edit'),
     url(r'^(?P<author>\w+)/article/(?P<pk>\d+)/$', 'blog.views.post', name='post'),
-    url(r'^blog/delete/(?P<pk>\d+)/$', 'blog.views.delete', name='delete'),
-    url(r'^blog/undelete/(?P<pk>\d+)/$', 'blog.views.undelete', name='undelete'),
-    url(r'^blog/delete/(?P<pk>\d+)?deepdelete=(?P<deepdelete>\w+)/$', 'blog.views.delete', name='deepdelete'),
+    url(r'^blog/delete/(?P<pk>\d+)/$', 'blog.views.delete', name='article_delete'),
+    url(r'^blog/undelete/(?P<pk>\d+)/$', 'blog.views.undelete', name='article_undelete'),
+    url(r'^blog/delete/(?P<pk>\d+)?deepdelete=(?P<deepdelete>\w+)/$', 'blog.views.delete', name='article_deepdelete'),
     # category
     url(r'(?P<author>\w+)/category/(?P<pk>\d+)/$', 'blog.views.category', name='category'),
     # upload

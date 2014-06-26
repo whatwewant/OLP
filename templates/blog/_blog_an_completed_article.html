@@ -5,9 +5,16 @@
       <a href="{{ article.get_absolute_url | urlencode }}">{{ article.title }}</a>
   </h3>
   <div class="info">
-      <span>{{ article.author.user.username }}</span> / 
-      <span>{{ article.date }}</span>
+      <span>{{ article.author.user.username }} / {{ article.date }}</span>
       <span>words: {{ article.content | wordcount }}</span>
+      <span class="#">
+        {% if permisson %}
+        <a href="{{ article.get_edit_url }}">编辑</a> |
+        <a href="{{ article.get_delete_url }}">删除</a>
+        {% else %}
+        <a href="#">分享</a> | <a href="#">收藏</a>
+        {% endif %}
+      </span>
   </div>
   {% for category in article.get_categories %}
   <div class="info">{{ category.name }} </div>

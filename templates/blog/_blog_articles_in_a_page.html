@@ -5,8 +5,15 @@
             {% for article in articles %}
             <div class="article-title"><a href="{{ article.get_absolute_url }}"><h3>{{ article.title | title }}</h3></a></div>
             <div class="article-author">
-                <span>{{ article.author.user }}</span> / 
-                <span>{{ article.date }}</span>
+                <span>{{ article.author.user }} / {{ article.date }}</span>
+                <span class="#">
+                    {% if permisson %}
+                    <a href="{{ article.get_edit_url }}">编辑</a> |
+                    <a href="{{ article.get_delete_url }}">删除</a>
+                    {% else %}
+                    <a href="#">分享</a> | <a href="#">收藏</a>
+                    {% endif %}
+                </span>
             </div>
             <div class="article-comment">{{ article.comment }}</div>
             <div class="article-excerpt">

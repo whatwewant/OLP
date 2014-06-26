@@ -33,26 +33,32 @@ def personPage(request, author=False):
     # print dir(request.user)
     # print request.user.is_authenticated()
     # user
-    userprofile = None
-    authenticated = False
-    if request.user.is_authenticated():
-        userprofile = request.user.userprofile
-        authenticated = True #request.user.is_authenticated()
+
     # articles author
     author = get_object_or_404(User, username=author)
     authorprofile = UserProfile.objects.get(user=author)
+
+    userprofile = None
+    authenticated = False
+    permission = False
+    authenticated = request.user.is_authenticated() 
+    if authenticated:
+        userprofile = request.user.userprofile
+        if userprofile == authorprofile:
+            permission = True
     articles = Post.objects.filter(author=authorprofile, show=True)
     categories = Category.objects.filter(author=authorprofile)
     return render(request, 'blog/index.html', {'author':authorprofile, 
                                         'user': userprofile,
                                         'articles':articles, 
                                         'authenticated':authenticated,
+                                        'permission':permission,
                                         'categories':categories
                                         })
 
 @login_required(login_url='sign_in')
 def write(request):
-    author = request.user.userprofile
+    user = request.user.userprofile
     if request.method == "POST" :
         title = request.POST.get('title').strip()
         content = request.POST.get('content').strip()
@@ -74,7 +80,7 @@ def write(request):
             excerpt = html_tags_filter(content)[:300]
 
         # 
-        pp, pcreated = Post.objects.get_or_create(author=author, 
+        pp, pcreated = Post.objects.get_or_create(author=user, 
                             title=title, name = name,
                             content=content, excerpt=excerpt,
                             modified_date=modified_date,
@@ -85,19 +91,20 @@ def write(request):
                 new_category_name = new_category_name.strip()
                 if not new_category_name or new_category_name == "" :
                     continue
-                cp, ccreated = Category.objects.get_or_create(author=author, name=new_category_name)
+                cp, ccreated = Category.objects.get_or_create(author=user, name=new_category_name)
                 PostToCategory.objects.get_or_create(post=pp, category=cp)
         else:
             new_category_name = u'未分类'
-            cp, ccreated = Category.objects.get_or_create(author=author, name=new_category_name)
+            cp, ccreated = Category.objects.get_or_create(author=user, name=new_category_name)
             PostToCategory.objects.get_or_create(post=pp, category=cp)
 
 
         # 文章数 +1
-        author.blog_num += 1
-        author.save()
+        user.blog_num += 1
+        user.save()
         return redirect('blog_index', request.user.username)
-    return render(request, 'blog/write.html', {'author':author,
+    return render(request, 'blog/write.html', {'user':user,
+                                               'author':user,
                                                'authenticated':True})
 	
 @login_required(login_url='sign_in')
@@ -106,7 +113,7 @@ def edit(request, pk):
 	edit view
     '''
     if request.method == "POST":
-        author = request.user.userprofile
+        user = request.user.userprofile
         title = request.POST.get('title').strip()
         content = request.POST.get('content').strip()
         excerpt = request.POST.get('excerpt').strip()
@@ -124,9 +131,9 @@ def edit(request, pk):
 
         if categorylist:
             for i in categorylist:
-                cp, ccreated = Category.objects.get_or_create(author=author, name=i)
+                cp, ccreated = Category.objects.get_or_create(author=user, name=i)
 
-            article = Post.objects.get(author=author, pk=pk, show=True)
+            article = Post.objects.get(author=user, pk=pk, show=True)
             # @TODO 判断是否和旧内容相同，如果相同就不用增加数据库存储负担
             # @TODO 不让空数据传存入数据库
             article.title = title
@@ -141,10 +148,11 @@ def edit(request, pk):
 
         return redirect('blog_index', request.user.username)
 
-    author = request.user.userprofile
-    article = get_object_or_404(Post, author=author, pk=pk, show=True)
+    user = request.user.userprofile
+    article = get_object_or_404(Post, author=user, pk=pk, show=True)
     print article
-    return render(request, 'blog/edit.html', {'author':author,
+    return render(request, 'blog/edit.html', {'user':user,
+                                              'author':user,
                                               'article':article, 
                                               'authenticated':True})
 
@@ -155,14 +163,16 @@ def search(request, authorname):
     if keyword == "":
         return redirect('blog_index', authorname)
 
-    userprofile = None
-    authenticated = False
-    if request.user.is_authenticated():
-        userprofile = request.user.userprofile
-        authenticated = True #request.user.is_authenticated()
-
     author = get_object_or_404(User, username=authorname)
     authorprofile = get_object_or_404(UserProfile, user=author)
+    userprofile = None
+    authenticated = request.user.is_authenticated() 
+    permission = False
+    if authenticated:
+        userprofile = request.user.userprofile
+        if userprofile == authorprofile:
+            permission = True #request.user.is_authenticated()
+
 
     articles = get_list_or_404(Post, author=authorprofile, title__contains=keyword, show=True)
     categories = Category.objects.filter(author=authorprofile)
@@ -170,6 +180,7 @@ def search(request, authorname):
                                         'user': userprofile,
                                         'articles':articles, 
                                         'authenticated':authenticated,
+                                        'permission':permission,
                                         'categories':categories
                                         })
 
@@ -195,7 +206,7 @@ def delete(request, pk, deepdelete=True):
 @login_required(login_url='sign_in')
 def undelete(request, pk):
     author = request.user.userprofile
-    article = get_object_or_404(Post, author=author, pk=pk)
+    article = get_object_or_404(Post, author=author, pk=pk, show=False)
     article.show = True
     article.save()
     return redirect('blog_index', request.user.username)
@@ -205,29 +216,42 @@ def post(request, author, pk):
         author = User.objects.get(username=author)
         if UserProfile.objects.filter(user=author).exists():
             author = UserProfile.objects.get(user=author)
+            permission = None
+            user = None
+            authenticated = request.user.is_authenticated() 
+            if authenticated :
+                user = request.user.userprofile
+                if author == User:
+                    permission = True
             article = get_object_or_404(Post, author=author, pk=pk) 
             categories = get_list_or_404(Category, author=author)
             return render(request, 'blog/article.html', {'article':article, 
-                'categories':categories,
-                'author': author,
-                'authenticated':request.user.is_authenticated()})
+                                                    'categories':categories,
+                                                    'author': author,
+                                                    'user':user,
+                                                    'authenticated':authenticated,
+                                                    'permission':permission
+                                                    })
         raise Http404
     raise Http404
 
 def category(request, author, pk):
     # 登入用户
     user = None
-    authenticated = None
-    if request.user.is_authenticated():
-        user = request.user.userprofile
-        authenticated = True
+    permission = None
     author = get_object_or_404(User, username=author)
     authorprofile = get_object_or_404(UserProfile, user=author)
+    authenticated = request.user.is_authenticated() 
+    if authenticated:
+        user = request.user.userprofile
+        if user == authorprofile:
+            permission = True
     categories = get_list_or_404(Category, author=authorprofile)
     category = get_object_or_404(Category, author=authorprofile, pk=pk)
     articles = category.post_set.all()
     return render(request, 'blog/category.html', {'author':authorprofile,
                                                   'user':user, 
                                                   'authenticated':authenticated,
+                                                  'permission':permission,
                                                   'articles':articles,
                                                   'categories':categories})

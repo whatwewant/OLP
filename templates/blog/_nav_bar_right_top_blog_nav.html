@@ -2,10 +2,11 @@
       <ul class="nav nav-tabs">
         <li class="active"><a href="{%url 'blog_index' author.user.username %}">Home</a></li>
         <li><a href="{%url 'blog_index' author.user.username %}">Profile</a></li>
-        {% if authenticated %}
+        {% if permisson %}
         <li><a href="{%url 'blog_write'%}">Write</a></li>
         {% endif %}
         <li><a href="#">Messages</a></li>
+        <li><a href="#">Friend Link</a></li>
           
          <!-- section search begin -->
         <ul class="nav navbar-nav navbar-right">
