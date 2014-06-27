@@ -26,7 +26,21 @@
           {% paginate %}
         {% else %}
             <div class="info center">
-                <h2>亲，来一篇吧<a href="{%url 'blog_write'%}"><span class="glyphicon glyphicon-plus-sign" title="write"></span></a></h2>
+                {%if permission %}
+                <h2>
+                    亲，来一篇吧～
+                    <a href="{%url 'blog_write'%}">
+                        <span class="glyphicon glyphicon-plus-sign" title="write"></span>
+                    </a>
+                </h2>
+                {% else %}
+                <h2>
+                    客官，此人比较懒，麻烦稍后在来～
+                    <a href="#">
+                        <span class="glyphicon glyphicon-envelope" title="快摧催他^_^"></span>
+                    </a>
+                </h2>
+                {% endif %}
             </div>
         {% endif %}
 </div>
