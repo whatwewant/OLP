@@ -1,6 +1,6 @@
 <div class="row bigblock">
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="{%url 'blog_index' author.user.username %}">Home</a></li>
+      <ul class="nav nav-tabs daytime">
+        <li class="active daytime"><a href="{%url 'blog_index' author.user.username %}">Home</a></li>
         <li><a href="{%url 'blog_index' author.user.username %}">Profile</a></li>
         {% if permission %}
         <li><a href="{%url 'blog_write'%}">Write</a></li>
@@ -9,13 +9,13 @@
         <li><a href="#">Friend Link</a></li>
           
          <!-- section search begin -->
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right daytime">
         <li>
             <form action="{{ author.get_search_url }}", method="get" class="navbar-form navbar-right">
               <div class="form-group">
-                <input type="text" name="search" class="form-control" placeholder="Search Article">
+                <input type="text" name="search" class="form-control daytime" placeholder="Search Article">
               </div>
-              <button type="submit" class="btn btn-default">Submit</button>
+              <button type="submit" class="btn btn-default daytime">Submit</button>
             </form>
         </li>
       </ul>

@@ -204,9 +204,15 @@ def user_info(request):
         #     
         #userinfo.save()
         return render(request, 'user/user_info.html', {'userinfo':userinfo, 
-                                                       'author':userprofile})
+                                                       'user':userprofile,
+                                                       'author':userprofile,
+                                                       'authenticated':True,
+                                                       'permission':True})
     return render(request, 'user/user_info.html', {'userinfo':userinfo,
-                                                'author':userprofile})
+                                                   'user':userprofile,
+                                                   'author':userprofile,
+                                                   'authenticated':True,
+                                                   'permission':True})
 
 @login_required(login_url='sign_in')
 def get_user_login_history(request):
@@ -215,6 +221,8 @@ def get_user_login_history(request):
     user = author.user
     histories = UserLoginHistory.objects.filter(user=user)[:10]
     return render(request, 'user/user_login_history.html', {'histories': histories,
+                                                            'user':author,
                                                             'author':author,
-                                                            'authenticated':True})
+                                                            'authenticated':True,
+                                                            'permission':True})
 

@@ -6,41 +6,41 @@
         <form role="form" class="form-group" method="post" action=".">
             {% csrf_token %}
          <label for="InputText">姓名(Name):</label> 
-         <input type="text" name="name" class="form-control userinfo" placeholder="Name" value="{{ userinfo.name }}"/><br />
+         <input type="text" name="name" class="form-control userinfo daytime" placeholder="Name" value="{{ userinfo.name }}"/><br />
         
         <label for="InputText">性别(Sex): </label>
-        <input type="text" name="sex" class="form-control userinfo" value="{{ userinfo.sex }}"/><br />
+        <input type="text" name="sex" class="form-control userinfo daytime" value="{{ userinfo.sex }}"/><br />
          
         <label for="InputText">年龄(Age): </label>
-         <input type="text" name="age" class="form-control userinfo" value="{{ userinfo.age }}"/><br />
+         <input type="text" name="age" class="form-control userinfo daytime" value="{{ userinfo.age }}"/><br />
         
          <label for="InputText">家乡(Hometown): </label></label>
-         <input type="text" name="hometown" class="form-control userinfo" value="{{ userinfo.hometown }}"/><br />
+         <input type="text" name="hometown" class="form-control userinfo daytime" value="{{ userinfo.hometown }}"/><br />
         
          <label for="InputText">邮编(Zip Code): </label>
-         <input type="text" name="zip_code" class="form-control userinfo" value="{{ userinfo.zip_code }}"/><br />
+         <input type="text" name="zip_code" class="form-control userinfo daytime" value="{{ userinfo.zip_code }}"/><br />
          
           <label for="InputText">QQ: </label>
-         <input type="text" name="qq" class="form-control userinfo" value="{{ userinfo.qq }}"/><br />
+         <input type="text" name="qq" class="form-control userinfo daytime" value="{{ userinfo.qq }}"/><br />
          
           <label for="InputText">手机(Phone): </label>
-         <input type="text" name="phone" class="form-control userinfo" value="{{ userinfo.phone }}"/><br />
+         <input type="text" name="phone" class="form-control userinfo daytime" value="{{ userinfo.phone }}"/><br />
          
           <label for="InputText">国籍(Country): </label>
-         <input type="text" name="country" class="form-control userinfo" value="{{ userinfo.country }}"/><br />
+         <input type="text" name="country" class="form-control userinfo daytime" value="{{ userinfo.country }}"/><br />
          
          <label for="InputText">国家代码(Country Code): </label>
-         <input type="text" name="country_code" class="form-control userinfo" value="{{ userinfo.country_code }}"/><br />
+         <input type="text" name="country_code" class="form-control userinfo daytime" value="{{ userinfo.country_code }}"/><br />
          
          <label for="InputText">语言(language): </label>
-         <input type="text" name="language" class="form-control userinfo" value="{{ userinfo.language }}"/><br />
+         <input type="text" name="language" class="form-control userinfo daytime" value="{{ userinfo.language }}"/><br />
 
          <label for="InputText">辅助邮箱(Recovery Email): </label>
-         <input type="text" name="recovery_email" class="form-control userinfo" value="{{ userinfo.recovery_email }}"/><br />
+         <input type="text" name="recovery_email" class="form-control userinfo daytime" value="{{ userinfo.recovery_email }}"/><br />
          
          <label for="InputText">个人网站(Web Site): </label>
-         <input type="text" name="web_site" class="form-control userinfo" value="{{ userinfo.web_site }}"/><br />
+         <input type="text" name="web_site" class="form-control userinfo daytime" value="{{ userinfo.web_site }}"/><br />
          
-         <button type="submit" class="form-control">Submit</button>
+         <button type="submit" class="form-control daytime">Submit</button>
         </form>
      </div>

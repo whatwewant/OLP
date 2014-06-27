@@ -19,7 +19,7 @@
   {% for category in article.get_categories %}
   <div class="info">{{ category.name }} </div>
   {% endfor %}
-  <div class="page-header" class="article-example-bodyfont">
+  <div class="page-header" class="article-example-bodyfont daytime">
       <small>
         {{ article.get_full_of_article | safe }}
       </small>

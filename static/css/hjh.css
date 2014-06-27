@@ -64,3 +64,20 @@
     font-size: 20px;
     font-weight: bold;
 }
+
+/*
+    1.body
+    2.portrait info
+    3.blog top bar
+    4.user info
+*/
+/* daytime / night mode
+$(".daytime,pre,p,h1,h2,h3,h4,h5,h6").css("background-color","black")
+*/
+.daytime {
+    background-color: #FFF;
+}
+
+.night {
+    background-color: #484848;
+}
