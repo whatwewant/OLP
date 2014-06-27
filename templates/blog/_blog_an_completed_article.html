@@ -12,9 +12,9 @@
         <a href="{{ article.get_edit_url }}"><span class="glyphicon glyphicon-edit" title="编辑"></span></a> |
         <a href="{{ article.get_delete_url }}"><span class="glyphicon glyphicon-remove-circle" title="删除"></span></a>
         {% else %}
-        <a href="#"><span class="glyphicon glyphicon-share" title="分享"></span></a> | 
-        <a href="#"><span class="glyphicon glyphicon-bookmark" title="收藏"></span></a> | 
-        <a href="#"><span class="glyphicon glyphicon-heart" title="赞"></span></a>
+        <a href="#"><span class="glyphicon glyphicon-share" title="分享"></span><span class="badge">0</span></a> | 
+        <a href="#"><span class="glyphicon glyphicon-bookmark" title="收藏"></span><span class="badge">0</span></a> | 
+        <a href="#"><span class="glyphicon glyphicon-heart" title="赞"></span><span class="badge">0</span></a>
         {% endif %}
       </span>
   </div>
@@ -26,4 +26,10 @@
         {{ article.get_full_of_article | safe }}
       </small>
   </div>
+</div>
+
+<div class="article-comment">
+    <!-- blog article comment begin -->
+    {%include 'blog/_blog_article_comments.html'%}
+    <!-- blog article comment end -->
 </div>
