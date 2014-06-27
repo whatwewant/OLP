@@ -21,7 +21,8 @@ def homePage(request):
     if authenticated:
         userprofile = request.user.userprofile
     return render(request, 'index.html', {'authenticated':authenticated,
-                                          'user':userprofile, 'articles':articles})
+                                          'user':userprofile, 
+                                          'articles':articles})
 
 def personPage(request, author=False):
     '''
