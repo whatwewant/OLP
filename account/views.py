@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from account.models import UserProfile, UserInfo, UserLoginHistory
 import time
 
-# from utils import transform_ip_to_address
+from utils import transform_ip_to_address
 
 def index(request):    
 	user = request.user.username
@@ -24,7 +24,7 @@ def sign_in(request):
         password = request.POST.get('password')
         login_ip = request.META['REMOTE_ADDR']
         login_date = time.ctime
-        # login_address = transform_ip_to_address(login_ip)
+        login_address = transform_ip_to_address(login_ip)
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
@@ -32,7 +32,7 @@ def sign_in(request):
                 UserLoginHistory.objects.create(
                     user=user,
                     login_ip=login_ip,
-                    # login_address=login_address,
+                    login_address=login_address,
                     date=login_date
                     )
                 return redirect('blog_index', request.user.username)

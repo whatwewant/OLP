@@ -104,6 +104,14 @@ else
     echo "已安装ipython" | tee install.log
 fi
 
+# 7 requests
+echo $packages | grep -i requests > /dev/null
+if [ "$?" != "0" ]; then
+    pip install requests
+else
+    echo "已安装requests" | tee install.log
+fi
+
 # Clear
 cd $CurrentDir
 rm -rf $BuildDir
