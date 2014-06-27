@@ -8,10 +8,12 @@
                 <span>{{ article.author.user }} / {{ article.date }}</span>
                 <span class="#">
                     {% if permission %}
-                    <a href="{{ article.get_edit_url }}">编辑</a> |
-                    <a href="{{ article.get_delete_url }}">删除</a>
+                    <a href="{{ article.get_edit_url }}"><span class="glyphicon glyphicon-edit" title="编辑"></span></a> |
+                    <a href="{{ article.get_delete_url }}"><span class="glyphicon glyphicon-remove-circle" title="删除"></span></a>
                     {% else %}
-                    <a href="#">分享</a> | <a href="#">收藏</a>
+                    <a href="#"><span class="glyphicon glyphicon-share" title="分享"></span></a> | 
+                    <a href="#"><span class="glyphicon glyphicon-bookmark" title="收藏"></span></a> | 
+                    <a href="#"><span class="glyphicon glyphicon-heart" title="收藏"></span></a>
                     {% endif %}
                 </span>
             </div>
@@ -23,6 +25,8 @@
             {% endfor %}
           {% paginate %}
         {% else %}
-            <div class="info">亲，来一篇吧</div>
+            <div class="info center">
+                <h2>亲，来一篇吧<a href="{%url 'blog_write'%}"><span class="glyphicon glyphicon-plus-sign" title="write"></span></a></h2>
+            </div>
         {% endif %}
 </div>

@@ -106,6 +106,7 @@ def write(request):
         return redirect('blog_index', request.user.username)
     return render(request, 'blog/write.html', {'user':user,
                                                'author':user,
+                                               'permission':True,
                                                'authenticated':True})
 	
 @login_required(login_url='sign_in')

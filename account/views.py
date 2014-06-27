@@ -89,9 +89,21 @@ def sign_up(request):
                 password=password, email=email)
         UserProfile.objects.create(user=user,
                 nickname=nickname)
-
+        # auto sign in 
         user = authenticate(username=username, password=password)
         login(request, user)
+
+        # login history
+        login_ip = request.META['REMOTE_ADDR']
+        login_date = time.ctime
+        # login_address = transform_ip_to_address(login_ip)
+        UserLoginHistory.objects.create(
+                    user=user,
+                    login_ip=login_ip,
+                    # login_address=login_address,
+                    date=login_date
+                    )
+
         return redirect('blog_index', request.user.username)
         #return redirect('sign_in')
     before = request.GET.get("before", "/")
