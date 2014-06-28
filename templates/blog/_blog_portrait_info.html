@@ -7,8 +7,8 @@
         </button>
         {% if permission %}
         <ul class="dropdown-menu daytime" role="menu">
-            <li><a href="{%url 'user_info'%}">个人信息</a></li>
-            <li><a href="{%url 'history'%}">登录历史</a></li>
+            <li><a href="{%url 'user_info' user.user.username %}">个人信息</a></li>
+            <li><a href="{%url 'history' user.user.username %}">登录历史</a></li>
             <li><a href="">主页</a></li>
             <li><a href="">系统消息</a></li>
             <li class="divider"></li>

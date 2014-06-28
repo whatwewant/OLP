@@ -20,8 +20,8 @@ urlpatterns = patterns('',
     url(r'^sign_in/$','account.views.sign_in', name='sign_in'),
     url(r'^sign_up/$', 'account.views.sign_up', name='sign_up'),
     url(r'^sign_out/$', 'account.views.sign_out', name='sign_out'),
-    url(r'^userinfo/$', 'account.views.user_info', name='user_info'),
-    url(r'^loginhistory/$', 'account.views.get_user_login_history', name='history'),
+    url(r'^(?P<username>\w+)/userinfo/$', 'account.views.user_info', name='user_info'),
+    url(r'^(?P<username>\w+)/loginhistory/$', 'account.views.get_user_login_history', name='history'),
 
     # blog
     url(r'^$', 'blog.views.homePage', name='index'),

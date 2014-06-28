@@ -134,7 +134,7 @@ def change_password(request):
     return redirect('index')
 
 @login_required(login_url='sign_in')
-def user_info(request):
+def user_info(request, username=None):
     '''获取/修改个人信息'''
     # if not request.user.is_authenticated():
     #    return redirect('sign_up')
@@ -227,7 +227,7 @@ def user_info(request):
                                                    'permission':True})
 
 @login_required(login_url='sign_in')
-def get_user_login_history(request):
+def get_user_login_history(request, username=None):
     '''登入历史'''
     author = request.user.userprofile
     user = author.user
