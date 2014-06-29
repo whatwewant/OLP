@@ -39,14 +39,6 @@ def personPage(request, author=False):
     author = get_object_or_404(User, username=author)
     authorprofile = UserProfile.objects.get(user=author)
 
-    # visit
-    ip = request.META['REMOTE_ADDR']
-    today = date.today()
-    if not Visit.objects.filter(user=authorprofile, ip=ip, date=today).exists():
-        Visit.objects.create(user=authorprofile, ip=ip, date=today)
-        authorprofile.visits += 1
-        authorprofile.save()
-
     userprofile = None
     authenticated = False
     permission = False
@@ -55,6 +47,15 @@ def personPage(request, author=False):
         userprofile = request.user.userprofile
         if userprofile == authorprofile:
             permission = True
+
+    # visit
+    ip = request.META['REMOTE_ADDR']
+    today = date.today()
+    if userprofile != authorprofile and not Visit.objects.filter(user=authorprofile, ip=ip, date=today).exists():
+        Visit.objects.create(user=authorprofile, ip=ip, date=today)
+        authorprofile.visits += 1
+        authorprofile.save()
+
 
     articles = Post.objects.filter(author=authorprofile, show=True)
     categories = Category.objects.filter(author=authorprofile)
