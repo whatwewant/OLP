@@ -73,5 +73,6 @@ def delete_friend_links(request, authorname, pk):
     user = request.user.userprofile
     link = get_object_or_404(Links, owner=user, pk=pk)
     link.delete()
+
     return redirect('friend_links', user.user.username)
 
