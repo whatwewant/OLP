@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404, get_list_or_404
 
-def show_friend_link(request, authorname):
+def show_friend_links(request, authorname):
     authenticated = request.user.is_authenticated()
     author = get_object_or_404(User, username=authorname)
     author = UserProfile.objects.get(user=author)
@@ -32,10 +32,6 @@ def show_friend_link(request, authorname):
                                                       url=url, name=name,
                                                       description=description,
                                                       # visible=visible
-                                                      notes="",
-                                                      rel="",
-                                                      rss="",
-                                                      target="",
                                                       )
         return redirect('friend_links', user.user.username)
         
@@ -50,7 +46,7 @@ def show_friend_link(request, authorname):
                                })
 
 @login_required(login_url='sign_in')
-def add_friend_link(request, authorname):
+def add_friend_links(request, authorname):
     user = request.user.userprofile
     
     if request.method == "POST":
@@ -70,3 +66,13 @@ def add_friend_link(request, authorname):
         return redirect('friend_links', user.user.name)
 
     return redirect('friend_links', user.user.name)
+
+@login_required(login_url='sign_in')
+def delete_friend_links(request, authorname, pk):
+    '''delete friend links'''
+    user = request.user.userprofile
+    link = get_object_or_404(Links, owner=user, pk=pk)
+    link.delete()
+
+    return redirect('friend_links', user.user.username)
+
