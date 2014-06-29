@@ -153,3 +153,16 @@ class CommentMeta(models.Model):
     def __unicode__(self):
         return str(self.meta_key)
 
+
+class Visit(models.Model):
+    '''通过 user ip date 三个元素共同判断访问者一天访问一次'''
+    # 博主
+    user = models.ForeignKey(UserProfile)
+    ip = models.IPAddressField(u'Visitor IP', max_length=16)
+    date = models.DateField(u'上次访问时间', auto_now=True)
+
+    class Meta:
+        ordering = ['-date']
+
+    def __unicode__(self):
+        return 'visitor\' ip :%s' % self.ip

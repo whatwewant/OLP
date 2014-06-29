@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from blog.models import Post, Category, PostToCategory
+from blog.models import Post, Category, PostToCategory, Visit
 from account.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -39,6 +39,14 @@ def personPage(request, author=False):
     author = get_object_or_404(User, username=author)
     authorprofile = UserProfile.objects.get(user=author)
 
+    # visit
+    ip = request.META['REMOTE_ADDR']
+    today = date.today()
+    if not Visit.objects.filter(user=authorprofile, ip=ip, date=today).exists():
+        Visit.objects.create(user=authorprofile, ip=ip, date=today)
+        authorprofile.visits += 1
+        authorprofile.save()
+
     userprofile = None
     authenticated = False
     permission = False
@@ -47,6 +55,7 @@ def personPage(request, author=False):
         userprofile = request.user.userprofile
         if userprofile == authorprofile:
             permission = True
+
     articles = Post.objects.filter(author=authorprofile, show=True)
     categories = Category.objects.filter(author=authorprofile)
     return render(request, 'blog/index.html', {'author':authorprofile, 

@@ -75,3 +75,5 @@ class UserLoginHistory(models.Model):
     def __unicode__(self):
 
         return u'{username}\'s Detailed User Login Histories'.format(username=self.user.username)
+
+
