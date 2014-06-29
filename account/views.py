@@ -157,19 +157,6 @@ def user_info(request, username=None):
         recovery_email = request.POST.get('recovery_email')
         web_site = request.POST.get('web_site')
 
-        print name
-        print sex
-        print age
-        print hometown
-        print zip_code
-        print qq
-        print phone
-        print country
-        print country_code
-        print language
-        print recovery_email
-        print web_site
-
         userinfo.name = name
         userinfo.sex = sex
         userinfo.age = int(age)
