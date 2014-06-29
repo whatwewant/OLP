@@ -51,10 +51,11 @@ def personPage(request, author=False):
     # visit
     ip = request.META['REMOTE_ADDR']
     today = date.today()
-    if userprofile != authorprofile and not Visit.objects.filter(user=authorprofile, ip=ip, date=today).exists():
-        Visit.objects.create(user=authorprofile, ip=ip, date=today)
-        authorprofile.visits += 1
-        authorprofile.save()
+    if userprofile != authorprofile:
+        if not Visit.objects.filter(user=authorprofile, post=-1, ip=ip, date=today).exists():
+            Visit.objects.create(user=authorprofile, ip=ip, date=today)
+            authorprofile.visits += 1
+            authorprofile.save()
 
 
     articles = Post.objects.filter(author=authorprofile, show=True)
@@ -243,10 +244,17 @@ def post(request, author, pk):
             # visit
             ip = request.META['REMOTE_ADDR']
             today = date.today()
-            if user != author and not Visit.objects.filter(user=author, post=article.pk, ip=ip, date=today).exists():
-                Visit.objects.create(user=author, post=article.pk, ip=ip, date=today)
-                article.visit += 1
-                article.save()
+            if user != author:
+                if not Visit.objects.filter(user=author, post=-1, ip=ip, date=today).exists():
+                    Visit.objects.create(user=author, ip=ip, date=today)
+                    author.visits += 1
+                    author.save()
+
+                if not Visit.objects.filter(user=author, post=article.pk, ip=ip, date=today).exists():
+                    Visit.objects.create(user=author, post=article.pk, ip=ip, date=today)
+                    article.visit += 1
+                    article.save()
+
 
             return render(request, 'blog/article.html', {'article':article, 
                                                     'categories':categories,
@@ -269,6 +277,16 @@ def category(request, author, pk):
         user = request.user.userprofile
         if user == authorprofile:
             permission = True
+
+    # visit
+    ip = request.META['REMOTE_ADDR']
+    today = date.today()
+    if user != author:
+        if not Visit.objects.filter(user=authorprofile, post=-1, ip=ip, date=today).exists():
+            Visit.objects.create(user=authorprofile, ip=ip, date=today)
+            authorprofile.visits += 1
+            authorprofile.save()
+
     categories = get_list_or_404(Category, author=authorprofile)
     category = get_object_or_404(Category, author=authorprofile, pk=pk)
     articles = category.post_set.all()
