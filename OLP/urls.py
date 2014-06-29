@@ -20,8 +20,8 @@ urlpatterns = patterns('',
     url(r'^sign_in/$','account.views.sign_in', name='sign_in'),
     url(r'^sign_up/$', 'account.views.sign_up', name='sign_up'),
     url(r'^sign_out/$', 'account.views.sign_out', name='sign_out'),
-    url(r'^userinfo/$', 'account.views.user_info', name='user_info'),
-    url(r'^loginhistory/$', 'account.views.get_user_login_history', name='history'),
+    url(r'^(?P<username>\w+)/userinfo/$', 'account.views.user_info', name='user_info'),
+    url(r'^(?P<username>\w+)/loginhistory/$', 'account.views.get_user_login_history', name='history'),
 
     # blog
     url(r'^$', 'blog.views.homePage', name='index'),
@@ -39,11 +39,15 @@ urlpatterns = patterns('',
     # category
     url(r'(?P<author>\w+)/category/(?P<pk>\d+)/$', 'blog.views.category', name='category'),
     # upload
-    url(r'^uploadimage/$', 'blog.views.ke_upload_image', name='upload_image'),
-    url(r'^uploadaudio/$', 'blog.views.ke_upload_audio', name='upload_audio'),
+    url(r'^(?P<authorname>\w+)/uploadimage/$', 'blog.views.ke_upload_image', name='upload_image'),
+    url(r'^(P<authorname>\w+)uploadaudio/$', 'blog.views.ke_upload_audio', name='upload_audio'),
     # Search 
     url(r'^(?P<authorname>\w+)/search/$', 'blog.views.search', name='search'),
 
     # Mail
-    url(r'^sendmail/$', 'blog.views.send_one_mail', name='send_one_mail'),
+    url(r'^(?P<authorname>\w+)/sendmail/$', 'blog.views.send_one_mail', name='send_one_mail'),
+
+    # links
+    url(r'^(?P<authorname>\w+)/friendlinks/$', 'links.views.show_friend_link', name='friend_links'),
+    url(r'^(?P<authorname>\w+)/addfriendlinks/$', 'links.views.add_friend_link', name='add_friend_links'),
 )

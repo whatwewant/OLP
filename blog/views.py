@@ -59,6 +59,7 @@ def personPage(request, author=False):
 
 @login_required(login_url='sign_in')
 def write(request):
+    '''publish an article'''
     user = request.user.userprofile
     if request.method == "POST" :
         title = request.POST.get('title').strip()

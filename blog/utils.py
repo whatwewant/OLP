@@ -139,6 +139,6 @@ def html_tags_filter(html):
         Example : <li>as<span>pq</span></li>
         return : aspq
     '''
-    str = re.sub(r'</?\w+[^>]*>', '', html)
+    str = re.sub(r'</?\w+[^>]*>', '', html).replace(' ', '').replace('\n', '')
 
     return str

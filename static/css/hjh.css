@@ -12,7 +12,7 @@
 
 .center {
     text-align: center;
-    margin-left: 25%;
+    margin:auto;
 }
 
 .portrait {
@@ -80,4 +80,8 @@ $(".daytime,pre,p,h1,h2,h3,h4,h5,h6").css("background-color","black")
 
 .night {
     background-color: #484848;
+}
+
+.article-excerpt {
+    text-indent: 20px;
 }
