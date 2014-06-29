@@ -58,16 +58,16 @@ if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
 	fi
 elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
 	sudo apt-get install -y git-flow python-dev
-	sudo apt-get install -y mysql-server mysql-client apache2
-    sudo apt-get install -y libapache2-mod-wsgi
+	#sudo apt-get install -y mysql-server mysql-client apache2
+    #sudo apt-get install -y libapache2-mod-wsgi
     # ubuntu install python-mysqldb
-    sudo apt-get install -y python-mysqldb
+    #sudo apt-get install -y python-mysqldb
     # for 'pip install mysql-python': sh: 1: mysql_config: not found
-    sudo apt-get install -y libmysqld-dev libmysqlclient-dev
+    #sudo apt-get install -y libmysqld-dev libmysqlclient-dev
 fi
 
 # pip install mysql-python
-pip install mysql-python
+#pip install mysql-python
 
 # all installed packages
 packages=$(pip list)
