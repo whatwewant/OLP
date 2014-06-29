@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block script %}
+{% load static %}
+<script src="{% static 'js/editor/kindeditor-all.js' %}"></script>
+<script src="{% static 'js/edit.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+<link rel="stylesheet" href="{% static 'css/hjh.css' %}" />
+{% endblock %}
+
+{% block body %}
+<!-- nav bar left side begin -->
+{%include 'blog/_nav_bar_left.html'%}
+<!-- nav bar left side end -->
+
+<!-- nav bar right side begin -->
+
+<div class="container">
+    <!-- right_top for sign in/up/out begin -->
+    {%include 'blog/_nav_bar_right_top.html'%}
+    <!-- right_top for sign in/up/out end -->
+    
+    <!-- blog navbar beigin -->
+    <div class="row bigblock"></div>
+    <!-- blog navbar end -->
+  
+    
+    <!-- blog name begin -->
+    <div class="row bigblock"></div>
+    <!-- blog name end -->
+
+    <div class="row">
+        <div class="col-md-10  bigblock">
+        
+        </div>
+      
+        <div class="col-md-2 bigblock">
+           
+        </div>
+    </div>
+    
+    <div class="row footer">
+        &copy;2014 Potter
+    </div>
+</div>
+    
+<!-- nav bar right side end -->
+{% endblock %}
