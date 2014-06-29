@@ -48,6 +48,6 @@ urlpatterns = patterns('',
     url(r'^(?P<authorname>\w+)/sendmail/$', 'blog.views.send_one_mail', name='send_one_mail'),
 
     # links
-    url(r'^(?P<authorname>\w+)/friendlinks/$', 'links.views.show_friend_link', name='friend_links'),
-    url(r'^(?P<authorname>\w+)/addfriendlinks/$', 'links.views.add_friend_link', name='add_friend_links'),
+    url(r'^(?P<authorname>\w+)/friendlinks/$', 'links.views.show_friend_links', name='friend_links'),
+    url(r'(?P<authorname>\w+)/friendlinks/delete/(?P<pk>\d+)', 'links.views.delete_friend_links', name='delete_friend_links'),
 )
