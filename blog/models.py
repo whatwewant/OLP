@@ -62,6 +62,7 @@ class Post(models.Model):
                                 blank=True, null=True)
     # 默认显示， 用于删除文章进入垃圾箱
     show = models.BooleanField(default=True)
+    visit = models.IntegerField(u'访问量', default=0)
 
     def __unicode__(self):
         return self.title
@@ -155,9 +156,14 @@ class CommentMeta(models.Model):
 
 
 class Visit(models.Model):
-    '''通过 user ip date 三个元素共同判断访问者一天访问一次'''
+    '''
+        通过 user ip date 三个元素共同判断访问者同一个博客一天访问一次
+        通过 user post ip date 三个元素共同判断访问者同一篇文章一天访问一次
+    '''
     # 博主
     user = models.ForeignKey(UserProfile)
+    # -1 表示访问博客, 非负数表示文章
+    post = models.IntegerField(u'文章id', default=-1)
     ip = models.IPAddressField(u'Visitor IP', max_length=16)
     date = models.DateField(u'上次访问时间', auto_now=True)
 

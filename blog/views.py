@@ -236,9 +236,18 @@ def post(request, author, pk):
                 user = request.user.userprofile
                 if author == user:
                     permission = True
-            print permission
+
             article = get_object_or_404(Post, author=author, pk=pk) 
             categories = get_list_or_404(Category, author=author)
+
+            # visit
+            ip = request.META['REMOTE_ADDR']
+            today = date.today()
+            if user != author and not Visit.objects.filter(user=author, post=article.pk, ip=ip, date=today).exists():
+                Visit.objects.create(user=author, post=article.pk, ip=ip, date=today)
+                article.visit += 1
+                article.save()
+
             return render(request, 'blog/article.html', {'article':article, 
                                                     'categories':categories,
                                                     'author': author,
