@@ -36,7 +36,7 @@ def show_friend_links(request, authorname):
         return redirect('friend_links', user.user.username)
         
 
-    friend_links = get_list_or_404(Links, owner=author)
+    friend_links = Links.objects.filter(owner=author)
 
     return render(request, 'links/friend_links.html', {'user':user,
                                 'author':author,

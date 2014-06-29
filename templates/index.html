@@ -1,48 +1,31 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}青岛大学在线学习交流平台{% endblock %}
 
 {% block script %}
-{% load static %}
-<script src="{% static 'js/editor/kindeditor-all.js' %}"></script>
-<script src="{% static 'js/edit.js' %}"></script>
-<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
-<link rel="stylesheet" href="{% static 'css/hjh.css' %}" />
+<link href ="{{ STATIC_URL }}css/Page.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/nav.css" rel="stylesheet">
+<link href= "{{ STATIC_URL }}css/bootstrap.css" rel = "stylesheet">
 {% endblock %}
 
 {% block body %}
-<!-- nav bar left side begin -->
-{%include 'blog/_nav_bar_left.html'%}
-<!-- nav bar left side end -->
+<div id="whole_container">
+    <div id="page-up">
+         {% include '_index/_index_top_bar.html' %}
+    </div>
 
-<!-- nav bar right side begin -->
-
-<div class="container">
-    <!-- right_top for sign in/up/out begin -->
-    {%include 'blog/_nav_bar_right_top.html'%}
-    <!-- right_top for sign in/up/out end -->
-    
-    <!-- blog navbar beigin -->
-    <div class="row bigblock"></div>
-    <!-- blog navbar end -->
-  
-    
-    <!-- blog name begin -->
-    <div class="row bigblock"></div>
-    <!-- blog name end -->
-
-    <div class="row">
-        <div class="col-md-10  bigblock">
-        
+    <div class="container" id = "page-mid-and-down">
+        <div id="page-mid">
+            {% include '_index/_page_mid.html' %}
         </div>
-      
-        <div class="col-md-2 bigblock">
-           
-        </div>
+
+       <div id="page-down">
+            {% include '_index/_page_down.html' %} 
+       </div>
     </div>
     
-    <div class="row footer">
-        &copy;2014 Potter
-    </div>
+    <p id="pright">
+            <a href="#" target="_self">返回顶部</a>
+    </p>
 </div>
-    
-<!-- nav bar right side end -->
 {% endblock %}
