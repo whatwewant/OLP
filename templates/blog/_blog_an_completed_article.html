@@ -13,7 +13,7 @@
         <a href="{{ article.get_delete_url }}"><span class="glyphicon glyphicon-remove-circle" title="删除"></span></a>
         {% else %}
         <a href="#"><span class="glyphicon glyphicon-share" title="分享"></span><span class="badge">0</span></a> | 
-        <a href="#"><span class="glyphicon glyphicon-bookmark" title="收藏"></span><span class="badge">0</span></a> | 
+        <a href="{{ article.get_collect_url }}"><span class="glyphicon glyphicon-bookmark" title="收藏"></span><span class="badge">{{ article.collected }}</span></a> | 
         <a href="#"><span class="glyphicon glyphicon-heart" title="阅读"></span><span class="badge">{{ article.visit }}</span></a>
         {% endif %}
       </span>

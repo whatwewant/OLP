@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from blog.models import Post, Category, PostToCategory, Visit
+from blog.models import CollectArticle
 from account.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -206,7 +207,7 @@ def search(request, authorname):
 def delete(request, pk, deepdelete=True):
     author = request.user.userprofile
     # @TODO 永远不能进入
-    if deepdelete:
+    if deepdelete == 'deepdelete':
         article = get_object_or_404(Post, author=author, pk=pk)
         article.delete()
         return redirect('blog_index', request.user.username)
@@ -296,3 +297,51 @@ def category(request, author, pk):
                                                   'permission':permission,
                                                   'articles':articles,
                                                   'categories':categories})
+
+
+@login_required(login_url='sign_in')
+def collect(request, authorname, pk):
+    '''收藏文章'''
+    # @TODO 这样做不好，要局部ajax
+    user = request.user.userprofile
+    author = get_object_or_404(User, username=authorname)
+    author = get_object_or_404(UserProfile, user=author)
+    post = get_object_or_404(Post, author=author, pk=pk)
+    
+    errorcode = -1
+    errorinfo = u'已收藏过了'
+    if user!= author:
+        a = CollectArticle.objects.filter(user=user, authorname=authorname)
+        print a 
+        if not CollectArticle.objects.filter(user=user, authorname=authorname, post=post).exists():
+            CollectArticle.objects.create(user=user, authorname=authorname, post=post)
+            post.collected += 1
+            post.save()
+            errorcode = 0
+            errorinfo = u'收藏成功'
+    
+    url = post.get_absolute_url()
+    return redirect(url)
+
+def collections(request, authorname):
+    '''显示收藏的文章'''
+    user = None
+    authenticated = request.user.is_authenticated()
+    if authenticated:
+        user = request.user.userprofile
+
+    author = get_object_or_404(User, username=authorname)
+    author = get_object_or_404(UserProfile, user=author)
+
+    permission = False
+    if user == author:
+        permission = True
+    
+    articles = CollectArticle.objects.filter(user=author)
+        
+    return render(request, 'blog/collect.html', {'user':user,
+                                                 'author':author,
+                                                 'articles':articles,
+                                                 'authenticated':authenticated,
+                                                 'permission':permission
+                                                })

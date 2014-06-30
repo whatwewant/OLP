@@ -63,6 +63,7 @@ class Post(models.Model):
     # 默认显示， 用于删除文章进入垃圾箱
     show = models.BooleanField(default=True)
     visit = models.IntegerField(u'访问量', default=0)
+    collected = models.IntegerField(u'被收藏次数', default=0)
 
     def __unicode__(self):
         return self.title
@@ -92,6 +93,10 @@ class Post(models.Model):
     @models.permalink
     def get_deepdelete_url(self):
         return ('article_deep_delete', (), {'pk':self.pk, 'deepdelete':True})
+
+    @models.permalink
+    def get_collect_url(self):
+        return ('article_collect', (), {'authorname':self.author.user.username, 'pk':self.pk})
 
     def get_categories(self):
         return self.po_type.all()
@@ -172,3 +177,20 @@ class Visit(models.Model):
 
     def __unicode__(self):
         return 'visitor\' ip :%s' % self.ip
+
+class CollectArticle(models.Model):
+    '''文章收藏'''
+    # 收藏者
+    user =  models.ForeignKey(UserProfile)
+    # 文章主人/作者
+    # @TODO 
+    # author =  models.ForeignKey(UserProfile)
+    authorname = models.CharField(u'作者名字', max_length=255)
+    post = models.ForeignKey(Post)
+    date = models.DateField(u'收藏时间', auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date']
+    
+    def __unicode__(self):
+        return '%s\'s CollectArticle' % self.user.user.username
