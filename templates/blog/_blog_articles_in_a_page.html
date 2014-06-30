@@ -3,7 +3,7 @@
         {% if articles %}
           {% autopaginate articles %}
             {% for article in articles %}
-            <div class="article-title"><a href="{{ article.get_absolute_url }}"><h3>{{ article.title | title }}</h3></a></div>
+            <div class="article-title"><a href="{{ article.get_absolute_url }}"><h3>{{ article.title | title | truncatechars:20 }}</h3></a></div>
             <div class="article-author">
                 <span>{{ article.author.user }} / {{ article.date }}</span>
                 <span class="#">
