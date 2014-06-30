@@ -12,7 +12,7 @@
                     <td><a href="{{ article.post.get_absolute_url }}">{{ article.post.name }}</a></td>:
                     <td>{{ article.date }}
                         {% if permission %}
-                            <span><a href="{{ article.post.get_absolute_url }}" class="btn btn-default navbar-right"><span class="glyphicon glyphicon-remove-circle" title="删除"></a></span>
+                            <span><a href="{{ article.get_delete_url }}" class="btn btn-default navbar-right"><span class="glyphicon glyphicon-remove-circle" title="删除"></a></span>
                         {% endif %}
                     </td>  
                 </tr>

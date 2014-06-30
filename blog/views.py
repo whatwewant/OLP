@@ -303,7 +303,9 @@ def category(request, author, pk):
 def collect(request, authorname, pk):
     '''收藏文章'''
     # @TODO 这样做不好，要局部ajax
+    # 收藏者
     user = request.user.userprofile
+    # 文章作者
     author = get_object_or_404(User, username=authorname)
     author = get_object_or_404(UserProfile, user=author)
     post = get_object_or_404(Post, author=author, pk=pk)
@@ -311,8 +313,6 @@ def collect(request, authorname, pk):
     errorcode = -1
     errorinfo = u'已收藏过了'
     if user!= author:
-        a = CollectArticle.objects.filter(user=user, authorname=authorname)
-        print a 
         if not CollectArticle.objects.filter(user=user, authorname=authorname, post=post).exists():
             CollectArticle.objects.create(user=user, authorname=authorname, post=post)
             post.collected += 1
@@ -322,6 +322,20 @@ def collect(request, authorname, pk):
     
     url = post.get_absolute_url()
     return redirect(url)
+
+@login_required(login_url='sign_in')
+def delete_collect(request, authorname, pk):
+    '''删除一篇藏的文章'''
+    user = request.user.userprofile
+    author = get_object_or_404(User, username=authorname)
+    author = get_object_or_404(UserProfile, user=author)
+    # post = get_object_or_404(Post, author=author, pk=pk)
+    
+    collection = get_object_or_404(CollectArticle, user=user, pk=pk)
+    collection.delete()
+    
+    return redirect('collections', user.user.username)
+    
 
 def collections(request, authorname):
     '''显示收藏的文章'''

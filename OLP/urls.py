@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     url(r'^blog/delete/(?P<pk>\d+)/(?P<deepdelete>\w+)/$', 'blog.views.delete', name='article_deepdelete'),
     # 收藏别人的文章
     url(r'^(?P<authorname>\w+)/collectarticle/(?P<pk>\d+)/$', 'blog.views.collect', name='article_collect'),
+    url(r'^(?P<authorname>\w+)/deletecollection/(?P<pk>\d+)/$', 'blog.views.delete_collect', name='delete_collect'),
     # 自己收藏的所有文章
     url(r'^(?P<authorname>\w+)/collections/$', 'blog.views.collections', name='collections'),
     # category

@@ -194,3 +194,7 @@ class CollectArticle(models.Model):
     
     def __unicode__(self):
         return '%s\'s CollectArticle' % self.user.user.username
+
+    @models.permalink
+    def get_delete_url(self):
+        return ('delete_collect', (), {'authorname':self.user.user.username, 'pk':self.pk})
