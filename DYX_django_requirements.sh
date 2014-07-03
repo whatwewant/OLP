@@ -144,6 +144,23 @@ else
     echo "已安装requests" | tee install.log
 fi
 
+# 8 uwsgi
+echo $packages | grep -i uwsgi > /dev/null
+if [ "$?" != "0" ]; then
+    pip install uwsgi
+else
+    echo "已安装uwsgi" | tee install.log
+fi
+
+# 9 flup
+echo $packages | grep -i flup > /dev/null
+if [ "$?" != "0" ]; then
+    pip install flup
+else
+    echo "已安装flup" | tee install.log
+fi
+
+
 # Clear
 cd $CurrentDir
 rm -rf $BuildDir
