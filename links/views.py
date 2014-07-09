@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals, absolute_import
 
 from links.models import Links
 from account.models import User, UserProfile

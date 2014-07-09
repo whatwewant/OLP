@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from __future__ import unicode_literals, absolute_import
 
 from blog.models import Post, Category, PostToCategory, Visit
 from blog.models import CollectArticle
@@ -11,8 +12,8 @@ from django.http import Http404
 from django.utils import timezone
 from datetime import date
 
-from utils import ke_upload_image, ke_upload_audio, send_one_mail
-from utils import html_tags_filter
+from .utils import ke_upload_image, ke_upload_audio, send_one_mail
+from .utils import html_tags_filter
 
 def homePage(request):
     # print dir(request)
