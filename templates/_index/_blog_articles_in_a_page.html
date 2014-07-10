@@ -1,0 +1,51 @@
+{% load pagination_tags %}
+<div class="main">
+        {% if articles %}
+          {% autopaginate articles %}
+            {% for article in articles %}
+            <div class="article-title">
+                <a href="{{ article.get_absolute_url }}"><h3>{{ article.title | title | truncatechars:20 }}</h3></a>
+                <a href="{%url 'blog_author' article.author.user.username %}">
+                <img class="img-circle navbar-text navbar-right" alt="..." title="Portrait" src="{{ STATIC_URL }}images/1.png" style="width:50px; height:50px;display:inline-block;" />
+                </a>
+            </div>
+            <div class="article-author">
+                <span>{{ article.author.user }} / {{ article.date }}</span>
+                <span class="#">
+                    {% if permission %}
+                    <a href="{{ article.get_edit_url }}"><span class="glyphicon glyphicon-edit" title="编辑"></span></a> |
+                    <a href="{{ article.get_delete_url }}"><span class="glyphicon glyphicon-remove-circle" title="删除"></span></a>
+                    {% else %}
+                    <a href="#"><span class="glyphicon glyphicon-share" title="分享"></span><span class="badge">0</span></a> | 
+                    <a href="{{ article.get_collect_url }}"><span class="glyphicon glyphicon-bookmark" title="收藏"></span><span class="badge">{{ article.collected }}</span></a> | 
+                    <a href="#"><span class="glyphicon glyphicon-heart" title="阅读"></span><span class="badge">{{ article.visit }}</span></a>
+                    {% endif %}
+                </span>
+            </div>
+            <div class="article-comment">{{ article.comment }}</div>
+            <div class="article-excerpt">
+                {{ article.excerpt | safe }}
+            </div>
+            <hr>
+            {% endfor %}
+          {% paginate %}
+        {% else %}
+            <div class="info center">
+                {%if permission %}
+                <h2>
+                    亲，来一篇吧～
+                    <a href="{%url 'blog_write'%}">
+                        <span class="glyphicon glyphicon-plus-sign" title="write"></span>
+                    </a>
+                </h2>
+                {% else %}
+                <h2>
+                    客官，此人比较懒，麻烦稍后在来～
+                    <a href="#">
+                        <span class="glyphicon glyphicon-envelope" title="快摧催他^_^"></span>
+                    </a>
+                </h2>
+                {% endif %}
+            </div>
+        {% endif %}
+</div>
