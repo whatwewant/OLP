@@ -19,7 +19,7 @@ def homePage(request):
     # print dir(request)
     authenticated = request.user.is_authenticated()
     userprofile = None
-    articles = Post.objects.filter(show=True)[:9]
+    articles = Post.objects.filter(show=True) # [:9]
     if authenticated:
         userprofile = request.user.userprofile
     return render(request, 'index.html', {'authenticated':authenticated,

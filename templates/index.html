@@ -17,31 +17,33 @@
 
 <div class="container">
     
-    <!-- home section 1 begin -->
-    <div class="col-md-3">
-        <div class="cover-img" style="background-image:url({{ STATIC_URL }}images/2.jpg);height:100%;width:100%;"></div>
-    </div>
-    <!-- home section 1 end -->
-    
-    <div class="col-md-9">
     <!-- right_top for sign in/up/out begin -->
     {%include 'blog/_nav_bar_right_top.html'%}
     <!-- right_top for sign in/up/out end -->
     
     <!-- home beigin -->
     <div class="row">
+        <!-- home section 1 begin -->
+        <div class="col-md-3 bigblock">
+            <div class="cover-img" style="background-image:url({{ STATIC_URL }}images/2.jpg);height:100%;width:100%;"></div>
+            1
+        </div>
+        <!-- home section 1 end -->
+        
+        <div class="col-md-1">
+        </div>
         
         <!-- home section 2 begin -->
-        <div class="col-md-7 bigblock">
+        <div class="col-md-6 bigblock">
             {%include 'blog/_blog_articles_in_a_page.html'%}
         </div>
         <!-- home section 2 end -->
         
-        <div class="col-md-2">
+        <div class="col-md-0">
         </div>
         
         <!-- home section 3 begin -->
-        <div class="col-md-3 bigblock">
+        <div class="col-md-2 bigblock">
             3
         </div>
         <!-- home section 3 end -->
@@ -50,7 +52,6 @@
     
     <div class="row footer">
         &copy;2014 Potter
-    </div>
     </div>
 </div>
     

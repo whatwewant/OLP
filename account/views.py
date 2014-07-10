@@ -37,6 +37,9 @@ def sign_in(request):
                     # login_address=login_address,
                     date=login_date
                     )
+
+                if request.GET.get('next'):
+                    return redirect(request.GET.get('next'))
                 return redirect('blog_index', request.user.username)
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
