@@ -203,25 +203,28 @@ def search(request, authorname):
                                         'categories_by_date':categories_by_date,
                                         })
 
-    
-
 
 @login_required(login_url='sign_in')
-# @TODO 缺省参数deepdelete ???
 def delete(request, pk, deepdelete=True):
+    '''浅度删除'''
     author = request.user.userprofile
-    # @TODO 永远不能进入
-    if deepdelete == 'deepdelete':
-        article = get_object_or_404(Post, author=author, pk=pk)
-        article.delete()
-        return redirect('blog_author', request.user.username)
         
-    return redirect('blog_author', request.user.username)
     article = get_object_or_404(Post, author=author, pk=pk, show=True)
     article.show = False
     article.save()
     return redirect('blog_author', request.user.username)
+
+
+@login_required(login_url='sign_in')
+def deepdelete(request, pk):
+    '''深度删除'''
+    author = request.user.userprofile
+
+    article = get_object_or_404(Post, author=author, pk=pk)
+    article.delete()
+    return redirect('blog_author', request.user.username)
         
+
 @login_required(login_url='sign_in')
 def undelete(request, pk):
     author = request.user.userprofile

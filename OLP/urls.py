@@ -32,7 +32,7 @@ urlpatterns = patterns('',
     url(r'^(?P<author>\w+)/article/(?P<pk>\d+)/$', 'blog.views.post', name='post'),
     url(r'^blog/delete/(?P<pk>\d+)/$', 'blog.views.delete', name='article_delete'),
     url(r'^blog/undelete/(?P<pk>\d+)/$', 'blog.views.undelete', name='article_undelete'),
-    url(r'^blog/delete/(?P<pk>\d+)/(?P<deepdelete>\w+)/$', 'blog.views.delete', name='article_deepdelete'),
+    url(r'^blog/deepdelete/(?P<pk>\d+)/$', 'blog.views.delete', name='article_deepdelete'),
     # 收藏别人的文章
     url(r'^(?P<authorname>\w+)/collectarticle/(?P<pk>\d+)/$', 'blog.views.collect', name='article_collect'),
     url(r'^(?P<authorname>\w+)/deletecollection/(?P<pk>\d+)/$', 'blog.views.delete_collect', name='delete_collect'),
