@@ -44,19 +44,19 @@ class UserMeta(models.Model):
 # @TODO
 class UserInfo(models.Model):
     # @TODO
-    name = models.CharField(u'真实姓名', max_length=255, null=True)
-    sex = models.CharField(u'性别', default='None', max_length='5')
-    age = models.IntegerField(u'年龄', default=0, max_length=3)
     userprofile = models.ForeignKey(UserProfile)
-    hometown = models.CharField(u'家乡', max_length=255, null=True)
-    zip_code = models.IntegerField(u'邮编', max_length=7, null=True)
-    qq = models.IntegerField(u'QQ', max_length=25, null=True)
-    phone = models.IntegerField(u'Phone', max_length=255, null=True)
-    country = models.CharField(u'国家', max_length=255, null=True)
+    name = models.CharField(u'真实姓名', max_length=255, blank=True, null=True)
+    sex = models.CharField(u'性别', max_length='5', blank=True, null=True)
+    age = models.IntegerField(u'年龄', max_length=3, default=-1)
+    hometown = models.CharField(u'家乡', max_length=255, blank=True, null=True)
+    zip_code = models.IntegerField(u'邮编', max_length=7, blank=True, null=True)
+    qq = models.IntegerField(u'QQ', max_length=25, blank=True, null=True)
+    phone = models.IntegerField(u'Phone', max_length=255, blank=True, null=True)
+    country = models.CharField(u'国家', max_length=255, blank=True, null=True)
     country_code = models.CharField(u'国家代号', max_length=3, default='+86')
     language = models.CharField(u'语言', max_length=255, default='Chinese')
-    recovery_email = models.EmailField(u'辅助邮箱', max_length=255, null=True)
-    web_site = models.URLField(u'个人网站', max_length=255, null=True)
+    recovery_email = models.EmailField(u'辅助邮箱', max_length=255, blank=True, null=True)
+    web_site = models.URLField(u'个人网站', max_length=255, blank=True, null=True)
 
     def __unicode__(self):
 

@@ -65,9 +65,9 @@ def sign_up(request):
         re_password = request.POST.get("dopassword")
         nickname = request.POST.get("nickname").strip()
 
-        if not (len(username) >= 3 and len(username) <= 10):
+        if not (len(username) >= 3 and len(username) <= 20):
             return render(request, "account/sign_up.html",
-                    {"error": u"用户名只能是3-10个字符"})
+                    {"error": u"用户名只能是3-20个字符"})
         name = re.compile(ur'[a-zA-Z0-9_]|[\u4e00-\u9fa5]+$')
         if not name.match(unicode(username)):
             return render(request, "account/sign_up.html",
