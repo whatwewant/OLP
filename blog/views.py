@@ -151,22 +151,25 @@ def edit(request, pk):
         if not excerpt:
             excerpt = html_tags_filter(content)[:300]
 
-        if categorylist:
-            for i in categorylist:
-                cp, ccreated = Category.objects.get_or_create(author=user, name=i)
+        article = Post.objects.get(author=user, pk=pk, show=True)
+        if categorylist[0] != "":
+            for new_category_name in categorylist:
+                new_category_name = new_category_name.strip()
+                if new_category_name == "":
+                    continue
+                cp, ccreated = Category.objects.get_or_create(author=user, name=new_category_name)
 
-            article = Post.objects.get(author=user, pk=pk, show=True)
-            # @TODO 判断是否和旧内容相同，如果相同就不用增加数据库存储负担
-            # @TODO 不让空数据传存入数据库
-            article.title = title
-            article.content = content
-            article.excerpt = excerpt
-            article.categorylist = categorylist
-            article.modified_date = modified_date
-            article.modified_date_gmt = modified_date_gmt
-            article.save()
+                PostToCategory.objects.get_or_create(post=article, category=cp)
 
-            PostToCategory.objects.get_or_create(post=article, category=cp)
+        # @TODO 判断是否和旧内容相同，如果相同就不用增加数据库存储负担
+        # @TODO 不让空数据传存入数据库
+        article.title = title
+        article.content = content
+        article.excerpt = excerpt
+        article.categorylist = categorylist
+        article.modified_date = modified_date
+        article.modified_date_gmt = modified_date_gmt
+        article.save()
 
         return redirect('blog_index', request.user.username)
 
