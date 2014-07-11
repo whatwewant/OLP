@@ -85,3 +85,7 @@ $(".daytime,pre,p,h1,h2,h3,h4,h5,h6").css("background-color","black")
 .article-excerpt {
     text-indent: 20px;
 }
+
+img {
+    max-width: 100%;
+}

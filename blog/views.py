@@ -80,7 +80,7 @@ def write(request):
         modified_date_gmt = timezone.now()
         # content_type = request.POST.get('content_type')
         if not title or not content:
-            return redirect('blog_index', request.user.username)
+            return redirect('blog_author', request.user.username)
         
         name = title
         if len(name) > 10:
@@ -112,7 +112,7 @@ def write(request):
         # 文章数 +1
         user.blog_num += 1
         user.save()
-        return redirect('blog_index', request.user.username)
+        return redirect('blog_author', request.user.username)
     return render(request, 'blog/write.html', {'user':user,
                                                'author':user,
                                                'permission':True,
@@ -135,7 +135,7 @@ def edit(request, pk):
         modified_date_gmt = timezone.now()
         # content_type = request.POST.get('content_type')
         if not title or not content:
-            return redirect('blog_index', request.user.username)
+            return redirect('blog_author', request.user.username)
 
         if not excerpt:
             excerpt = html_tags_filter(content)[:300]
@@ -160,7 +160,7 @@ def edit(request, pk):
         article.modified_date_gmt = modified_date_gmt
         article.save()
 
-        return redirect('blog_index', request.user.username)
+        return redirect('blog_author', request.user.username)
 
     user = request.user.userprofile
     article = get_object_or_404(Post, author=user, pk=pk, show=True)
@@ -176,7 +176,7 @@ def search(request, authorname):
     keyword = request.GET.get('search').strip()
 
     if keyword == "":
-        return redirect('blog_index', authorname)
+        return redirect('blog_author', authorname)
 
     author = get_object_or_404(User, username=authorname)
     authorprofile = get_object_or_404(UserProfile, user=author)
@@ -214,13 +214,13 @@ def delete(request, pk, deepdelete=True):
     if deepdelete == 'deepdelete':
         article = get_object_or_404(Post, author=author, pk=pk)
         article.delete()
-        return redirect('blog_index', request.user.username)
+        return redirect('blog_author', request.user.username)
         
-    return redirect('blog_index', request.user.username)
+    return redirect('blog_author', request.user.username)
     article = get_object_or_404(Post, author=author, pk=pk, show=True)
     article.show = False
     article.save()
-    return redirect('blog_index', request.user.username)
+    return redirect('blog_author', request.user.username)
         
 @login_required(login_url='sign_in')
 def undelete(request, pk):
@@ -228,7 +228,7 @@ def undelete(request, pk):
     article = get_object_or_404(Post, author=author, pk=pk, show=False)
     article.show = True
     article.save()
-    return redirect('blog_index', request.user.username)
+    return redirect('blog_author', request.user.username)
 
 def post(request, author, pk):
     if User.objects.filter(username=author).exists():
