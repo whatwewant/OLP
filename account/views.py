@@ -40,7 +40,7 @@ def sign_in(request):
 
                 if request.GET.get('next'):
                     return redirect(request.GET.get('next'))
-                return redirect('blog_index', request.user.username)
+                return redirect('blog_author', request.user.username)
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
         error = u'用户名或密码错误'
@@ -109,7 +109,7 @@ def sign_up(request):
                     date=login_date
                     )
 
-        return redirect('blog_index', request.user.username)
+        return redirect('blog_author', request.user.username)
         #return redirect('sign_in')
     before = request.GET.get("before", "/")
     return render(request, "account/sign_up.html", {"before": before})
