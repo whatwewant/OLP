@@ -3,13 +3,15 @@
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-
-import json, os, datetime, time
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
 from django.core.mail import send_mail
+
+from blog.models import Post
+
+from datetime import date
+import json, os, datetime, time
 
 import re
 
@@ -142,3 +144,49 @@ def html_tags_filter(html):
     str = re.sub(r'</?\w+[^>]*>', '', html).replace(' ', '').replace('\n', '')
 
     return str
+
+def get_categories_by_date(authorprofile=None):
+    '''
+        按日期获得文章, 10个
+    '''
+    if not authorprofile:
+        return None
+
+    month_register = authorprofile.register_date.month
+    year_register = authorprofile.register_date.year
+
+    month_now = date.today().month
+    year_now = date.today().year
+
+    categories = list()
+    articles_all = Post.objects.filter(author=authorprofile)
+    while year_register <= year_now and month_register <= month_now:
+        articles = articles_all.filter(date__year=year_now, 
+                                date__month=month_now)
+        if articles.count() != 0:
+            count = articles.count()
+            url = r'/%s/category_by_date/%s/%s/' % (authorprofile.user.username, year_now, month_now)
+            year_and_month = str(year_now)+'-'+str(month_now)
+            
+            t = {'date':year_and_month, 'count':count, 'url':url}
+            categories.append(t)
+
+        month_now -= 1
+        if month_register < 1:
+            month_now = 12
+            year_now -= 1
+
+    return categories
+
+def get_articles_by_visit(authorprofile=None):
+    '''
+        按阅读排行文章，5篇
+    '''
+    if not authorprofile:
+        return None
+
+    # author = get_object_or_404(User, username=authorname)
+    # authorprofile = get_object_or_404(UserProfile, user=author)
+    articles = Post.objects.filter(author=authorprofile).order_by('-visit')[:5]
+
+    return articles

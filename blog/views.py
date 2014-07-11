@@ -14,6 +14,7 @@ from datetime import date
 
 from .utils import ke_upload_image, ke_upload_audio, send_one_mail
 from .utils import html_tags_filter
+from .utils import get_articles_by_visit, get_categories_by_date
 
 def homePage(request):
     # print dir(request)
@@ -63,13 +64,16 @@ def personPage(request, author=False):
     articles = Post.objects.filter(author=authorprofile, show=True)
     articles_by_visit = get_articles_by_visit(authorprofile=authorprofile)
     categories = Category.objects.filter(author=authorprofile)
+    categories_by_date = get_categories_by_date(authorprofile=authorprofile)
+
     return render(request, 'blog/index.html', {'author':authorprofile, 
                                         'user':userprofile,
                                         'articles':articles, 
                                         'articles_by_visit':articles_by_visit,
                                         'authenticated':authenticated,
                                         'permission':permission,
-                                        'categories':categories
+                                        'categories':categories,
+                                        'categories_by_date':categories_by_date,
                                         })
 
 @login_required(login_url='sign_in')
@@ -174,19 +178,6 @@ def edit(request, pk):
                                               'article':article, 
                                               'authenticated':True})
 
-def get_articles_by_visit(authorprofile=None):
-    '''
-        按阅读排行文章，5篇
-    '''
-    if not authorprofile:
-        return None
-
-    # author = get_object_or_404(User, username=authorname)
-    # authorprofile = get_object_or_404(UserProfile, user=author)
-    articles = Post.objects.filter(author=authorprofile).order_by('-visit')[:5]
-
-    return articles
-
 
 def search(request, authorname):
 
@@ -209,13 +200,15 @@ def search(request, authorname):
     articles = get_list_or_404(Post, author=authorprofile, title__contains=keyword, show=True)
     articles_by_visit = get_articles_by_visit(authorprofile=authorprofile)
     categories = Category.objects.filter(author=authorprofile)
+    categories_by_date = get_categories_by_date(authorprofile=authorprofile)
     return render(request, 'blog/search.html', {'author':authorprofile, 
                                         'user': userprofile,
                                         'articles':articles, 
                                         'articles_by_visit':articles_by_visit,
                                         'authenticated':authenticated,
                                         'permission':permission,
-                                        'categories':categories
+                                        'categories':categories,
+                                        'categories_by_date':categories_by_date,
                                         })
 
     
@@ -261,6 +254,7 @@ def post(request, author, pk):
             article = get_object_or_404(Post, author=author, pk=pk) 
             categories = get_list_or_404(Category, author=author)
             articles_by_visit = get_articles_by_visit(authorprofile=author)
+            categories_by_date = get_categories_by_date(authorprofile=author)
 
             # visit
             ip = request.META['REMOTE_ADDR']
@@ -279,6 +273,7 @@ def post(request, author, pk):
 
             return render(request, 'blog/article.html', {'article':article, 
                                                     'categories':categories,
+                                                    'categories_by_date':categories_by_date,
                                                     'articles_by_visit':articles_by_visit,
                                                     'author': author,
                                                     'user':user,
@@ -312,12 +307,53 @@ def category(request, author, pk):
     categories = get_list_or_404(Category, author=authorprofile)
     category = get_object_or_404(Category, author=authorprofile, pk=pk)
     articles = category.post_set.all()
+    articles_by_visit = get_articles_by_visit(authorprofile=authorprofile)
+    categories_by_date = get_categories_by_date(authorprofile=authorprofile)
     return render(request, 'blog/category.html', {'author':authorprofile,
                                                   'user':user, 
                                                   'authenticated':authenticated,
                                                   'permission':permission,
                                                   'articles':articles,
-                                                  'categories':categories})
+                                                  'articles_by_visit':articles_by_visit,
+                                                  'categories':categories,
+                                                  'categories_by_date':categories_by_date,})
+
+def category_by_date(request, author, year, month):
+    print year
+    print month
+    # 登入用户
+    user = None
+    permission = None
+    author = get_object_or_404(User, username=author)
+    authorprofile = get_object_or_404(UserProfile, user=author)
+    authenticated = request.user.is_authenticated() 
+    if authenticated:
+        user = request.user.userprofile
+        if user == authorprofile:
+            permission = True
+
+    # visit
+    ip = request.META['REMOTE_ADDR']
+    today = date.today()
+    if user != author:
+        if not Visit.objects.filter(user=authorprofile, post=-1, ip=ip, date=today).exists():
+            Visit.objects.create(user=authorprofile, ip=ip, date=today)
+            authorprofile.visits += 1
+            authorprofile.save()
+
+    categories = get_list_or_404(Category, author=authorprofile)
+    categories_by_date = get_categories_by_date(authorprofile=authorprofile)
+    articles = Post.objects.filter(author=authorprofile, date__year=year, date__month=month).order_by('-date')
+    articles_by_visit = get_articles_by_visit(authorprofile=authorprofile)
+
+    return render(request, 'blog/category.html', {'author':authorprofile,
+                                                  'user':user, 
+                                                  'authenticated':authenticated,
+                                                  'permission':permission,
+                                                  'articles':articles,
+                                                  'articles_by_visit':articles_by_visit,
+                                                  'categories':categories,
+                                                  'categories_by_date':categories_by_date,})
 
 
 @login_required(login_url='sign_in')
