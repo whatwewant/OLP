@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     url(r'^(?P<username>\w+)/loginhistory/$', 'account.views.get_user_login_history', name='history'),
 
     # blog
-    url(r'^$', 'blog.views.homePage', name='index'),
+    url(r'^$', 'home.views.index', name='index'),
     url(r'^blog/$', 'blog.views.homePage'),
     url(r'^blog/index/$', 'blog.views.homePage'),
     url(r'^blog/write/$', 'blog.views.write', name='blog_write'),

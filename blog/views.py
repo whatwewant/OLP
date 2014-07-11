@@ -16,17 +16,6 @@ from .utils import ke_upload_image, ke_upload_audio, send_one_mail
 from .utils import html_tags_filter
 from .utils import get_articles_by_visit, get_categories_by_date
 
-def homePage(request):
-    # print dir(request)
-    authenticated = request.user.is_authenticated()
-    userprofile = None
-    articles = Post.objects.filter(show=True) # [:9]
-    if authenticated:
-        userprofile = request.user.userprofile
-    return render(request, 'index.html', {'authenticated':authenticated,
-                                          'user':userprofile, 
-                                          'articles':articles})
-
 def personPage(request, author=False):
     '''
         Person Blog Home Page

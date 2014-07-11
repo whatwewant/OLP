@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     'django.contrib.markup',
     'south',
     'linaro_django_pagination',
+    'home',
     'account',
     'blog',
     'links',
