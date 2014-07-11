@@ -164,16 +164,25 @@ def user_info(request, username=None):
 
         userinfo.name = name
         userinfo.sex = sex
-        userinfo.age = int(age)
+        userinfo.age = age
         userinfo.hometown = hometown
-        userinfo.zip_code = int(zip_code)
-        userinfo.qq = int(qq)
-        userinfo.phone = int(phone)
+        userinfo.zip_code = zip_code
         userinfo.country = country
         userinfo.country_code = country_code
         userinfo.language = language
         userinfo.recovery_email = recovery_email
         userinfo.web_site = web_site
+        
+        try:
+            userinfo.qq = int(qq)
+        except ValueError:
+            pass
+
+        try:
+            userinfo.phone = int(phone)
+        except ValueError:
+            pass
+
         userinfo.save()
         
         # userinfo.sex = sex

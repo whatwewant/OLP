@@ -45,18 +45,18 @@ class UserMeta(models.Model):
 class UserInfo(models.Model):
     # @TODO
     userprofile = models.ForeignKey(UserProfile)
-    name = models.CharField(u'真实姓名', max_length=255, blank=True, null=True)
-    sex = models.CharField(u'性别', max_length='5', blank=True, null=True)
-    age = models.IntegerField(u'年龄', max_length=3, default=-1)
-    hometown = models.CharField(u'家乡', max_length=255, blank=True, null=True)
-    zip_code = models.IntegerField(u'邮编', max_length=7, blank=True, null=True)
+    name = models.CharField(u'真实姓名', max_length=255, default='')
+    sex = models.CharField(u'性别', max_length='5', default='')
+    age = models.CharField(u'年龄', max_length=3, default='')
+    hometown = models.CharField(u'家乡', max_length=255, default='')
+    zip_code = models.CharField(u'邮编', max_length=7, default='')
     qq = models.IntegerField(u'QQ', max_length=25, blank=True, null=True)
     phone = models.IntegerField(u'Phone', max_length=255, blank=True, null=True)
-    country = models.CharField(u'国家', max_length=255, blank=True, null=True)
+    country = models.CharField(u'国家', max_length=255, default='')
     country_code = models.CharField(u'国家代号', max_length=3, default='+86')
     language = models.CharField(u'语言', max_length=255, default='Chinese')
-    recovery_email = models.EmailField(u'辅助邮箱', max_length=255, blank=True, null=True)
-    web_site = models.URLField(u'个人网站', max_length=255, blank=True, null=True)
+    recovery_email = models.EmailField(u'辅助邮箱', max_length=255, blank=True, default='@gmail.com')
+    web_site = models.URLField(u'个人网站', max_length=255, blank=True, default='http://')
 
     def __unicode__(self):
 
