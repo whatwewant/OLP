@@ -172,7 +172,7 @@ def edit(request, pk):
 
     user = request.user.userprofile
     article = get_object_or_404(Post, author=user, pk=pk, show=True)
-    print article
+
     return render(request, 'blog/edit.html', {'user':user,
                                               'author':user,
                                               'article':article, 
@@ -284,6 +284,9 @@ def post(request, author, pk):
     raise Http404
 
 def category(request, author, pk):
+    '''
+        按分类名获取分类
+    '''
     # 登入用户
     user = None
     permission = None
@@ -319,8 +322,9 @@ def category(request, author, pk):
                                                   'categories_by_date':categories_by_date,})
 
 def category_by_date(request, author, year, month):
-    print year
-    print month
+    '''
+        按月份获取分类
+    '''
     # 登入用户
     user = None
     permission = None
