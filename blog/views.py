@@ -61,10 +61,12 @@ def personPage(request, author=False):
 
 
     articles = Post.objects.filter(author=authorprofile, show=True)
+    articles_by_visit = get_articles_by_visit(authorprofile=authorprofile)
     categories = Category.objects.filter(author=authorprofile)
     return render(request, 'blog/index.html', {'author':authorprofile, 
-                                        'user': userprofile,
+                                        'user':userprofile,
                                         'articles':articles, 
+                                        'articles_by_visit':articles_by_visit,
                                         'authenticated':authenticated,
                                         'permission':permission,
                                         'categories':categories
@@ -172,6 +174,20 @@ def edit(request, pk):
                                               'article':article, 
                                               'authenticated':True})
 
+def get_articles_by_visit(authorprofile=None):
+    '''
+        按阅读排行文章，5篇
+    '''
+    if not authorprofile:
+        return None
+
+    # author = get_object_or_404(User, username=authorname)
+    # authorprofile = get_object_or_404(UserProfile, user=author)
+    articles = Post.objects.filter(author=authorprofile).order_by('-visit')[:5]
+
+    return articles
+
+
 def search(request, authorname):
 
     keyword = request.GET.get('search').strip()
@@ -191,10 +207,12 @@ def search(request, authorname):
 
 
     articles = get_list_or_404(Post, author=authorprofile, title__contains=keyword, show=True)
+    articles_by_visit = get_articles_by_visit(authorprofile=authorprofile)
     categories = Category.objects.filter(author=authorprofile)
     return render(request, 'blog/search.html', {'author':authorprofile, 
                                         'user': userprofile,
                                         'articles':articles, 
+                                        'articles_by_visit':articles_by_visit,
                                         'authenticated':authenticated,
                                         'permission':permission,
                                         'categories':categories
@@ -242,6 +260,7 @@ def post(request, author, pk):
 
             article = get_object_or_404(Post, author=author, pk=pk) 
             categories = get_list_or_404(Category, author=author)
+            articles_by_visit = get_articles_by_visit(authorprofile=author)
 
             # visit
             ip = request.META['REMOTE_ADDR']
@@ -260,6 +279,7 @@ def post(request, author, pk):
 
             return render(request, 'blog/article.html', {'article':article, 
                                                     'categories':categories,
+                                                    'articles_by_visit':articles_by_visit,
                                                     'author': author,
                                                     'user':user,
                                                     'authenticated':authenticated,
