@@ -25,11 +25,8 @@ urlpatterns = patterns('',
 
     # blog
     url(r'^$', 'home.views.index', name='index'),
-    url(r'^blog/$', 'blog.views.homePage'),
-    url(r'^blog/index/$', 'blog.views.homePage'),
     url(r'^blog/write/$', 'blog.views.write', name='blog_write'),
-    url(r'^blog/(?P<author>\w+)/$', 'blog.views.personPage', name='blog_author'),
-    url(r'^(?P<author>\w+)/$', 'blog.views.personPage', name='blog_index'),
+    url(r'^(?P<author>\w+)/$', 'blog.views.personPage', name='blog_author'),
     # article
     url(r'^blog/edit/(?P<pk>\d+)/$', 'blog.views.edit', name='article_edit'),
     url(r'^(?P<author>\w+)/article/(?P<pk>\d+)/$', 'blog.views.post', name='post'),
