@@ -26,6 +26,7 @@ def sign_in(request):
         password = request.POST.get('password')
         login_ip = request.META['REMOTE_ADDR']
         login_date = time.ctime
+        print password
         # login_address = transform_ip_to_address(login_ip)
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -64,6 +65,9 @@ def sign_up(request):
         password = request.POST.get("password")
         re_password = request.POST.get("dopassword")
         nickname = request.POST.get("nickname").strip()
+
+        print password
+        print re_password
 
         if not (len(username) >= 3 and len(username) <= 20):
             return render(request, "account/sign_up.html",

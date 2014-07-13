@@ -12,7 +12,10 @@
                     <td><a href="{{ friend_link.url }}">{{ friend_link.name }}</a></td>:
                     <td>{{ friend_link.description }}
                         {% if permission %}
-                            <span><a href="{{ friend_link.get_absolute_url }}" class="btn btn-default navbar-right"><span class="glyphicon glyphicon-remove-circle" title="删除"></a></span>
+                        <form style="display:inline;" action="{{ friend_link.get_absolute_url }}" method="post">
+                            {% csrf_token %}
+                            <span><button class="btn btn-default navbar-right data-delete"><span class="glyphicon glyphicon-remove-circle" title="删除"></button></span>
+                        </form>
                         {% endif %}
                     </td>  
                 </tr>
