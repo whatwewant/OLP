@@ -37,7 +37,7 @@ def ke_upload_image(request):
     save_path = settings.MEDIA_ROOT+save_dir
     # @TODO
     # save_url = settings.MEDIA_URL+save_dir
-    save_url = settings.STATIC_URL+save_dir
+    save_url = settings.STATIC_ROOT+save_dir
     # print save_dir, save_path, save_url
 
     if request.method == 'POST':
@@ -71,6 +71,31 @@ def ke_upload_image(request):
         return HttpResponse(json.dumps(
             {'error':0, 'url':save_url+new_file}
             ))
+    
+
+def store_image(imagetype, username, file):
+    ext_allowed = ['gif', 'jpg', 'jpeg', 'png']
+    max_size = 2621440
+    save_dir = imagetype + '/'
+    save_path = settings.MEDIA_ROOT+save_dir
+    # save_path = settings.STATIC_URL+save_dir
+    # print save_dir, save_path, save_url
+    if file.size > max_size:
+        return HttpResponse(json.dumps(
+            {'error':1, 'message':u'上传的文件大小不能超过2.5MB'}
+            ))
+
+    if not os.path.isdir(save_path):
+        os.makedirs(save_path)
+
+    ext = file.name.split('.').pop()
+    new_file = '%s-%s.%s' % (username, int(time.time()), ext)
+
+    #with open(save_path+new_file, 'wb+') as destination:
+    #    for chunk in file.chunks():
+    #        destination.write(chunk)
+
+    return ('/'+save_path+new_file, new_file)
 
 @login_required(login_url='sign_in')
 @csrf_exempt

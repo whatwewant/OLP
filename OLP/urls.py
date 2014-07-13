@@ -22,6 +22,8 @@ urlpatterns = patterns('',
     url(r'^sign_out/$', 'account.views.sign_out', name='sign_out'),
     url(r'^(?P<username>\w+)/userinfo/$', 'account.views.user_info', name='user_info'),
     url(r'^(?P<username>\w+)/loginhistory/$', 'account.views.get_user_login_history', name='history'),
+    # upload portrait
+    url(r'^(?P<username>\w+)/upload_portrait/$', 'account.views.upload_portrait', name='upload_portrait'),
 
     # blog
     url(r'^$', 'home.views.index', name='index'),

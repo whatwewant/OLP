@@ -13,7 +13,7 @@ class UserProfile(models.Model):
     grade = models.CharField(u'等级', max_length=9, default='--- --- ---')
     visits = models.IntegerField(u'访问量', default=0)
     rank = models.IntegerField(u'排名', default=0)
-    head_portrait = models.ImageField(upload_to='./head_portrait', 
+    head_portrait = models.ImageField(upload_to='head_portrait', 
                                       default='./head_portrait/no-img.jsp',
     #                                  height_field=100, width_field=100,
                                       max_length=255)

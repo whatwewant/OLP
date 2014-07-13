@@ -6,7 +6,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+import django.forms as forms
+
 from account.models import UserProfile, UserInfo, UserLoginHistory
+from blog.utils import store_image
 import time
 
 # from utils import transform_ip_to_address
@@ -243,3 +246,16 @@ def get_user_login_history(request, username=None):
                                                             'authenticated':True,
                                                             'permission':True})
 
+@login_required(login_url='sign_in')
+def upload_portrait(request, username):
+    # @TODO .............
+    if request.method == 'POST':
+        user = request.user.userprofile
+        # form = forms.ImageField(request.POST, request.FILES)
+        filedata = request.FILES.get('portrait_image')
+        url, filedata.name = store_image('head_portrait', user.user.username, filedata)
+        user.head_portrait = filedata
+        user.save()
+        return redirect('blog_author', user.user.username)
+
+    return redirect('blog_author', user.user.username)
