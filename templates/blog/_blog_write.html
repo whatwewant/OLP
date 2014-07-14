@@ -1,6 +1,6 @@
-<div class="col-md-10 bigblock">
+<form role="form" action="" method="post">
+<div class="col-md-9">
         <div id="editText">
-        <form role="form" action="" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <label for="exampleInputText"> Title: </label>
@@ -12,19 +12,28 @@
                 <textarea id="content" class="form-control" style="height: 400px;" name="content"></textarea>
                 <span class="error" style="display:none">* Cannot Be Empty.</span>
             </div>
-            <div>
-                 <label for="exampleInputText"> Category: </label>
-                <input type="text" name="category" id="content_type" class="form-control" /><span>(以,隔开)</span>
-                <span class="error" style="display:none">* Cannot Be Empty.</span>
-            </div>
             <div class="form-group">
                 <label for="exmapleTextarea"> Content-Excerpt: </label>
                 <textarea name="excerpt" id="excerpt" class="form-control" style="height: 100px"></textarea>
                 <span class="error" style="display:none">* Cannot Be Empty.</span>
             </div>
-            <button type="submit" class="btn btn-default">发布</button>
-        </form>
+            <button type="submit" class="btn btn-default  navbar-right">Publish</button>
         </div>
 </div>
-
-    
+<div class="col-md-2" style="margin: 20px;">
+    <div class="title"><label for="memory"> Memory Categories </label></div>
+    {% for category in categories %}
+    <div class="row">
+        <input style="display:inline;"type="checkbox" name="oldcategories" value="{{ category.name }}"/> &ensp; {{ category.name }}
+    </div>
+    {% endfor %}
+    <div class="row">
+        
+    </div>
+    <div class="row">
+        <label for="exampleInputText"> New Category:<span>(以,隔开)</span></label>
+        <input type="text" name="category" id="content_type" class="form-control" />
+        <span class="error" style="display:none">* Cannot Be Empty.</span>
+    </div>
+</div>
+</form>

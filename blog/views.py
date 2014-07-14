@@ -69,12 +69,15 @@ def personPage(request, author=False):
 def write(request):
     '''publish an article'''
     user = request.user.userprofile
+    categories = Category.objects.filter(author=user)
     if request.method == "POST" :
         title = request.POST.get('title').strip()
         content = request.POST.get('content').strip()
         excerpt = request.POST.get('excerpt').strip()
         # new 文章分类
         categorylist = request.POST.get('category').strip().split(',')
+        # old categorylist
+        oldcategories = request.POST.getlist('oldcategories')
         # password= request.POST.get('password')
         modified_date = date.today()
         modified_date_gmt = timezone.now()
@@ -108,6 +111,11 @@ def write(request):
             cp, ccreated = Category.objects.get_or_create(author=user, name=new_category_name)
             PostToCategory.objects.get_or_create(post=pp, category=cp)
 
+        # oldcategories
+        for oldcategory in oldcategories:
+            oldcategory = Category.objects.get(author=user, name=oldcategory)
+            PostToCategory.objects.get_or_create(post=pp, category=oldcategory)
+
 
         # 文章数 +1
         user.blog_num += 1
@@ -116,6 +124,7 @@ def write(request):
     return render(request, 'blog/write.html', {'user':user,
                                                'author':user,
                                                'permission':True,
+                                               'categories':categories,
                                                'authenticated':True})
 	
 @login_required(login_url='sign_in')
@@ -376,8 +385,8 @@ def collect(request, authorname, pk):
             errorcode = 0
             errorinfo = u'收藏成功'
     
-    url = post.get_absolute_url()
-    return redirect(url)
+    where_you_come = request.META.get('HTTP_REFERER', '/')
+    return redirect(where_you_come)
 
 @login_required(login_url='sign_in')
 def delete_collect(request, authorname, pk):

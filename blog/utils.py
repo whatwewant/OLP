@@ -89,6 +89,10 @@ def store_image(imagetype, username, file):
         os.makedirs(save_path)
 
     ext = file.name.split('.').pop()
+    
+    if ext not in ext_allowed:
+        return ('', None)
+
     new_file = '%s-%s.%s' % (username, int(time.time()), ext)
 
     #with open(save_path+new_file, 'wb+') as destination:

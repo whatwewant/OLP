@@ -252,10 +252,14 @@ def upload_portrait(request, username):
     if request.method == 'POST':
         user = request.user.userprofile
         # form = forms.ImageField(request.POST, request.FILES)
-        filedata = request.FILES.get('portrait_image')
-        url, filedata.name = store_image('head_portrait', user.user.username, filedata)
-        user.head_portrait = filedata
-        user.save()
-        return redirect('blog_author', user.user.username)
+        filedata = request.FILES.get('portrait_image', None)
+        if filedata != None:
+            url, filename = store_image('head_portrait', user.user.username, filedata)
+            if filename != None:
+                filedata.name = filename
+                user.head_portrait = filedata
+                user.save()
+
+            return redirect('blog_author', user.user.username)
 
     return redirect('blog_author', user.user.username)
