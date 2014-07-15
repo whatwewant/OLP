@@ -21,7 +21,7 @@ class Category(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('category', (), {'author':self.author.user.username, 'pk':self.pk})
+        return ('category', (), {'authorname':self.author.user.username, 'pk':self.pk})
     
     # 文章数统计
     def get_post_count(self):

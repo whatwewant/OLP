@@ -7,20 +7,15 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404, get_list_or_404
 
-def show_friend_links(request, authorname):
-    authenticated = request.user.is_authenticated()
-    author = get_object_or_404(User, username=authorname)
-    author = UserProfile.objects.get(user=author)
+from utils.shortcuts import is_permitted, get_userprofile_by_username
 
-    user = None
-    permission = False
-    if request.user.is_authenticated():
-        user = request.user.userprofile
-        if user == author:
-            permission = True
+def show_friend_links(request, authorname):
+    authorprofile = get_userprofile_by_username(authorname)
+    authenticated = request.user.is_authenticated()
+    permission, userprofile = is_permitted(request, authenticated, authorprofile)
 
     if permission and request.method == "POST":
-        owner = user
+        owner = userprofile
         url = request.POST.get('urlInput').strip()
         name = request.POST.get('nameInput').strip()
         # image
@@ -34,13 +29,13 @@ def show_friend_links(request, authorname):
                                                       description=description,
                                                       # visible=visible
                                                       )
-        return redirect('friend_links', user.user.username)
+        return redirect('friend_links', userprofile.user.username)
         
 
-    friend_links = Links.objects.filter(owner=author)
+    friend_links = Links.objects.filter(owner=authorprofile)
 
-    return render(request, 'links/friend_links.html', {'user':user,
-                                'author':author,
+    return render(request, 'links/friend_links.html', {'user':userprofile,
+                                'author':authorprofile,
                                 'authenticated':authenticated,
                                 'permission':permission,
                                 'friend_links': friend_links

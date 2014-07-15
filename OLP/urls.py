@@ -28,7 +28,7 @@ urlpatterns = patterns('',
     # blog
     url(r'^$', 'home.views.index', name='index'),
     url(r'^blog/write/$', 'blog.views.write', name='blog_write'),
-    url(r'^(?P<author>\w+)/$', 'blog.views.personPage', name='blog_author'),
+    url(r'^(?P<authorname>\w+)/$', 'blog.views.personPage', name='blog_author'),
     # article
     url(r'^blog/edit/(?P<pk>\d+)/$', 'blog.views.edit', name='article_edit'),
     url(r'^(?P<author>\w+)/article/(?P<pk>\d+)/$', 'blog.views.post', name='post'),
@@ -41,7 +41,7 @@ urlpatterns = patterns('',
     # 自己收藏的所有文章
     url(r'^(?P<authorname>\w+)/collections/$', 'blog.views.collections', name='collections'),
     # category
-    url(r'(?P<author>\w+)/category/(?P<pk>\d+)/$', 'blog.views.category', name='category'),
+    url(r'(?P<authorname>\w+)/category/(?P<pk>\d+)/$', 'blog.views.category', name='category'),
     # category_by_date
     url(r'^(?P<author>\w+)/category_by_date/(?P<year>\d+)/(?P<month>\d+)/$', 'blog.views.category_by_date', name='category_by_date'),
     # upload
