@@ -129,6 +129,7 @@ def edit(request, pk):
     '''
     user = request.user.userprofile
     article = get_object_or_404(Post, author=user, pk=pk, show=True)
+    categories = get_categories_by_userprofile(user)
 
     if request.method == "POST":
         title = request.POST.get('title').strip()
@@ -170,6 +171,7 @@ def edit(request, pk):
     return render(request, 'blog/edit.html', {'user':user,
                                               'author':user,
                                               'article':article, 
+                                              'categories':categories,
                                               'authenticated':True})
 
 
