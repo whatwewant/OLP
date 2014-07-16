@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 import django.forms as forms
 
 from account.models import UserProfile, UserInfo, UserLoginHistory
-from blog.utils import store_image
+from utils.utils import store_image
 import time
 
 # from utils import transform_ip_to_address
