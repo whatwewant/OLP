@@ -4,21 +4,21 @@
     </div>
     {%if user %}
      <div class="row">
-        <a href="{%url 'blog_author' user.user.username %}">Blog</a>
+        <a href="{%url 'blog_author' user.user.username %}" title="我的博客">Blog</a>
     </div>
     {% else %}
      <div class="row">
-        <a href="{%url 'sign_in'%}">Blog</a>
+        <a href="{%url 'sign_in'%}" title="我的博客">Blog</a>
     </div>
     {% endif %}
     
     {% if user %}
     <div class="row">
-        <a href="{%url 'collections' user.user.username %}"><span class="glyphicon glyphicon-th" title="Collections"></span></a>
+        <a href="{%url 'collections' user.user.username %}"><span class="glyphicon glyphicon-th" title="我的收藏"></span></a>
     </div>
     {% else %}
     <div class="row">
-        <a href="{%url 'sign_in'%}" title="Sign In"><span class="glyphicon glyphicon-th"></span></a>
+        <a href="{%url 'sign_in'%}" title="我的收藏"><span class="glyphicon glyphicon-th"></span></a>
     </div>
     {% endif %}
     <div class="row">
