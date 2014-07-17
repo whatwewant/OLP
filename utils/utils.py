@@ -75,10 +75,10 @@ def ke_upload_image(request):
             ))
     
 
-def store_image(imagetype, username, file):
+def store_image(filetype, username, file):
     ext_allowed = ['gif', 'jpg', 'jpeg', 'png']
     max_size = 2621440
-    save_dir = imagetype + '/'
+    save_dir = filetype + '/'
     save_path = settings.MEDIA_ROOT+save_dir
     # save_path = settings.STATIC_URL+save_dir
     # print save_dir, save_path, save_url
@@ -176,48 +176,27 @@ def html_tags_filter(html):
 
     return str
 
-def get_categories_by_date(authorprofile=None):
-    '''
-        按日期获得文章, 10个
-    '''
-    if not authorprofile:
-        return None
+def rename_file_by_time(filetype, username, file):
+    ext_allowed = ['gif', 'jpg', 'jpeg', 'png']
+    max_size = 2621440
+    save_dir = filetype + '/'
+    save_path = settings.MEDIA_ROOT+save_dir
+    # save_path = settings.STATIC_URL+save_dir
+    # print save_dir, save_path, save_url
+    if file.size > max_size:
+        return HttpResponse(json.dumps(
+            {'error':1, 'message':u'上传的文件大小不能超过2.5MB'}
+            ))
 
-    month_register = authorprofile.register_date.month
-    year_register = authorprofile.register_date.year
+    if not os.path.isdir(save_path):
+        os.makedirs(save_path)
 
-    month_now = date.today().month
-    year_now = date.today().year
+    ext = file.name.split('.').pop()
+    
+    if ext not in ext_allowed:
+        return ('', None)
 
-    categories = list()
-    articles_all = Post.objects.filter(author=authorprofile)
-    while year_register <= year_now and month_register <= month_now:
-        articles = articles_all.filter(date__year=year_now, 
-                                date__month=month_now)
-        if articles.count() != 0:
-            count = articles.count()
-            url = r'/%s/category_by_date/%s/%s/' % (authorprofile.user.username, year_now, month_now)
-            year_and_month = str(year_now)+'-'+str(month_now)
-            
-            t = {'date':year_and_month, 'count':count, 'url':url}
-            categories.append(t)
+    new_file = '%s-%s.%s' % (username, int(time.time()), ext)
 
-        month_now -= 1
-        if month_register < 1:
-            month_now = 12
-            year_now -= 1
+    return ('/'+save_path+new_file, new_file)
 
-    return categories
-
-def get_articles_by_visit(authorprofile=None):
-    '''
-        按阅读排行文章，5篇
-    '''
-    if not authorprofile:
-        return None
-
-    # author = get_object_or_404(User, username=authorname)
-    # authorprofile = get_object_or_404(UserProfile, user=author)
-    articles = Post.objects.filter(author=authorprofile).order_by('-visit')[:5]
-
-    return articles

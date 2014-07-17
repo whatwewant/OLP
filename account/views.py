@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 import django.forms as forms
 
 from account.models import UserProfile, UserInfo, UserLoginHistory
-from utils.utils import store_image
+from utils.utils import rename_file_by_time
 import time
 
 # from utils import transform_ip_to_address
@@ -254,7 +254,7 @@ def upload_portrait(request, username):
         # form = forms.ImageField(request.POST, request.FILES)
         filedata = request.FILES.get('portrait_image', None)
         if filedata != None:
-            url, filename = store_image('head_portrait', user.user.username, filedata)
+            url, filename = rename_file_by_time('head_portrait', user.user.username, filedata)
             if filename != None:
                 filedata.name = filename
                 user.head_portrait = filedata

@@ -53,7 +53,9 @@ $(document).ready(function () {
 }); */
 
 function calcMD5() {
-    $(".password-input").val($.md5($(".password-input").val()));
+    if($(".password-input").val() != "") {
+        $(".password-input").val($.md5($(".password-input").val()));
+    }
     if($(".dopassword-input").length > 0) {
         $(".dopassword-input").val($.md5($(".dopassword-input").val()));
     }
