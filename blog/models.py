@@ -50,8 +50,8 @@ class VisitBlog(models.Model):
     '''
         博客访问
     '''
-    author = models.ForeignKey(UserProfile, related_name='博主')
-    visitor = models.ForeignKey(UserProfile, related_name='访问者')
+    author = models.ForeignKey(UserProfile, related_name='author')
+    visitor = models.ForeignKey(UserProfile, related_name='visitor')
     date = models.DateField(auto_now=True)
     ip = models.IPAddressField(max_length=16)
     
@@ -141,6 +141,9 @@ class Post(models.Model):
 
     def get_excerpt_of_article(self):
         return self.excerpt
+
+    def get_visit_count(self):
+        return self.visit.count()
 
     # 重载delete方法
 

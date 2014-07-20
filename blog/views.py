@@ -255,7 +255,7 @@ def post(request, author, pk):
 
     # visit post
     visit_post(request, userprofile, authorprofile, article)
-    visit_blog = visit_blog(request, userprofile, authorprofile)
+    visit_blog(request, userprofile, authorprofile)
     # if userprofile != authorprofile:
     #    geted, created = Visit.objects.get_or_create(visitor=userprofile, 
     #                                ip=request.META['REMOTE_ADDR'], 

@@ -89,10 +89,23 @@ def get_categories_by_date(userprofile=None):
     return categories
 
 
-anonymous = get_userprofile_by_username('anonymous')
+def get_anonymous():
+    # @TODO
+    user = None
+    userprofile = None
+    if not User.objects.filter(username='anonymous').exists():
+        user = User.objects.create_user(username='anonymous',password='anonymous')
+    else:
+        user = User.objects.get(username='anonymous')
+    if not UserProfile.objects.filter(user=user).exists():
+        userprofile = UserProfile.objects.create(user=user, nickname='anonymous')
+    else:
+        userprofile = UserProfile.objects.get(user=user)
+    return userprofile
 
-def is_permitted(request, authencated=False, authorprofile=None, userprofile=anonymous):
+def is_permitted(request, authencated=False, authorprofile=None, userprofile=None):
     '''是否获得各种操作权限'''
+    userprofile = get_anonymous()
     if not authencated:
         return (False, userprofile)
     userprofile = request.user.userprofile
