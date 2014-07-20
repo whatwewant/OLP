@@ -27,6 +27,40 @@ class Category(models.Model):
     def get_post_count(self):
         return self.post_set.count()
 
+class Visit(models.Model):
+    '''
+        用途两种:
+            1、单篇文章的ManyToMany
+            (Error, only 1) 2、对博客的访问
+        通过 user ip date 三个元素共同判断访问者同一个博客一天访问一次
+        通过 user post ip date 三个元素共同判断访问者同一篇文章一天访问一次
+    '''
+    # 访问者
+    visitor = models.ForeignKey(UserProfile)
+    date = models.DateField(u'访问时间', auto_now=True)
+    ip = models.IPAddressField(u'Visitor IP', max_length=16)
+
+    class Meta:
+        ordering = ['-date']
+
+    def __unicode__(self):
+        return 'visitor\' ip :%s' % self.ip
+
+class VisitBlog(models.Model):
+    '''
+        博客访问
+    '''
+    author = models.ForeignKey(UserProfile, related_name='博主')
+    visitor = models.ForeignKey(UserProfile, related_name='访问者')
+    date = models.DateField(auto_now=True)
+    ip = models.IPAddressField(max_length=16)
+    
+    class Meta:
+        ordering = ['-date']
+
+    def __unicode__(self):
+        return '%s visited %s' % (self.visitor, self.user)
+    
 
 class Post(models.Model):
     '''blog '''
@@ -62,7 +96,8 @@ class Post(models.Model):
                                 blank=True, null=True)
     # 默认显示， 用于删除文章进入垃圾箱
     show = models.BooleanField(default=True)
-    visit = models.IntegerField(u'访问量', default=0)
+    # 单篇文章的访问
+    visit = models.ManyToManyField(Visit, through='PostToVisit', blank=True, null=True)
     collected = models.IntegerField(u'被收藏次数', default=0)
 
     def __unicode__(self):
@@ -116,6 +151,10 @@ class PostToCategory(models.Model):
     category = models.ForeignKey(Category)
     date_joined = models.DateField(auto_now_add=True)
 
+class PostToVisit(models.Model):
+    post = models.ForeignKey(Post)
+    visit = models.ForeignKey(Visit)
+    date_visited = models.DateField(auto_now_add=True)
 
 class PostMeta(models.Model):
 
@@ -160,23 +199,6 @@ class CommentMeta(models.Model):
         return str(self.meta_key)
 
 
-class Visit(models.Model):
-    '''
-        通过 user ip date 三个元素共同判断访问者同一个博客一天访问一次
-        通过 user post ip date 三个元素共同判断访问者同一篇文章一天访问一次
-    '''
-    # 博主
-    user = models.ForeignKey(UserProfile)
-    # -1 表示访问博客, 非负数表示文章
-    post = models.IntegerField(u'文章id', default=-1)
-    ip = models.IPAddressField(u'Visitor IP', max_length=16)
-    date = models.DateField(u'上次访问时间', auto_now=True)
-
-    class Meta:
-        ordering = ['-date']
-
-    def __unicode__(self):
-        return 'visitor\' ip :%s' % self.ip
 
 class CollectArticle(models.Model):
     '''文章收藏'''

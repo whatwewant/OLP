@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
 from account.models import UserProfile
-from blog.models import Post, Category
+from blog.models import Post, Category, Visit, VisitBlog
+from blog.models import PostToVisit
 # from links.models import Links
 
 def get_user(username):
@@ -88,7 +89,9 @@ def get_categories_by_date(userprofile=None):
     return categories
 
 
-def is_permitted(request, authencated=False, authorprofile=None, userprofile=None):
+anonymous = get_userprofile_by_username('anonymous')
+
+def is_permitted(request, authencated=False, authorprofile=None, userprofile=anonymous):
     '''是否获得各种操作权限'''
     if not authencated:
         return (False, userprofile)
@@ -103,4 +106,26 @@ def get_ip(request):
 def get_request_url(request):
     return request.META.get('HTTP_REFERER', '/')
 
+def visit_post(request, userprofile, authorprofile, post):
+    '''访问文章'''
+    if userprofile != authorprofile:
+        geted, created = Visit.objects.get_or_create(
+            visitor = userprofile,
+            ip = get_ip(request),
+            date = date.today()
+            )
+    PostToVisit.objects.get_or_create(post=post, visit=geted)
+    return True
+
+def visit_blog(request, userprofile, authorprofile):
+    '''访问博客'''
+    if userprofile != authorprofile:
+        geted, created = VisitBlog.objects.get_or_create(
+            author = authorprofile,
+            visitor = userprofile,
+            ip = get_ip(request),
+            date = date.today()
+            )
+        return geted
+    return False
 

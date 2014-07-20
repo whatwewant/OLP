@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from __future__ import unicode_literals, absolute_import
 
-from blog.models import Post, Category, PostToCategory, Visit
+from blog.models import Post, Category, PostToCategory, Visit, PostToVisit
 from blog.models import CollectArticle
 # from account.models import UserProfile
 # from django.contrib.auth.models import User
@@ -34,15 +34,10 @@ def personPage(request, authorname):
     authenticated = request.user.is_authenticated() 
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
 
-    # visit
-    ip = get_ip(request)
-    today = date.today()
-    if userprofile != authorprofile:
-        if not Visit.objects.filter(user=authorprofile, post=-1, ip=ip, date=today).exists():
-            Visit.objects.create(user=authorprofile, ip=ip, date=today)
-            authorprofile.visits += 1
-            authorprofile.save()
-
+    # visit blog
+    visit_blog(request, userprofile, authorprofile)
+    # all visit this blog visitor
+    all_visit = VisitBlog.objects.filter(author=authorprofile)
 
     articles = get_posts_by_userprofile(authorprofile)
     articles_by_visit = get_posts_by_visit(authorprofile)
@@ -57,6 +52,7 @@ def personPage(request, authorname):
                                         'permission':permission,
                                         'categories':categories,
                                         'categories_by_date':categories_by_date,
+                                        'all_visit':all_visit,
                                         })
 
 @login_required(login_url='sign_in')
@@ -64,6 +60,8 @@ def write(request):
     '''publish an article'''
     user = request.user.userprofile
     categories = get_categories_by_userprofile(user)
+    # all visit this blog visitor
+    all_visit = VisitBlog.objects.filter(author=authorprofile)
 
     if request.method == "POST" :
         title = request.POST.get('title').strip()
@@ -120,7 +118,9 @@ def write(request):
                                                'author':user,
                                                'permission':True,
                                                'categories':categories,
-                                               'authenticated':True})
+                                               'authenticated':True,
+                                               'all_visit':all_visit,
+                                              })
 	
 @login_required(login_url='sign_in')
 def edit(request, pk):
@@ -130,6 +130,9 @@ def edit(request, pk):
     user = request.user.userprofile
     article = get_object_or_404(Post, author=user, pk=pk, show=True)
     categories = get_categories_by_userprofile(user)
+    
+    # all visit this blog visitor
+    all_visit = VisitBlog.objects.filter(author=authorprofile)
 
     if request.method == "POST":
         title = request.POST.get('title').strip()
@@ -172,7 +175,9 @@ def edit(request, pk):
                                               'author':user,
                                               'article':article, 
                                               'categories':categories,
-                                              'authenticated':True})
+                                              'authenticated':True,
+                                              'all_visit':all_visit,
+                                             })
 
 
 def search(request, authorname):
@@ -185,6 +190,11 @@ def search(request, authorname):
     authorprofile = get_userprofile_by_username(authorname)
     authenticated = request.user.is_authenticated() 
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
+    
+    # visit blog
+    visit_blog(request, userprofile, authorprofile)
+    # all visit this blog visitor
+    all_visit = VisitBlog.objects.filter(author=authorprofile)
 
     articles = get_list_or_404(Post, author=authorprofile, title__contains=keyword, show=True)
     articles_by_visit = get_posts_by_visit(authorprofile)
@@ -198,6 +208,7 @@ def search(request, authorname):
                                         'permission':permission,
                                         'categories':categories,
                                         'categories_by_date':categories_by_date,
+                                        'all_visit':all_visit,
                                         })
 
 
@@ -231,6 +242,8 @@ def undelete(request, pk):
     return redirect('blog_author', request.user.username)
 
 def post(request, author, pk):
+    print dir(request.user)
+    '''访问单篇文章'''
     authorprofile = get_userprofile_by_username(author)
     authenticated = request.user.is_authenticated()
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
@@ -240,20 +253,14 @@ def post(request, author, pk):
     articles_by_visit = get_posts_by_visit(authorprofile)
     categories_by_date = get_categories_by_date(authorprofile)
 
-    # visit
-    ip = request.META['REMOTE_ADDR']
-    today = date.today()
-    if userprofile != authorprofile:
-        if not Visit.objects.filter(user=authorprofile, post=-1, ip=ip, date=today).exists():
-            Visit.objects.create(user=authorprofile, ip=ip, date=today)
-            authorprofile.visits += 1
-            authorprofile.save()
-
-    if not Visit.objects.filter(user=authorprofile, post=article.pk, ip=ip, date=today).exists():
-        Visit.objects.create(user=authorprofile, post=article.pk, ip=ip, date=today)
-        article.visit += 1
-        article.save()
-
+    # visit post
+    visit_post(request, userprofile, authorprofile, article)
+    visit_blog = visit_blog(request, userprofile, authorprofile)
+    # if userprofile != authorprofile:
+    #    geted, created = Visit.objects.get_or_create(visitor=userprofile, 
+    #                                ip=request.META['REMOTE_ADDR'], 
+    #                                date=date.today())
+    #    PostToVisit.object.get_or_create(post=article, visit=geted)
 
     return render(request, 'blog/article.html', {'article':article, 
                                                 'categories':categories,
@@ -262,7 +269,8 @@ def post(request, author, pk):
                                                 'author': authorprofile,
                                                 'user':userprofile,
                                                 'authenticated':authenticated,
-                                                'permission':permission
+                                                'permission':permission,
+                                                'visit_blog':visit_blog,
                                                 })
 
 def category(request, authorname, pk):
@@ -274,14 +282,10 @@ def category(request, authorname, pk):
     authenticated = request.user.is_authenticated() 
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
 
-    # visit
-    ip = request.META['REMOTE_ADDR']
-    today = date.today()
-    if userprofile != authorprofile:
-        if not Visit.objects.filter(user=authorprofile, post=-1, ip=ip, date=today).exists():
-            Visit.objects.create(user=authorprofile, ip=ip, date=today)
-            authorprofile.visits += 1
-            authorprofile.save()
+    # visit blog
+    visit_blog(request, userprofile, authorprofile)
+    # all visit this blog visitor
+    all_visit = VisitBlog.objects.filter(author=authorprofile)
 
     category = get_object_or_404(Category, author=authorprofile, pk=pk)
     articles = category.post_set.all()
@@ -295,7 +299,9 @@ def category(request, authorname, pk):
                                                   'articles':articles,
                                                   'articles_by_visit':articles_by_visit,
                                                   'categories':categories,
-                                                  'categories_by_date':categories_by_date,})
+                                                  'categories_by_date':categories_by_date,
+                                                  'all_visit':all_visit,
+                                                 })
 
 def category_by_date(request, author, year, month):
     '''
@@ -305,14 +311,10 @@ def category_by_date(request, author, year, month):
     authenticated = request.user.is_authenticated()
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
 
-    # visit
-    ip = request.META['REMOTE_ADDR']
-    today = date.today()
-    if userprofile != authorprofile:
-        if not Visit.objects.filter(user=authorprofile, post=-1, ip=ip, date=today).exists():
-            Visit.objects.create(user=authorprofile, ip=ip, date=today)
-            authorprofile.visits += 1
-            authorprofile.save()
+    # visit blog
+    visit_blog(request, userprofile, authorprofile)
+    # all visit this blog visitor
+    all_visit = VisitBlog.objects.filter(author=authorprofile)
 
     categories = get_list_or_404(Category, author=authorprofile)
     categories_by_date = get_categories_by_date(authorprofile)
@@ -326,7 +328,9 @@ def category_by_date(request, author, year, month):
                                                   'articles':articles,
                                                   'articles_by_visit':articles_by_visit,
                                                   'categories':categories,
-                                                  'categories_by_date':categories_by_date,})
+                                                  'categories_by_date':categories_by_date,
+                                                  'all_visit':all_visit,
+                                                 })
 
 
 @login_required(login_url='sign_in')
@@ -372,10 +376,16 @@ def collections(request, authorname):
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
     
     articles = CollectArticle.objects.filter(user=authorprofile)
+
+    # visit blog
+    visit_blog(request, userprofile, authorprofile)
+    # all visit this blog visitor
+    all_visit = VisitBlog.objects.filter(author=authorprofile)
         
     return render(request, 'blog/collect.html', {'user':userprofile,
                                                  'author':authorprofile,
                                                  'articles':articles,
                                                  'authenticated':authenticated,
-                                                 'permission':permission
+                                                 'permission':permission,
+                                                 'all_visit':all_visit,
                                                 })
