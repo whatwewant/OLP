@@ -44,7 +44,7 @@ class Visit(models.Model):
         ordering = ['-date']
 
     def __unicode__(self):
-        return 'visitor\' ip :%s' % self.ip
+        return '%s at %s' % (self.visitor.user.username, self.date)
 
 class VisitBlog(models.Model):
     '''
@@ -98,6 +98,8 @@ class Post(models.Model):
     show = models.BooleanField(default=True)
     # 单篇文章的访问
     visit = models.ManyToManyField(Visit, through='PostToVisit', blank=True, null=True)
+    # @TODO 单篇文章的访问次数，用于排序，不知道如何用一个manytomany字段排序
+    visits = models.IntegerField(u'访问次数', default=0)
     collected = models.IntegerField(u'被收藏次数', default=0)
 
     def __unicode__(self):

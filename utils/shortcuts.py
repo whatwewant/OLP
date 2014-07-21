@@ -34,8 +34,14 @@ def get_posts_by_userprofile(userprofile):
     return posts
 
 def get_posts_by_visit(userprofile):
-    posts = Post.objects.filter(author=userprofile).order_by('-visit')[:5]
+    posts = Post.objects.filter(author=userprofile, show=True).order_by('-visits')[:5]
     return posts
+
+def visit_plus_plus(article):
+    # article.visits = article.visit.count()
+    article.visits += 1
+    article.save()
+    return True
 
 def get_one_post_by_username_and_pk(username, pk):
     userprofile = get_userprofile_by_username(username)
@@ -136,6 +142,7 @@ def visit_post(request, userprofile, authorprofile, post):
             ip = get_ip(request),
             )
         PostToVisit.objects.get_or_create(post=post, visit=geted)
+        visit_plus_plus(post)
     return True
 
 def visit_blog(request, userprofile, authorprofile):
