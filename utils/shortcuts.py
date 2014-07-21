@@ -135,7 +135,7 @@ def visit_post(request, userprofile, authorprofile, post):
             visitor = userprofile,
             ip = get_ip(request),
             )
-    PostToVisit.objects.get_or_create(post=post, visit=geted)
+        PostToVisit.objects.get_or_create(post=post, visit=geted)
     return True
 
 def visit_blog(request, userprofile, authorprofile):
