@@ -37,7 +37,7 @@ def personPage(request, authorname):
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
-    all_visit = VisitBlog.objects.filter(author=authorprofile)
+    all_visit = VisitBlog.objects.filter(author=authorprofile)[:9]
 
     articles = get_posts_by_userprofile(authorprofile)
     articles_by_visit = get_posts_by_visit(authorprofile)
@@ -61,7 +61,7 @@ def write(request):
     user = request.user.userprofile
     categories = get_categories_by_userprofile(user)
     # all visit this blog visitor
-    all_visit = VisitBlog.objects.filter(author=authorprofile)
+    all_visit = VisitBlog.objects.filter(author=authorprofile)[:9]
 
     if request.method == "POST" :
         title = request.POST.get('title').strip()
@@ -132,7 +132,7 @@ def edit(request, pk):
     categories = get_categories_by_userprofile(user)
     
     # all visit this blog visitor
-    all_visit = VisitBlog.objects.filter(author=authorprofile)
+    all_visit = VisitBlog.objects.filter(author=authorprofile)[:9]
 
     if request.method == "POST":
         title = request.POST.get('title').strip()
@@ -194,7 +194,7 @@ def search(request, authorname):
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
-    all_visit = VisitBlog.objects.filter(author=authorprofile)
+    all_visit = VisitBlog.objects.filter(author=authorprofile)[:9]
 
     articles = get_list_or_404(Post, author=authorprofile, title__contains=keyword, show=True)
     articles_by_visit = get_posts_by_visit(authorprofile)
@@ -258,7 +258,7 @@ def post(request, author, pk):
     # visit blog recorded
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
-    all_visit = VisitBlog.objects.filter(author=authorprofile)
+    all_visit = VisitBlog.objects.filter(author=authorprofile)[:9]
     # if userprofile != authorprofile:
     #    geted, created = Visit.objects.get_or_create(visitor=userprofile, 
     #                                ip=request.META['REMOTE_ADDR'], 
@@ -288,7 +288,7 @@ def category(request, authorname, pk):
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
-    all_visit = VisitBlog.objects.filter(author=authorprofile)
+    all_visit = VisitBlog.objects.filter(author=authorprofile)[:9]
 
     category = get_object_or_404(Category, author=authorprofile, pk=pk)
     articles = category.post_set.all()
@@ -317,7 +317,7 @@ def category_by_date(request, author, year, month):
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
-    all_visit = VisitBlog.objects.filter(author=authorprofile)
+    all_visit = VisitBlog.objects.filter(author=authorprofile)[:9]
 
     categories = get_list_or_404(Category, author=authorprofile)
     categories_by_date = get_categories_by_date(authorprofile)
@@ -383,7 +383,7 @@ def collections(request, authorname):
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
-    all_visit = VisitBlog.objects.filter(author=authorprofile)
+    all_visit = VisitBlog.objects.filter(author=authorprofile)[:9]
         
     return render(request, 'blog/collect.html', {'user':userprofile,
                                                  'author':authorprofile,
