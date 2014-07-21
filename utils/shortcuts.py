@@ -38,8 +38,8 @@ def get_posts_by_visit(userprofile):
     return posts
 
 def visit_plus_plus(article):
-    # article.visits = article.visit.count()
-    article.visits += 1
+    article.visits = article.visit.count()
+    # article.visits += 1
     article.save()
     return True
 

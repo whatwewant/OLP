@@ -4,7 +4,7 @@
                 {% for article in articles_by_visit %}
             <tr>
                 <td><a href="{{ article.get_absolute_url }}">{{ article.name | title | truncatechars:20 }}</a></td>
-                <td>{{ article.visit.count }}</td>
+                <td>{{ article.visits }}</td>
             </tr>
                 {% endfor %}
             </table>
