@@ -52,7 +52,7 @@ class VisitBlog(models.Model):
     '''
     author = models.ForeignKey(UserProfile, related_name='author')
     visitor = models.ForeignKey(UserProfile, related_name='visitor')
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now_add=True)
     ip = models.IPAddressField(max_length=16)
     
     class Meta:

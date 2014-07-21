@@ -134,7 +134,6 @@ def visit_post(request, userprofile, authorprofile, post):
         geted, created = Visit.objects.get_or_create(
             visitor = userprofile,
             ip = get_ip(request),
-            date = date.today()
             )
     PostToVisit.objects.get_or_create(post=post, visit=geted)
     return True
@@ -148,7 +147,6 @@ def visit_blog(request, userprofile, authorprofile):
             author = authorprofile,
             visitor = userprofile,
             ip = get_ip(request),
-            date = date.today()
             )
         return geted
     return False
