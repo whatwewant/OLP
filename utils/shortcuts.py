@@ -5,6 +5,7 @@ from datetime import date
 
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.http import HttpRequest
 
 from account.models import UserProfile
 from blog.models import Post, Category, Visit, VisitBlog
@@ -127,7 +128,7 @@ def is_permitted(request, authencated=False, authorprofile=None, userprofile=Non
     return (True, userprofile)
 
 def get_ip(request):
-    return request.META.get('REMOTE_ADDR')
+    return HttpRequest.get_host(request)
 
 def get_request_url(request):
     return request.META.get('HTTP_REFERER', '/')

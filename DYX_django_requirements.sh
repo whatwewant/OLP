@@ -66,6 +66,13 @@ elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
     #sudo apt-get install -y libmysqld-dev libmysqlclient-dev
 fi
 
+# libmemcached-dev For pylibmic lack of 'memcached.h'
+if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+	sudo pacman -S --noconfirm libmemcached-dev
+elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+    sudo apt-get install -y libmemcached-dev
+fi
+
 # pip install mysql-python
 #pip install mysql-python
 
@@ -158,6 +165,22 @@ if [ "$?" != "0" ]; then
     pip install flup
 else
     echo "已安装flup" | tee install.log
+fi
+
+# 10 python-memcached
+echo $packages | grep -i python-memcached > /dev/null
+if [ "$?" != "0" ]; then
+    pip install python-memcached
+else
+    echo "已安装python-memcached" | tee install.log
+fi
+
+# 11 pylibmc
+echo $packages | grep -i pylibmc > /dev/null
+if [ "$?" != "0" ]; then
+    pip install pylibmc
+else
+    echo "已安装pylibmc" | tee install.log
 fi
 
 
