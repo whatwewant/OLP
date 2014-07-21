@@ -253,9 +253,12 @@ def post(request, author, pk):
     articles_by_visit = get_posts_by_visit(authorprofile)
     categories_by_date = get_categories_by_date(authorprofile)
 
-    # visit post
+    # visit post recorded
     visit_post(request, userprofile, authorprofile, article)
+    # visit blog recorded
     visit_blog(request, userprofile, authorprofile)
+    # all visit this blog visitor
+    all_visit = VisitBlog.objects.filter(author=authorprofile)
     # if userprofile != authorprofile:
     #    geted, created = Visit.objects.get_or_create(visitor=userprofile, 
     #                                ip=request.META['REMOTE_ADDR'], 
@@ -270,7 +273,7 @@ def post(request, author, pk):
                                                 'user':userprofile,
                                                 'authenticated':authenticated,
                                                 'permission':permission,
-                                                'visit_blog':visit_blog,
+                                                'all_visit':all_visit,
                                                 })
 
 def category(request, authorname, pk):

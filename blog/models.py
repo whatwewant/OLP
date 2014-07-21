@@ -52,14 +52,14 @@ class VisitBlog(models.Model):
     '''
     author = models.ForeignKey(UserProfile, related_name='author')
     visitor = models.ForeignKey(UserProfile, related_name='visitor')
-    date = models.DateField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
     ip = models.IPAddressField(max_length=16)
     
     class Meta:
         ordering = ['-date']
 
     def __unicode__(self):
-        return '%s visited %s' % (self.visitor, self.user)
+        return '%s visited %s' % (self.visitor, self.date)
     
 
 class Post(models.Model):
@@ -156,6 +156,13 @@ class PostToCategory(models.Model):
 
 class PostToVisit(models.Model):
     post = models.ForeignKey(Post)
+    visit = models.ForeignKey(Visit)
+    date_visited = models.DateField(auto_now_add=True)
+
+class UserProfileToVisit(models.Model):
+    # 被访问的对象
+    author = models.ForeignKey(UserProfile)
+    # 访问的模型
     visit = models.ForeignKey(Visit)
     date_visited = models.DateField(auto_now_add=True)
 

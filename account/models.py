@@ -3,6 +3,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _   
 
+# @TODO This Will report error
+# from blog.models import Visit
+# from blog.models import UserProfileToVisit
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     nickname = models.CharField(max_length=30, default=u'Just arrived')
@@ -12,6 +16,7 @@ class UserProfile(models.Model):
     blog_num = models.IntegerField(u'文章数量', default=0)
     grade = models.CharField(u'等级', max_length=9, default='--- --- ---')
     visits = models.IntegerField(u'访问量', default=0)
+    # visits = models.ManyToManyField(Visit, through='UserProfileToVisit', blank=True, null=True)
     rank = models.IntegerField(u'排名', default=0)
     head_portrait = models.ImageField(upload_to='head_portrait', 
                                       default='./head_portrait/no-img.jsp',
@@ -24,6 +29,10 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return u'user name is %s, id = %s' %(self.user.username, self.id)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('blog_author', (), {'authorname':self.user.username})
 
     # 获取本作者家目录提交的search
     @models.permalink

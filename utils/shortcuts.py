@@ -103,9 +103,16 @@ def get_anonymous():
         userprofile = UserProfile.objects.get(user=user)
     return userprofile
 
+def check_anonymous(userprofile):
+    anonymous = get_anonymous()
+    if userprofile == anonymous:
+        return None
+    return userprofile
+
 def is_permitted(request, authencated=False, authorprofile=None, userprofile=None):
     '''是否获得各种操作权限'''
-    userprofile = get_anonymous()
+    # @TODO 只允许本博客的使用者
+    # userprofile = get_anonymous()
     if not authencated:
         return (False, userprofile)
     userprofile = request.user.userprofile
@@ -121,6 +128,8 @@ def get_request_url(request):
 
 def visit_post(request, userprofile, authorprofile, post):
     '''访问文章'''
+    if not userprofile:
+        userprofile = get_anonymous()
     if userprofile != authorprofile:
         geted, created = Visit.objects.get_or_create(
             visitor = userprofile,
@@ -132,6 +141,8 @@ def visit_post(request, userprofile, authorprofile, post):
 
 def visit_blog(request, userprofile, authorprofile):
     '''访问博客'''
+    if not userprofile:
+        userprofile = get_anonymous()
     if userprofile != authorprofile:
         geted, created = VisitBlog.objects.get_or_create(
             author = authorprofile,
