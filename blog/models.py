@@ -113,7 +113,7 @@ class Post(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('post', (), 
-                {'author':self.author.user.username, 'pk':self.pk})
+                {'authorname':self.author.user.username, 'pk':self.pk})
 
     @models.permalink
     def get_edit_url(self):

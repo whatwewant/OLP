@@ -165,5 +165,5 @@ def anonymous_redirected(function=None, redirect_url=None):
     def wrapper(request, authorname, pk=None):
         if authorname == 'anonymous':
             return redirect('/')
-        return function
+        return function(request, authorname, pk)
     return wrapper
