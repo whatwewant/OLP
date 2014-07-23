@@ -162,7 +162,7 @@ def visit_blog(request, userprofile, authorprofile):
     return False
 
 def anonymous_redirected(function=None, redirect_url=None):
-    def wrapper(request, authorname):
+    def wrapper(request, authorname, pk=None):
         if authorname == 'anonymous':
             return redirect('/')
         return function

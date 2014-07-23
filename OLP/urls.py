@@ -31,7 +31,7 @@ urlpatterns = patterns('',
     url(r'^(?P<authorname>\w+)/$', 'blog.views.personPage', name='blog_author'),
     # article
     url(r'^blog/edit/(?P<pk>\d+)/$', 'blog.views.edit', name='article_edit'),
-    url(r'^(?P<author>\w+)/article/(?P<pk>\d+)/$', 'blog.views.post', name='post'),
+    url(r'^(?P<authorname>\w+)/article/(?P<pk>\d+)/$', 'blog.views.post', name='post'),
     url(r'^blog/delete/(?P<pk>\d+)/$', 'blog.views.delete', name='article_delete'),
     url(r'^blog/undelete/(?P<pk>\d+)/$', 'blog.views.undelete', name='article_undelete'),
     url(r'^blog/deepdelete/(?P<pk>\d+)/$', 'blog.views.delete', name='article_deepdelete'),

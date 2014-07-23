@@ -181,6 +181,7 @@ def edit(request, pk):
                                              })
 
 
+@anonymous_redirected
 def search(request, authorname):
 
     keyword = request.GET.get('search').strip()
@@ -242,7 +243,8 @@ def undelete(request, pk):
     article.save()
     return redirect('blog_author', request.user.username)
 
-def post(request, author, pk):
+@anonymous_redirected
+def post(request, authorname, pk):
     '''访问单篇文章'''
 
     authorprofile = get_userprofile_by_username(author)
