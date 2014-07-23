@@ -4,7 +4,7 @@
 from datetime import date
 
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpRequest
 
 from account.models import UserProfile
@@ -141,6 +141,7 @@ def visit_post(request, userprofile, authorprofile, post):
         geted, created = Visit.objects.get_or_create(
             visitor = userprofile,
             ip = get_ip(request),
+            date_visited = date.today(),
             )
         PostToVisit.objects.get_or_create(post=post, visit=geted)
         visit_plus_plus(post)
@@ -155,7 +156,14 @@ def visit_blog(request, userprofile, authorprofile):
             author = authorprofile,
             visitor = userprofile,
             ip = get_ip(request),
+            date_visited = date.today(),
             )
         return geted
     return False
 
+def anonymous_redirected(function=None, redirect_url=None):
+    def wrapper(request, authorname):
+        if authorname == 'anonymous':
+            return redirect('/')
+        return function
+    return wrapper

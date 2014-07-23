@@ -17,6 +17,7 @@ from utils.utils import html_tags_filter
 
 from utils.shortcuts import *
 
+@anonymous_redirected
 def personPage(request, authorname):
     '''
         Person Blog Home Page
@@ -242,8 +243,8 @@ def undelete(request, pk):
     return redirect('blog_author', request.user.username)
 
 def post(request, author, pk):
-    print dir(request.user)
     '''访问单篇文章'''
+
     authorprofile = get_userprofile_by_username(author)
     authenticated = request.user.is_authenticated()
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
