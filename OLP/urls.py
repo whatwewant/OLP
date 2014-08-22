@@ -46,7 +46,7 @@ urlpatterns = patterns('',
     url(r'^(?P<author>\w+)/category_by_date/(?P<year>\d+)/(?P<month>\d+)/$', 'blog.views.category_by_date', name='category_by_date'),
     # upload
     url(r'^(?P<authorname>\w+)/uploadimage/$', 'blog.views.ke_upload_image', name='upload_image'),
-    url(r'^(P<authorname>\w+)uploadaudio/$', 'blog.views.ke_upload_audio', name='upload_audio'),
+    url(r'^(P<authorname>\w+)/uploadaudio/$', 'blog.views.ke_upload_audio', name='upload_audio'),
     # Search 
     url(r'^(?P<authorname>\w+)/search/$', 'blog.views.search', name='search'),
 
