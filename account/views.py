@@ -82,14 +82,14 @@ def sign_up(request):
         if User.objects.filter(username = username).exists():
             return render(request, "account/sign_up.html",
                     {"error": u"用户名已经存在"})
-        #if not(len(nickname) >= 2 and len(nickname) <= 10):
-        #    return render(request, "account/sign_up.html",
-        #            {"error": u"昵称只能是2-10个字符"})
+        if not(len(nickname) >= 2 and len(nickname) <= 10):
+            return render(request, "account/sign_up.html",
+                    {"error": u"昵称只能是2-10个字符"})
         # @TODO
-        #name = re.compile(ur'^[_A-Za-z0-9\u4e00-\u9fa5]+$')
-        #if not name.match(unicode(nickname)):
-        #    return render(request, "account/sign_up.html",
-        #            {"error": u'ni cheng 只能是数字、英文字符、下划线和汉字'})
+        name = re.compile(ur'^[_A-Za-z0-9\u4e00-\u9fa5]+$')
+        if not name.match(unicode(nickname)):
+            return render(request, "account/sign_up.html",
+                    {"error": u'ni cheng 只能是数字、英文字符、下划线和汉字'})
         #mail = re.compile("[^\._-][\w\.-]+@(?:[A-Za-z0-9]+\.)+[A-Za-z]+$")
         #if not mail.match(email):
         #    return render(request, "account/sign_up.html",
