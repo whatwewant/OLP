@@ -62,7 +62,7 @@ def write(request):
     user = request.user.userprofile
     categories = get_categories_by_userprofile(user)
     # all visit this blog visitor
-    all_visit = VisitBlog.objects.filter(author=authorprofile)[:9]
+    all_visit = VisitBlog.objects.filter(author=user)[:9]
 
     if request.method == "POST" :
         title = request.POST.get('title').strip()
