@@ -46,6 +46,9 @@ def store():
     ''''''
     aids = get_aids()
     for aid in aids:
-        title, content = get_title_and_content(aid)
+        try:
+            title, content = get_title_and_content(aid)
+        except :
+            continue
         write_article_unknown_category_and_author(title, content)
-        time.sleep(3)
+        time.sleep(5)
