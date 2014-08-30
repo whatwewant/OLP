@@ -10,6 +10,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import time
 
 from shortcuts import write_article_unknown_category_and_author
 
@@ -35,6 +36,7 @@ def get_aids():
         aids += re.findall('href="/p/([^"]+)#comments"', daily.content)
         aids += re.findall('href="/p/([^"]+)#comments"', weekly.content)
         aids += re.findall('href="/p/([^"]+)#comments"', monthly.content)
+        time.sleep(5)
 
     return aids
 
@@ -44,3 +46,4 @@ def store():
     for aid in aids:
         title, content = get_title_and_content(aid)
         write_article_unknown_category_and_author(title, content)
+        time.sleep(3)
