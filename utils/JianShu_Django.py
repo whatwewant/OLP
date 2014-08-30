@@ -38,6 +38,8 @@ def get_aids():
         aids += re.findall('href="/p/([^"]+)#comments"', monthly.content)
         time.sleep(5)
 
+    print aids
+
     return aids
 
 def store():
