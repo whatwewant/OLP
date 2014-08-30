@@ -183,6 +183,14 @@ else
     echo "已安装pylibmc" | tee install.log
 fi
 
+# 12 BeautifulSoup for JianShu
+echo $packages | grep -i BeautifulSoup4 > /dev/null
+if [ "$?" != "0" ]; then
+    pip install pylibmc
+else
+    echo "已安装BeautifulSoup4" | tee install.log
+fi
+
 
 # Clear
 cd $CurrentDir

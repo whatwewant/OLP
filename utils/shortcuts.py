@@ -6,11 +6,13 @@ from datetime import date
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpRequest
+from django.utils import timezone
 
 from account.models import UserProfile
 from blog.models import Post, Category, Visit, VisitBlog
-from blog.models import PostToVisit
+from blog.models import PostToVisit, PostToCategory
 # from links.models import Links
+from utils import html_tags_filter
 
 def get_user(username):
     user = get_object_or_404(User, username=username)
@@ -167,3 +169,50 @@ def anonymous_redirected(function=None, redirect_url=None):
             return redirect('/')
         return function(request, authorname, pk)
     return wrapper
+
+def LinkPostToCategory(post, category):
+    PostToCategory.objects.get_or_create(post=post, category=category)
+
+def store_article(author, title, content):
+    """
+        create article
+    """
+    return Post.objects.create(author=author, 
+                        title=title, 
+                        name=title[:10],
+                        content=content, 
+                        excerpt=html_tags_filter(content)[:300],
+                        modified_date=date.today(),
+                        modified_date_gmt=timezone.now())
+
+def get_category_by_author_and_name(author, name):
+    get, created = Category.objects.get_or_create(author=author, name=name)
+    return get
+
+
+def write_article(author, title, content, category_name):
+    '''
+        store article
+    '''
+    if Post.objects.filter(author=author, title=title).exists():
+        return 
+
+    # create Post
+    post = store_article(author, title, content)
+    # get or create category
+    category = get_category_by_author_and_name(author, category_name)
+    # Links post and category
+    PostToCategory.objects.get_or_create(
+                    post=post, 
+                    category=category)
+
+def write_article_unknown_category(author, title, content):
+    '''未分类'''
+    write_article(author, title, content, u'未分类')
+
+def write_article_unknown_category_and_author(title, content):
+    '''
+        临时存储
+    '''  
+    author = get_userprofile_by_username('anonymous')
+    write_article_unknown_category(author, title, content)
