@@ -48,7 +48,7 @@ def store():
     for aid in aids:
         try:
             title, content = get_title_and_content(aid)
+            write_article_unknown_category_and_author(title, content)
+            time.sleep(5)
         except :
             continue
-        write_article_unknown_category_and_author(title, content)
-        time.sleep(5)
