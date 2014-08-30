@@ -24,8 +24,14 @@ def get_title_and_content(aid):
     return (title, content)
 
 def get_aids():
-    html = requests.get(r'http://jianshu.io/top/weekly')
-    aids = re.findall('href="/p/([^"]+)#comments"', html.content)
+    index = requests.get(r'http://jianshu.io')
+    daily = requests.get(r'http://jianshu.io/top/daily')
+    weekly = requests.get(r'http://jianshu.io/top/weekly')
+    monthly = requests.get(r'http://jianshu.io/top/monthly')
+    aids = re.findall('href="/p/([^"]+)#comments"', index.content)
+    aids += re.findall('href="/p/([^"]+)#comments"', daily.content)
+    aids += re.findall('href="/p/([^"]+)#comments"', weekly.content)
+    aids += re.findall('href="/p/([^"]+)#comments"', monthly.content)
 
     return aids
 
