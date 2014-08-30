@@ -26,7 +26,9 @@ def get_title_and_content(aid):
 def get_aids():
     index = requests.get(r'http://jianshu.io')
     aids = re.findall('href="/p/([^"]+)#comments"', index.content)
-    for i in range(10):
+    for i in range(5):
+        if i == 0:
+            continue
         daily = requests.get(r'http://jianshu.io/top/daily?page='+str(i))
         weekly = requests.get(r'http://jianshu.io/top/weekly?page='+str(i))
         monthly = requests.get(r'http://jianshu.io/top/monthly?page='+str(i))
