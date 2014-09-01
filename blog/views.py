@@ -35,6 +35,9 @@ def personPage(request, authorname):
     authenticated = request.user.is_authenticated() 
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
 
+    # 更新排名
+    rank_renew()
+
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
@@ -73,6 +76,8 @@ def write(request):
         # old categorylist
         oldcategories = request.POST.getlist('oldcategories')
         # password= request.POST.get('password')
+        # 文章类型,用于积分
+        article_type = None
         modified_date = date.today()
         modified_date_gmt = timezone.now()
         # content_type = request.POST.get('content_type')
@@ -86,6 +91,13 @@ def write(request):
         if not excerpt:
             excerpt = html_tags_filter(content)[:300]
 
+        # 该作者文章不许同名
+        # 未做提示处理
+        if Post.objects.filter(author=author,title=title).exists:
+            return redirect('blog_author', request.user.username)
+
+        # 积分
+        integral_plus_plus(author, article_type)
         # 
         pp, pcreated = Post.objects.get_or_create(author=user, 
                             title=title, name = name,
@@ -192,6 +204,8 @@ def search(request, authorname):
     authenticated = request.user.is_authenticated() 
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
     
+    # 更新排名
+    rank_renew()
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
@@ -253,6 +267,8 @@ def post(request, authorname, pk):
     articles_by_visit = get_posts_by_visit(authorprofile)
     categories_by_date = get_categories_by_date(authorprofile)
 
+    # 更新排名
+    rank_renew()
     # visit post recorded
     visit_post(request, userprofile, authorprofile, article)
     # visit blog recorded
@@ -285,6 +301,8 @@ def category(request, authorname, pk):
     authenticated = request.user.is_authenticated() 
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
 
+    # 更新排名
+    rank_renew()
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
@@ -314,6 +332,8 @@ def category_by_date(request, author, year, month):
     authenticated = request.user.is_authenticated()
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
 
+    # 更新排名
+    rank_renew()
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
@@ -380,6 +400,8 @@ def collections(request, authorname):
     
     articles = CollectArticle.objects.filter(user=authorprofile)
 
+    # 更新排名
+    rank_renew()
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor

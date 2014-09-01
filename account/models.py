@@ -18,6 +18,8 @@ class UserProfile(models.Model):
     visits = models.IntegerField(u'访问量', default=0)
     # visits = models.ManyToManyField(Visit, through='UserProfileToVisit', blank=True, null=True)
     rank = models.IntegerField(u'排名', default=0)
+    # 设置排名更新时间
+    rank_renew_date = models.DateField(u'排名更新时间')
     head_portrait = models.ImageField(upload_to='head_portrait', 
                                       default='./head_portrait/no-img.jsp',
     #                                  height_field=100, width_field=100,

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date
+import datetime
 
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect
@@ -41,8 +42,9 @@ def get_posts_by_visit(userprofile):
     return posts
 
 def visit_plus_plus(article):
-    article.visits = article.visit.count()
-    # article.visits += 1
+    # 访问单篇文章，访问量修正/增加
+    # article.visits = article.visit.count()
+    article.visits += 1
     article.save()
     return True
 
@@ -136,7 +138,7 @@ def get_request_url(request):
     return request.META.get('HTTP_REFERER', '/')
 
 def visit_post(request, userprofile, authorprofile, post):
-    '''访问文章'''
+    '''访问单篇文章'''
     if not userprofile:
         userprofile = get_anonymous()
     if userprofile != authorprofile:
@@ -216,3 +218,35 @@ def write_article_unknown_category_and_author(title, content):
     '''  
     author = get_userprofile_by_username('anonymous')
     write_article_unknown_category(author, title, content)
+
+def integral_plus_plus(author, article_type=None):
+    # 只有新写文章时会积分
+    # article_type 原创,转载,
+    article_types = {'original': 10, # 原创
+                     'reprint': 4, # 转载
+                     'translation': 6, # 翻译
+                     'default': 2, # 默认
+                    }
+    if article_type != None:
+        author.integral += article_types[article_type]
+    else:
+        author.integral += article_types['default']
+    author.integral.save()
+    return True
+
+def integral_plus_plus_by_authorname(authorname, article_type=None):
+    return integral_plus_plus(get_userprofile_by_username(authorname), article_type)
+
+def rank_renew():
+    # 定期进行等级排序, 这里每天更新,timedelta(n)表示n天
+    if date.today() - UserProfile.objects.all()[0].rank_renew_date == datetime.timedelta(0):
+        return False
+
+    all_user = UserProfile.objects.order_by('-integral', '-blog_num', '-visits', 'register_date')
+    k = 1
+    for user in all_user:
+        user.rank = k
+        user.rank_renew_date = date.today()
+        user.save()
+        k += 1
+    return True

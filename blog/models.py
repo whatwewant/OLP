@@ -59,7 +59,7 @@ class VisitBlog(models.Model):
         ordering = ['-date_visited']
 
     def __unicode__(self):
-        return '%s visited %s' % (self.visitor, self.date)
+        return '%s visited %s' % (self.visitor, self.date_visited)
     
 
 class Post(models.Model):
