@@ -216,7 +216,7 @@ def write_article_unknown_category_and_author(title, content):
     '''
         临时存储
     '''  
-    author = get_userprofile_by_username('anonymous')
+    author = get_userprofile_by_username('Potter')
     write_article_unknown_category(author, title, content)
 
 def integral_plus_plus(author, article_type=None):
