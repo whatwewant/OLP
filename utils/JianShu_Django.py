@@ -45,10 +45,21 @@ def get_aids():
 def store():
     ''''''
     aids = get_aids()
+    fp = open("jianshu.history", "a+")
+    tmp = [ x.strip() for x in fp.readlines() ]
+    fp.close()
     for aid in aids:
-        try:
-            title, content = get_title_and_content(aid)
-            write_article_unknown_category_and_author(title, content)
-            time.sleep(5)
-        except :
-            continue
+        if aid not in tmp:
+            try:
+                title, content = get_title_and_content(aid)
+                write_article_unknown_category_and_author(title, content)
+                tmp.append(aid)
+                time.sleep(5)
+            except :
+                continue
+        else:
+            print aid + "已存在"
+    # keep aids
+    with open("jianshu.history", "a+") as Jfp:
+        for aid in tmp:
+            Jfp.write(aid + '\n')
