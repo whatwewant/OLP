@@ -244,8 +244,8 @@ def rank_renew():
         return False
     
     # ... 顺便更新jianshu
-    from JianShu_Django import store 
-    store()
+    #from JianShu_Django import store 
+    #store()
 
     all_user = UserProfile.objects.order_by('-integral', '-blog_num', '-visits', 'register_date')
     k = 1
