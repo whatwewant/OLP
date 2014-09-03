@@ -93,7 +93,7 @@ def write(request):
 
         # 该作者文章不许同名
         # 未做提示处理
-        if Post.objects.filter(author=author,title=title).exists:
+        if Post.objects.filter(author=user,title=title).exists:
             return redirect('blog_author', request.user.username)
 
         # 积分
