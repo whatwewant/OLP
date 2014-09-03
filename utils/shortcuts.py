@@ -232,7 +232,7 @@ def integral_plus_plus(author, article_type=None):
         author.integral += article_types[article_type]
     else:
         author.integral += article_types['default']
-    author.integral.save()
+    author.save()
     return True
 
 def integral_plus_plus_by_authorname(authorname, article_type=None):
