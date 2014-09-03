@@ -1,6 +1,9 @@
 # -*- coding:utf-8 -*-
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+
+# @TODO he included urlconf OLP.urls doesn't have any patterns in it
+# I donot know why, but if you close admin.autodiscover(), may work
 admin.autodiscover()
 
 urlpatterns = patterns('',
