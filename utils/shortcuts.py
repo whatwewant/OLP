@@ -198,7 +198,8 @@ def write_article(author, title, content, category_name):
     '''
     if Post.objects.filter(author=author, title=title).exists():
         return 
-
+    # 积分增加
+    integral_plus_plus(author)
     # create Post
     post = store_article(author, title, content)
     # get or create category
