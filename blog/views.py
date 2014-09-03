@@ -97,7 +97,7 @@ def write(request):
             return redirect('blog_author', request.user.username)
 
         # 积分
-        integral_plus_plus(author, article_type)
+        integral_plus_plus(user, article_type)
         # 
         pp, pcreated = Post.objects.get_or_create(author=user, 
                             title=title, name = name,
