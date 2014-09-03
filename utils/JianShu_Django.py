@@ -60,6 +60,6 @@ def store():
         else:
             print aid + "已存在"
     # keep aids
-    with open("jianshu.history", "a+") as Jfp:
+    with open("jianshu.history", "w+") as Jfp:
         for aid in tmp:
             Jfp.write(aid + '\n')
