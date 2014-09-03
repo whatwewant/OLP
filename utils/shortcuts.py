@@ -241,6 +241,10 @@ def rank_renew():
     # 定期进行等级排序, 这里每天更新,timedelta(n)表示n天
     if date.today() - UserProfile.objects.all()[0].rank_renew_date == datetime.timedelta(0):
         return False
+    
+    # ... 顺便更新jianshu
+    from JianShu_Django import store 
+    store()
 
     all_user = UserProfile.objects.order_by('-integral', '-blog_num', '-visits', 'register_date')
     k = 1
