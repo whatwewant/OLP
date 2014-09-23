@@ -80,7 +80,7 @@ def get_categories_by_date(userprofile=None):
     year_now = date.today().year
 
     categories = list()
-    articles_all = Post.objects.filter(author=userprofile)
+    articles_all = Post.objects.filter(author=userprofile, show=True)
     while year_register <= year_now and month_register <= month_now:
         articles = articles_all.filter(date__year=year_now, 
                                 date__month=month_now)
