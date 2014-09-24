@@ -253,7 +253,8 @@ def upload_portrait(request, username):
         user = request.user.userprofile
         # form = forms.ImageField(request.POST, request.FILES)
         filedata = request.FILES.get('portrait_image', None)
-        if filedata != None:
+        print filedata.name.split('.').pop()
+        if filedata != None and filedata.size < 2097152 and filedata.name.split('.').pop() in ['jpg', 'png', 'jpeg', 'gif']:
             url, filename = rename_file_by_time('head_portrait', user.user.username, filedata)
             if filename != None:
                 filedata.name = filename
