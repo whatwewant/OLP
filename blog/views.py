@@ -389,7 +389,7 @@ def delete_collect(request, authorname, pk):
     collection = get_object_or_404(CollectArticle, user=userprofile, pk=pk)
     collection.delete()
     
-    return redirect('collections', user.user.username)
+    return redirect('collections', userprofile.user.username)
     
 
 def collections(request, authorname):
