@@ -309,7 +309,7 @@ def category(request, authorname, pk):
     all_visit = VisitBlog.objects.filter(author=authorprofile).exclude(visitor=get_anonymous())[:9]
 
     category = get_object_or_404(Category, author=authorprofile, pk=pk)
-    articles = category.post_set.all()
+    articles = category.post_set.filter(show=True)
     categories = get_list_or_404(Category, author=authorprofile)
     articles_by_visit = get_posts_by_visit(authorprofile)
     categories_by_date = get_categories_by_date(authorprofile)
