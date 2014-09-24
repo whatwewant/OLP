@@ -25,7 +25,7 @@ class Category(models.Model):
     
     # 文章数统计
     def get_post_count(self):
-        return self.post_set.count()
+        return self.post_set.filter(show=True).count()
 
 class Visit(models.Model):
     '''
