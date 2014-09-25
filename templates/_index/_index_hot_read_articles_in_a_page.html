@@ -1,0 +1,8 @@
+{% for article in articles_hot_read %}
+            <div class="article-title">
+                <h5>
+                    <a href="{{ article.get_absolute_url }}">{{ article.title | title | truncatechars:10 }}</a>
+                    <span>{{ article.visits }}</span>
+                </h5>
+            </div>
+            {% endfor %}

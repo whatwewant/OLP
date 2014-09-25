@@ -255,3 +255,21 @@ def rank_renew():
         user.save()
         k += 1
     return True
+
+def get_hot_read_articles_by_userprofile(userprofile):
+    if userprofile == None:
+        return Post.objects.filter(show=True).order_by('-visits')[:10]
+    return Post.objects.filter(author=userprofile, show=True).order_by('-visits')[:10]
+
+def get_hot_read_articles_by_userprofile_for_index():
+    return get_hot_read_articles_by_userprofile(None)
+    
+def get_hot_comments_articles_by_userprofile(userprofile):
+    if userprofile == None:
+        return Post.objects.filter(show=True).order_by('-visits')[:10]
+    return Post.objects.filter(author=userprofile, show=True).order_by('-visits')[:10]
+
+def get_hot_comments_articles_by_userprofile_for_index():
+    return get_hot_read_articles_by_userprofile(None)
+    
+
