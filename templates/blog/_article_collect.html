@@ -19,6 +19,8 @@
                         {% endif %}
                     </td>  
                 </tr>
+                {% empty %}
+                <h3>Sorry, {{author.nickname}} have not had any Collects yet.</h3>
                 {% endfor %}
                     
                 </table>
