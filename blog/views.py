@@ -319,6 +319,7 @@ def category(request, authorname, pk):
                                                   'permission':permission,
                                                   'articles':articles,
                                                   'articles_by_visit':articles_by_visit,
+                                                  'current_category': category,
                                                   'categories':categories,
                                                   'categories_by_date':categories_by_date,
                                                   'all_visit':all_visit,
@@ -339,6 +340,7 @@ def category_by_date(request, author, year, month):
     # all visit this blog visitor
     all_visit = VisitBlog.objects.filter(author=authorprofile).exclude(visitor=get_anonymous())[:9]
 
+    current_category = {'name': '文章 ' + year + '-' + month};
     categories = get_list_or_404(Category, author=authorprofile)
     categories_by_date = get_categories_by_date(authorprofile)
     articles = Post.objects.filter(author=authorprofile, date__year=year, date__month=month).order_by('-date')
@@ -350,6 +352,7 @@ def category_by_date(request, author, year, month):
                                                   'permission':permission,
                                                   'articles':articles,
                                                   'articles_by_visit':articles_by_visit,
+                                                  'current_category': current_category,
                                                   'categories':categories,
                                                   'categories_by_date':categories_by_date,
                                                   'all_visit':all_visit,
