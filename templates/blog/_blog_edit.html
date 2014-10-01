@@ -4,6 +4,13 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="exampleInputText"> Title: </label>
+                <select name="content-type" class="button">
+                  <option value="default">文章类型</option>
+                  <option value="original">原创</option>
+                  <option value="translation">翻译</option>
+                  <option value="reprint">转载</option>
+                  <option value="material">资料</option>
+                </select>
                 <input class="form-control" type="text" name="title" id="title" value="{{ article.title }}"/>
                 <span class="error" style="display:none">* Cannot Be Empty.</span>
             </div>

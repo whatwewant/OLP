@@ -72,6 +72,8 @@ def write(request):
 
     if request.method == "POST" :
         title = request.POST.get('title').strip()
+        content_type = request.POST.get('content-type', 'default')
+        print 'type: ' + content_type
         content = request.POST.get('content').strip()
         excerpt = request.POST.get('excerpt').strip()
         # new 文章分类
@@ -80,7 +82,7 @@ def write(request):
         oldcategories = request.POST.getlist('oldcategories')
         # password= request.POST.get('password')
         # 文章类型,用于积分
-        article_type = None
+        article_type = content_type
         modified_date = date.today()
         modified_date_gmt = timezone.now()
         # content_type = request.POST.get('content_type')
@@ -105,6 +107,7 @@ def write(request):
         pp, pcreated = Post.objects.get_or_create(author=user, 
                             title=title, name = name,
                             content=content, excerpt=excerpt,
+                            content_type=content_type,
                             modified_date=modified_date,
                             modified_date_gmt=modified_date_gmt)
 

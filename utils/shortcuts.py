@@ -248,11 +248,13 @@ def write_article_unknown_category_and_author(title, content):
 def integral_plus_plus(author, article_type=None):
     # 只有新写文章时会积分
     # article_type 原创,转载,
-    article_types = {'original': 10, # 原创
-                     'reprint': 4, # 转载
-                     'translation': 6, # 翻译
-                     'default': 2, # 默认
-                    }
+    article_types = {
+        u'original': 10, # 原创
+        u'reprint': 4, # 转载
+        u'translation': 6, # 翻译
+        u'default': 2, # 默认
+        u'material': 3, # 资料
+        }
     if article_type != None:
         author.integral += article_types[article_type]
     else:
