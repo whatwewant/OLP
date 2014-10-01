@@ -132,7 +132,17 @@ def is_permitted(request, authencated=False, authorprofile=None, userprofile=Non
     return (True, userprofile)
 
 def get_ip(request):
-    return HttpRequest.get_host(request)
+    # return HttpRequest.get_host(request)
+    # 使用 django 来获取用户访问的IP，如果用户是正常情况下
+    #   request.META['REMOTE_ADDR']可以获取用户的IP,
+    # 但是有些网站服务器会使用nginx等代理http，或者是该网站做了负载均衡，
+    # 导致REMOTE_ADDR抓取到的是127.0.0.1，使用HTTP_X_FORWARDED_FOR才是
+    # 用户的真实IP. 推荐一下代码
+    if request.META.has_key('HTTP_X_FORWARDED_FOR'):
+        return request.META['HTTP_X_FORWARDED_FOR']
+    else:
+        return request.META.get('REMOTE_ADDR', 'x.x.x.x')
+        
 
 def get_request_url(request):
     return request.META.get('HTTP_REFERER', '/')
