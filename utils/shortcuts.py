@@ -169,13 +169,13 @@ def visit_blog(request, userprofile, authorprofile):
             date_visited = date.today()
             ).exists():
 
-            geted, created = VisitBlog.objects.get_or_create(
+            created = VisitBlog.objects.create(
                 author = authorprofile,
                 visitor = userprofile,
                 ip = get_ip(request),
                 date_visited = date.today(),
                 )
-            return geted
+            return created
     return False
 
 def anonymous_redirected(function=None, redirect_url=None):
