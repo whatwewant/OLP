@@ -139,16 +139,22 @@ def get_request_url(request):
 
 def visit_post(request, userprofile, authorprofile, post):
     '''访问单篇文章'''
+    # 相同ip + userprofile + date 一天访问增加一次
     if not userprofile:
         userprofile = get_anonymous()
     if userprofile != authorprofile:
-        geted, created = Visit.objects.get_or_create(
+        if not Visit.objects.filter(
             visitor = userprofile,
             ip = get_ip(request),
             date_visited = date.today(),
-            )
-        PostToVisit.objects.get_or_create(post=post, visit=geted)
-        visit_plus_plus(post)
+            ).exists() :
+            geted, created = Visit.objects.get_or_create(
+                visitor = userprofile,
+                ip = get_ip(request),
+                date_visited = date.today(),
+                )
+            PostToVisit.objects.get_or_create(post=post, visit=geted)
+            visit_plus_plus(post)
     return True
 
 def visit_blog(request, userprofile, authorprofile):
