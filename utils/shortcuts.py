@@ -147,11 +147,13 @@ def visit_post(request, userprofile, authorprofile, post):
             visitor = userprofile,
             ip = get_ip(request),
             date_visited = date.today(),
+            post_id = post.pk,
             ).exists() :
             geted, created = Visit.objects.get_or_create(
                 visitor = userprofile,
                 ip = get_ip(request),
                 date_visited = date.today(),
+                post_id = post.pk,
                 )
             PostToVisit.objects.get_or_create(post=post, visit=geted)
             visit_plus_plus(post)

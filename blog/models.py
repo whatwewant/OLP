@@ -39,6 +39,7 @@ class Visit(models.Model):
     visitor = models.ForeignKey(UserProfile)
     date_visited = models.DateField(u'访问时间', auto_now_add=True)
     ip = models.IPAddressField(u'Visitor IP', max_length=16)
+    post_id = models.CharField(u'保存文章id', max_length=128)
 
     class Meta:
         ordering = ['-date_visited']
