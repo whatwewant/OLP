@@ -39,7 +39,7 @@ def ke_upload_image(request):
     save_path = settings.MEDIA_ROOT+save_dir
     # @TODO
     # save_url = settings.MEDIA_URL+save_dir
-    save_url = settings.STATIC_ROOT+save_dir
+    save_url = settings.STATIC_URL+save_dir
     # print save_dir, save_path, save_url
 
     if request.method == 'POST':
@@ -71,7 +71,7 @@ def ke_upload_image(request):
                 destination.write(chunk)
 
         return HttpResponse(json.dumps(
-            {'error':0, 'url':save_url+new_file}
+            {'error': 0, 'url': save_url+new_file}
             ))
     
 

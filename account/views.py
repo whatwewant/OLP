@@ -61,6 +61,17 @@ def handle_uploaded_file(file, filename):
 # @TODO
 def sign_up(request):
     '''注册'''
+    # 禁用的名字
+    forbidden_name = ['upload', 'uploadimage', 
+                      'blog', 'admin', 'administor',
+                      '', ' ', 
+                      'sign_in', 'sign_up', 'sign_out',
+                      'login', 'register',
+                      'media', 'static',
+                      'loginhistory',
+                     ]
+    forbidden_name_error = '该用户名已存在'
+    #
     if request.method == "POST":
 
         username = request.POST.get("username").strip()
@@ -79,7 +90,7 @@ def sign_up(request):
         if not name.match(unicode(username)):
             return render(request, "account/sign_up.html",
                     {"error": u'用户名只能是数字、英文字符、下划线和汉字'})
-        if User.objects.filter(username = username).exists():
+        if username in forbidden_name or User.objects.filter(username = username).exists():
             return render(request, "account/sign_up.html",
                     {"error": u"用户名已经存在"})
         if not(len(nickname) >= 2 and len(nickname) <= 10):

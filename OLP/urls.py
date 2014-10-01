@@ -19,6 +19,11 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     # url(r'^index/$', 'account.views.index', name='index'),
 
+    # upload
+    url(r'^uploadimage/$', 'blog.views.ke_upload_image', name='upload_image'),
+    url(r'^(?P<authorname>\w+)/uploadimage/$', 'blog.views.ke_upload_image', name='upload_image'),
+    url(r'^(P<authorname>\w+)/uploadaudio/$', 'blog.views.ke_upload_audio', name='upload_audio'),
+
     # user 
     url(r'^sign_in/$','account.views.sign_in', name='sign_in'),
     url(r'^sign_up/$', 'account.views.sign_up', name='sign_up'),
@@ -47,9 +52,6 @@ urlpatterns = patterns('',
     url(r'(?P<authorname>\w+)/category/(?P<pk>\d+)/$', 'blog.views.category', name='category'),
     # category_by_date
     url(r'^(?P<author>\w+)/category_by_date/(?P<year>\d+)/(?P<month>\d+)/$', 'blog.views.category_by_date', name='category_by_date'),
-    # upload
-    url(r'^(?P<authorname>\w+)/uploadimage/$', 'blog.views.ke_upload_image', name='upload_image'),
-    url(r'^(P<authorname>\w+)/uploadaudio/$', 'blog.views.ke_upload_audio', name='upload_audio'),
     # Search 
     url(r'^(?P<authorname>\w+)/search/$', 'blog.views.search', name='search'),
 
