@@ -1,7 +1,7 @@
 <div class="row bigblock" style="padding-left:23px; padding-top:5px; padding-bottom:5px;">
     {% for visit in all_visit %}
         <a href="{{ visit.visitor.get_absolute_url }}">
-        <img class="img-circle" alt="..." title="{{ visit.visitor.user.username }}" src="/static/{{ visit.visitor.head_portrait.name }}" style="width:50px; height:50px;display:inline;" />
+        <img class="img-circle" alt="" title="{{ visit.visitor.user.username }} came at {{ visit.date_visited }}" src="/static/{{ visit.visitor.head_portrait.name }}" style="width:50px; height:50px;display:inline;" />
         </a>
     {% empty %}
         太凄清，多出去走走，多交朋友！
