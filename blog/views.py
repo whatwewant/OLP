@@ -41,6 +41,7 @@ def personPage(request, authorname):
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
+    all_visits = VisitBlog.objects.filter(author=authorprofile).count()
     all_visit = VisitBlog.objects.filter(author=authorprofile).exclude(visitor=get_anonymous())[:9]
 
     articles = get_posts_by_userprofile(authorprofile)
@@ -56,6 +57,7 @@ def personPage(request, authorname):
                                         'permission':permission,
                                         'categories':categories,
                                         'categories_by_date':categories_by_date,
+                                        'all_visits':all_visits,
                                         'all_visit':all_visit,
                                         })
 
@@ -65,6 +67,7 @@ def write(request):
     user = request.user.userprofile
     categories = get_categories_by_userprofile(user)
     # all visit this blog visitor
+    all_visits = VisitBlog.objects.filter(author=user).count()
     all_visit = VisitBlog.objects.filter(author=user).exclude(visitor=get_anonymous())[:9]
 
     if request.method == "POST" :
@@ -132,6 +135,7 @@ def write(request):
                                                'permission':True,
                                                'categories':categories,
                                                'authenticated':True,
+                                               'all_visits':all_visits,
                                                'all_visit':all_visit,
                                               })
 	
@@ -145,6 +149,7 @@ def edit(request, pk):
     categories = get_categories_by_userprofile(user)
     
     # all visit this blog visitor
+    all_visits = VisitBlog.objects.filter(author=user).count()
     all_visit = VisitBlog.objects.filter(author=user).exclude(visitor=get_anonymous())[:9]
 
     if request.method == "POST":
@@ -189,7 +194,8 @@ def edit(request, pk):
                                               'article':article, 
                                               'categories':categories,
                                               'authenticated':True,
-                                              'all_visit':all_visit,
+                                              'all_visits': all_visits,
+                                              'all_visit': all_visit,
                                              })
 
 
@@ -209,6 +215,7 @@ def search(request, authorname):
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
+    all_visits = VisitBlog.objects.filter(author=authorprofile).count()
     all_visit = VisitBlog.objects.filter(author=authorprofile).exclude(visitor=get_anonymous())[:9]
 
     articles = get_list_or_404(Post, author=authorprofile, title__contains=keyword, show=True)
@@ -223,6 +230,7 @@ def search(request, authorname):
                                         'permission':permission,
                                         'categories':categories,
                                         'categories_by_date':categories_by_date,
+                                        'all_visits': all_visits,
                                         'all_visit':all_visit,
                                         })
 
@@ -274,6 +282,7 @@ def post(request, authorname, pk):
     # visit blog recorded
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
+    all_visits = VisitBlog.objects.filter(author=authorprofile).count()
     all_visit = VisitBlog.objects.filter(author=authorprofile).exclude(visitor=get_anonymous())[:9]
     # if userprofile != authorprofile:
     #    geted, created = Visit.objects.get_or_create(visitor=userprofile, 
@@ -289,6 +298,7 @@ def post(request, authorname, pk):
                                                 'user':userprofile,
                                                 'authenticated':authenticated,
                                                 'permission':permission,
+                                                 'all_visits': all_visits,
                                                 'all_visit':all_visit,
                                                 })
 
@@ -306,6 +316,7 @@ def category(request, authorname, pk):
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
+    all_visits = VisitBlog.objects.filter(author=authorprofile).count()
     all_visit = VisitBlog.objects.filter(author=authorprofile).exclude(visitor=get_anonymous())[:9]
 
     category = get_object_or_404(Category, author=authorprofile, pk=pk)
@@ -322,6 +333,7 @@ def category(request, authorname, pk):
                                                   'current_category': category,
                                                   'categories':categories,
                                                   'categories_by_date':categories_by_date,
+                                                  'all_visits': all_visits,
                                                   'all_visit':all_visit,
                                                  })
 
@@ -338,6 +350,7 @@ def category_by_date(request, author, year, month):
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
+    all_visits = VisitBlog.objects.filter(author=authorprofile).count()
     all_visit = VisitBlog.objects.filter(author=authorprofile).exclude(visitor=get_anonymous())[:9]
 
     current_category = {'name': '文章 ' + year + '-' + month};
@@ -355,6 +368,7 @@ def category_by_date(request, author, year, month):
                                                   'current_category': current_category,
                                                   'categories':categories,
                                                   'categories_by_date':categories_by_date,
+                                                  'all_visits': all_visits,
                                                   'all_visit':all_visit,
                                                  })
 
@@ -408,6 +422,7 @@ def collections(request, authorname):
     # visit blog
     visit_blog(request, userprofile, authorprofile)
     # all visit this blog visitor
+    all_visits = VisitBlog.objects.filter(author=authorprofile).count()
     all_visit = VisitBlog.objects.filter(author=authorprofile).exclude(visitor=get_anonymous())[:9]
         
     return render(request, 'blog/collect.html', {'user':userprofile,
@@ -415,5 +430,6 @@ def collections(request, authorname):
                                                  'articles':articles,
                                                  'authenticated':authenticated,
                                                  'permission':permission,
+                                                 'all_visits': all_visits,
                                                  'all_visit':all_visit,
                                                 })
