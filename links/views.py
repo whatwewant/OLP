@@ -9,11 +9,14 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 
 from utils.shortcuts import is_permitted, get_userprofile_by_username
 
+from blog.models import VisitBlog
+
 def show_friend_links(request, authorname):
     authorprofile = get_userprofile_by_username(authorname)
     authenticated = request.user.is_authenticated()
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
-
+    all_visits = VisitBlog.objects.filter(author=authorprofile).count()
+    
     if permission and request.method == "POST":
         owner = userprofile
         url = request.POST.get('urlInput').strip()
@@ -38,7 +41,8 @@ def show_friend_links(request, authorname):
                                 'author':authorprofile,
                                 'authenticated':authenticated,
                                 'permission':permission,
-                                'friend_links': friend_links
+                                'friend_links': friend_links,
+                                'all_visits': all_visits,
                                })
 
 @login_required(login_url='sign_in')

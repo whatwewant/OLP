@@ -12,6 +12,8 @@ from account.models import UserProfile, UserInfo, UserLoginHistory
 from utils.utils import rename_file_by_time
 import time
 
+from blog.models import VisitBlog
+
 # from utils import transform_ip_to_address
 
 def index(request):    
@@ -167,6 +169,7 @@ def user_info(request, username=None):
 
     userprofile = request.user.userprofile
     userinfo, userinfo_created = UserInfo.objects.get_or_create(userprofile=userprofile)
+    all_visits = VisitBlog.objects.filter(author=userprofile).count()
     # userinfo = UserInfo.objects.get(userprofile=userprofile)
     if request.method == 'POST':
         # @TODO
@@ -241,12 +244,16 @@ def user_info(request, username=None):
                                                        'user':userprofile,
                                                        'author':userprofile,
                                                        'authenticated':True,
-                                                       'permission':True})
+                                                       'permission':True,
+                                                       'all_visits': all_visits,
+                                                      })
     return render(request, 'user/user_info.html', {'userinfo':userinfo,
                                                    'user':userprofile,
                                                    'author':userprofile,
                                                    'authenticated':True,
-                                                   'permission':True})
+                                                   'permission':True,
+                                                   'all_visits': all_visits,
+                                                  })
 
 @login_required(login_url='sign_in')
 def get_user_login_history(request, username=None):
@@ -254,11 +261,14 @@ def get_user_login_history(request, username=None):
     author = request.user.userprofile
     user = author.user
     histories = UserLoginHistory.objects.filter(user=user)[:10]
+    all_visits = VisitBlog.objects.filter(author=author).count()
     return render(request, 'user/user_login_history.html', {'histories': histories,
                                                             'user':author,
                                                             'author':author,
                                                             'authenticated':True,
-                                                            'permission':True})
+                                                            'permission':True,
+                                                            'all_visits': all_visits,
+                                                           })
 
 @login_required(login_url='sign_in')
 def upload_portrait(request, username):
