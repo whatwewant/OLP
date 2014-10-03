@@ -69,6 +69,7 @@ def sign_up(request):
                       'login', 'register',
                       'media', 'static',
                       'loginhistory',
+                      'anonymous',
                      ]
     forbidden_name_error = '该用户名已存在'
     #

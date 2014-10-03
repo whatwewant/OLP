@@ -19,6 +19,16 @@ def get_user(username):
     user = get_object_or_404(User, username=username)
     return user
 
+def create_user(username):
+    from hashlib import md5
+    from random import randint
+    return User.objects.create_user(username=username,
+                            password=md5(str(randint(1000000, 100000000000))).hexdigest())
+
+def create_userprofile(username):
+    user = create_user(username)
+    return UserProfile.objects.create(user=user, nickname=username)
+
 def get_userprofile_by_username(username):
     user = get_user(username)
     userprofile = get_object_or_404(UserProfile, user=user)
@@ -242,7 +252,11 @@ def write_article_unknown_category_and_author(title, content):
     '''
         临时存储
     '''  
-    author = get_userprofile_by_username('Rainy')
+    author = None
+    try:
+        author = get_userprofile_by_username('Rainy')
+    except :
+        author = create_userprofile('Rainy')
     write_article_unknown_category(author, title, content)
 
 def integral_plus_plus(author, article_type=None):
