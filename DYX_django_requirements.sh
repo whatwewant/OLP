@@ -44,6 +44,16 @@ if [ "$?" != "0" ]; then
 	fi
 fi
 
+which sqlitebrowser > /dev/null
+if [ "$?" != "0" ]; then
+	if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+		sudo pacman -S --noconfirm sqlitebrowser
+	elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+    	sudo apt-get install -y sqlitebrowser
+	fi
+fi
+
+
 # git-flow
 if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
 	##
