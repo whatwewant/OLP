@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404, get_list_or_404
 
 from utils.shortcuts import is_permitted, get_userprofile_by_username
+from utils.shortcuts import get_anonymous
 
 from blog.models import VisitBlog
 
@@ -16,6 +17,7 @@ def show_friend_links(request, authorname):
     authenticated = request.user.is_authenticated()
     permission, userprofile = is_permitted(request, authenticated, authorprofile)
     all_visits = VisitBlog.objects.filter(author=authorprofile).count()
+    all_visitors = VisitBlog.objects.filter(author=authorprofile).exclude(visitor=get_anonymous())[:9]
     
     if permission and request.method == "POST":
         owner = userprofile
@@ -43,6 +45,7 @@ def show_friend_links(request, authorname):
                                 'permission':permission,
                                 'friend_links': friend_links,
                                 'all_visits': all_visits,
+                                'all_visit': all_visitors,
                                })
 
 @login_required(login_url='sign_in')

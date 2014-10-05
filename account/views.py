@@ -10,6 +10,7 @@ import django.forms as forms
 
 from account.models import UserProfile, UserInfo, UserLoginHistory
 from utils.utils import rename_file_by_time
+from utils.shortcuts import get_anonymous
 import time
 
 from blog.models import VisitBlog
@@ -170,6 +171,7 @@ def user_info(request, username=None):
     userprofile = request.user.userprofile
     userinfo, userinfo_created = UserInfo.objects.get_or_create(userprofile=userprofile)
     all_visits = VisitBlog.objects.filter(author=userprofile).count()
+    all_visitors = VisitBlog.objects.filter(author=userprofile).exclude(visitor=get_anonymous())[:9]
     # userinfo = UserInfo.objects.get(userprofile=userprofile)
     if request.method == 'POST':
         # @TODO
@@ -246,6 +248,7 @@ def user_info(request, username=None):
                                                        'authenticated':True,
                                                        'permission':True,
                                                        'all_visits': all_visits,
+                                                       'all_visit': all_visitors,
                                                       })
     return render(request, 'user/user_info.html', {'userinfo':userinfo,
                                                    'user':userprofile,
@@ -253,6 +256,7 @@ def user_info(request, username=None):
                                                    'authenticated':True,
                                                    'permission':True,
                                                    'all_visits': all_visits,
+                                                   'all_visit': all_visitors,
                                                   })
 
 @login_required(login_url='sign_in')
@@ -262,12 +266,14 @@ def get_user_login_history(request, username=None):
     user = author.user
     histories = UserLoginHistory.objects.filter(user=user)[:10]
     all_visits = VisitBlog.objects.filter(author=author).count()
+    all_visitors = VisitBlog.objects.filter(author=author).exclude(visitor=get_anonymous())[:9]
     return render(request, 'user/user_login_history.html', {'histories': histories,
                                                             'user':author,
                                                             'author':author,
                                                             'authenticated':True,
                                                             'permission':True,
                                                             'all_visits': all_visits,
+                                                            'all_visit': all_visitors,
                                                            })
 
 @login_required(login_url='sign_in')
