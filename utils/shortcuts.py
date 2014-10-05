@@ -313,4 +313,5 @@ def get_hot_comments_articles_by_userprofile(userprofile):
 def get_hot_comments_articles_by_userprofile_for_index():
     return get_hot_read_articles_by_userprofile(None)
     
-
+def get_active_userprofiles():
+    return UserProfile.objects.order_by('-integral', '-blog_num').exclude(nickname='anonymous')[:10]

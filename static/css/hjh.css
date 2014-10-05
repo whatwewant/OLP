@@ -12,8 +12,45 @@
 
 .center {
     text-align: center;
-    margin:auto;
+    margin:10px auto;
 }
+
+.marginTop-1 {
+    margin-top: 10px;
+}
+
+.marginTop-2 {
+    margin-top: 20px;
+}
+
+.marginTop-3 {
+    margin-top: 30px;
+}
+
+.padding-1 {
+    padding: 5px 5xp;
+}
+
+.padding-2 {
+    padding: 10px 10xp;
+}
+
+.paddingUD-1 {
+    padding: 5px auto;
+}
+
+.paddingUD-2 {
+    padding: 10px auto;
+}
+
+.paddingLR-1 {
+    padding: auto 5px;
+}
+
+.paddingLR-2 {
+    padding: auto 10px;
+}
+
 
 .portrait {
     margin-left: 25%;
