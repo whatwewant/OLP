@@ -273,6 +273,9 @@ def integral_plus_plus(author, article_type=None):
         author.integral += article_types[article_type]
     else:
         author.integral += article_types['default']
+    # 文章数+1
+    # author.blog_num += 1
+    author.blog_num = author.post_set.count()
     author.save()
     return True
 
