@@ -6,6 +6,10 @@
 @-o-viewport        { width: device-width; }
 @viewport           { width: device-width; }
 
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+
 .container {
     width: 90%;
 }
