@@ -45,7 +45,7 @@ class Visit(models.Model):
         ordering = ['-date_visited']
 
     def __unicode__(self):
-        return '%s at %s' % (self.visitor.user.username, self.date)
+        return '%s at %s' % (self.visitor.user.username, self.date_visited)
 
 class VisitBlog(models.Model):
     '''
