@@ -13,4 +13,6 @@ linaro-django-pagination
 pillow
 south
 markup
-# python-memcached
+python-memcached
+requests
+BeautifulSoup4
