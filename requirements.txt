@@ -17,4 +17,4 @@ markup
 python-memcached
 requests
 BeautifulSoup4
-uwsgi
+# uwsgi
