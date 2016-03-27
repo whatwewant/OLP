@@ -21,7 +21,7 @@ class UserProfile(models.Model):
     # 设置排名更新时间
     rank_renew_date = models.DateField(u'排名更新时间', default='1970-01-01')
     head_portrait = models.ImageField(upload_to='head_portrait', 
-                                      default='./head_portrait/no-img.jsp',
+                                      default='./head_portrait/no-img.jpg',
     #                                  height_field=100, width_field=100,
                                       max_length=255)
 
