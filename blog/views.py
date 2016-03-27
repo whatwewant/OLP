@@ -270,6 +270,7 @@ def undelete(request, pk):
     article.save()
     return redirect('blog_author', request.user.username)
 
+@cache_page(60 * 15)
 def post(request, authorname, pk):
     '''访问单篇文章'''
     authorprofile = get_userprofile_by_username(authorname)
