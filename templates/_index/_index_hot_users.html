@@ -1,7 +1,7 @@
 <div class="article-title">
     <h2 class="subtitle center paddingUD-1">活跃用户</h2>
-    <div class="table-responsive">
-    <table style="text-align: center" class="table table-hover">
+    <div style="text-align: center" class="table-responsive">
+    <table class="table table-hover">
         {% for user in active_users %}
         <tr>
             <td><a href="{%url 'blog_author' user.user.username %}">{{ user.nickname }}</a></td>
