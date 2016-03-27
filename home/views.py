@@ -2,12 +2,14 @@
 from __future__ import unicode_literals, absolute_import
 
 from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 
 from blog.models import Post
 from utils.shortcuts import get_hot_read_articles_by_userprofile_for_index
 from utils.shortcuts import get_hot_comments_articles_by_userprofile_for_index
 from utils.shortcuts import get_active_userprofiles
 
+@cache_page(60 * 15)
 def index(request):
     # print dir(request)
     authenticated = request.user.is_authenticated()

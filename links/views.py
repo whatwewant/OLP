@@ -6,12 +6,14 @@ from account.models import User, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404, get_list_or_404
+from django.views.decorators.cache import cache_page
 
 from utils.shortcuts import is_permitted, get_userprofile_by_username
 from utils.shortcuts import get_anonymous
 
 from blog.models import VisitBlog
 
+@cache_page(60 * 15)
 def show_friend_links(request, authorname):
     authorprofile = get_userprofile_by_username(authorname)
     authenticated = request.user.is_authenticated()

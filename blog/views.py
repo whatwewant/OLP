@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 from __future__ import unicode_literals, absolute_import
 
+from django.views.decorators.cache import cache_page
 from blog.models import Post, Category, PostToCategory, Visit, PostToVisit
 from blog.models import CollectArticle
 # from account.models import UserProfile
@@ -18,6 +19,7 @@ from utils.utils import html_tags_filter
 from utils.shortcuts import *
 
 
+@cache_page(60 * 15)
 def personPage(request, authorname):
     '''
         Person Blog Home Page
@@ -202,6 +204,7 @@ def edit(request, pk):
                                              })
 
 
+@cache_page(60 * 15)
 def search(request, authorname):
 
     keyword = request.GET.get('search').strip()
@@ -305,6 +308,7 @@ def post(request, authorname, pk):
                                                 'all_visit':all_visit,
                                                 })
 
+@cache_page(60 * 15)
 def category(request, authorname, pk):
     '''
         按分类名获取分类
@@ -340,6 +344,7 @@ def category(request, authorname, pk):
                                                   'all_visit':all_visit,
                                                  })
 
+@cache_page(60 * 15)
 def category_by_date(request, author, year, month):
     '''
         按月份获取分类
@@ -412,6 +417,7 @@ def delete_collect(request, authorname, pk):
     return redirect('collections', userprofile.user.username)
     
 
+@cache_page(60 * 15)
 def collections(request, authorname):
     '''显示收藏的文章'''
     authorprofile = get_userprofile_by_username(authorname)
