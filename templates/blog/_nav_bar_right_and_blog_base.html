@@ -21,21 +21,36 @@
     <!-- right_top for sign in/up/out end -->
     
     <!-- blog navbar beigin -->
-    <div class="row bigblock"></div>
+    {%include 'blog/_nav_bar_right_top_blog_nav.html'%}
     <!-- blog navbar end -->
   
     
     <!-- blog name begin -->
-    <div class="row bigblock"></div>
+    {%include 'blog/_nav_bar_right_top_blog_name.html'%}
     <!-- blog name end -->
 
     <div class="row">
         <div class="col-md-10  bigblock">
-        
+        <!-- Page index/write/article diff begin -->
+        {% block page %}
+        {%include 'blog/_blog_index.html'%}
+        {% endblock %}
+        <!-- Page index/write/article diff end -->
         </div>
       
         <div class="col-md-2 bigblock">
-           
+            <!-- Portrait begin -->
+              {%include 'blog/_blog_portrait.html'%}
+            <!-- Portrait end -->
+
+
+            <!-- username button begin -->
+              {%include 'blog/_blog_portrait_info.html'%}
+            <!-- username button end -->
+
+            <!-- userinfo begin -->
+            {%include 'blog/_blog_user_info.html'%}
+            <!-- userinfo end -->
         </div>
     </div>
     

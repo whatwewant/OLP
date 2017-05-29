@@ -11,6 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.core.mail import send_mail
 
+import re
+
 @login_required(login_url='sign_in')
 def upload_image(request):
     file = request.FILES.get('imgFile')
@@ -130,3 +132,13 @@ def send_one_mail(request):
             return_message = {'error':0, 'message':'发送成功'}
         return HttpResponse(json.dumps(return_message))
     return render(request, '', {})
+
+def html_tags_filter(html):
+    '''
+        过滤html标签
+        Example : <li>as<span>pq</span></li>
+        return : aspq
+    '''
+    str = re.sub(r'</?\w+[^>]*>', '', html).replace(' ', '').replace('\n', '')
+
+    return str

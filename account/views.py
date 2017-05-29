@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from account.models import UserProfile, UserInfo, UserLoginHistory
-from datetime import date
+import time
 
 # from utils import transform_ip_to_address
 
@@ -17,13 +17,13 @@ def sign_in(request):
     '''登录'''
     # 已经登入，直接跳转到主页
     if request.user.is_authenticated():
-        return redirect('homepage')
+        return redirect('index')
 
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         login_ip = request.META['REMOTE_ADDR']
-        login_date = date.today()
+        login_date = time.ctime
         # login_address = transform_ip_to_address(login_ip)
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -32,8 +32,9 @@ def sign_in(request):
                 UserLoginHistory.objects.create(
                     user=user,
                     login_ip=login_ip,
-                #    login_address=login_address,
-                    date=login_date)
+                    # login_address=login_address,
+                    date=login_date
+                    )
                 return redirect('blog_index', request.user.username)
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
@@ -88,8 +89,21 @@ def sign_up(request):
                 password=password, email=email)
         UserProfile.objects.create(user=user,
                 nickname=nickname)
-
+        # auto sign in 
+        user = authenticate(username=username, password=password)
         login(request, user)
+
+        # login history
+        login_ip = request.META['REMOTE_ADDR']
+        login_date = time.ctime
+        # login_address = transform_ip_to_address(login_ip)
+        UserLoginHistory.objects.create(
+                    user=user,
+                    login_ip=login_ip,
+                    # login_address=login_address,
+                    date=login_date
+                    )
+
         return redirect('blog_index', request.user.username)
         #return redirect('sign_in')
     before = request.GET.get("before", "/")
@@ -119,16 +133,18 @@ def change_password(request):
         return redirect('index')
     return redirect('index')
 
-@login_required(login_url='sign_up')
-def user_info(request):
+@login_required(login_url='sign_in')
+def user_info(request, username=None):
     '''获取/修改个人信息'''
     # if not request.user.is_authenticated():
     #    return redirect('sign_up')
 
     userprofile = request.user.userprofile
     userinfo, userinfo_created = UserInfo.objects.get_or_create(userprofile=userprofile)
+    # userinfo = UserInfo.objects.get(userprofile=userprofile)
     if request.method == 'POST':
         # @TODO
+        name = request.POST.get('name')
         sex = request.POST.get('sex')
         age = request.POST.get('age')
         hometown = request.POST.get('hometown')
@@ -141,12 +157,13 @@ def user_info(request):
         recovery_email = request.POST.get('recovery_email')
         web_site = request.POST.get('web_site')
 
+        userinfo.name = name
         userinfo.sex = sex
-        userinfo.age = age
+        userinfo.age = int(age)
         userinfo.hometown = hometown
-        userinfo.zip_code = zip_code
-        userinfo.qq = qq
-        userinfo.phone = phone
+        userinfo.zip_code = int(zip_code)
+        userinfo.qq = int(qq)
+        userinfo.phone = int(phone)
         userinfo.country = country
         userinfo.country_code = country_code
         userinfo.language = language
@@ -185,13 +202,26 @@ def user_info(request):
         #        userinfo_dict[key] = value
         #     
         #userinfo.save()
-        return render(request, 'account/user_info.html', {'userinfo':userinfo})
-    return render(request, 'account/user_info.html', {'userinfo':userinfo})
+        return render(request, 'user/user_info.html', {'userinfo':userinfo, 
+                                                       'user':userprofile,
+                                                       'author':userprofile,
+                                                       'authenticated':True,
+                                                       'permission':True})
+    return render(request, 'user/user_info.html', {'userinfo':userinfo,
+                                                   'user':userprofile,
+                                                   'author':userprofile,
+                                                   'authenticated':True,
+                                                   'permission':True})
 
 @login_required(login_url='sign_in')
-def get_user_login_history(request):
+def get_user_login_history(request, username=None):
     '''登入历史'''
-    user = request.user.userprofile.user
-    history = UserLoginHistory.objects.filter(user=user)[:10]
-    return render(request, 'account/login_history.html', {'history': history})
+    author = request.user.userprofile
+    user = author.user
+    histories = UserLoginHistory.objects.filter(user=user)[:10]
+    return render(request, 'user/user_login_history.html', {'histories': histories,
+                                                            'user':author,
+                                                            'author':author,
+                                                            'authenticated':True,
+                                                            'permission':True})
 

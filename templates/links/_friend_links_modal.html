@@ -1,0 +1,33 @@
+<!-- friend links modal begin -->
+<div class="modal fade" id="friendLinks" tabindex="-1" role="dialog" aria-labelledby="friendLinksLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{%url 'friend_links' user.user.username %}" method="post" role="link">
+        {% csrf_token %}
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="friendLinksLabel">Add Friend Link</h4>
+      </div>
+      <div class="modal-body">
+            <div class="form-group">
+                <label for="nameInput">Name:</label>
+                <input type="text" class="form-control" id="nameInput" name="nameInput" placeholder="title"/>
+             </div>
+             <div class="form-group">
+                <label for="urlInput">URL:</label>
+                <input type="text" class="form-control" id="urlInput" name="urlInput" placeholder="url"/>
+             </div>
+             <div class="form-group">
+                <label for="desrciptionInput">Description:</label>
+                <input type="text" class="form-control" id="descriptionInput" name="descriptionInput" placeholder="description"/>
+             </div> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Add Link</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<!-- friend links modal end -->

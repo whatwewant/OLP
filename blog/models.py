@@ -21,7 +21,7 @@ class Category(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('category', (), {'pk':self.pk})
+        return ('category', (), {'author':self.author.user.username, 'pk':self.pk})
     
     # 文章数统计
     def get_post_count(self):
@@ -75,6 +75,22 @@ class Post(models.Model):
     def get_absolute_url(self):
         return ('post', (), 
                 {'author':self.author.user.username, 'pk':self.pk})
+
+    @models.permalink
+    def get_edit_url(self):
+        return ('article_edit', (), {'pk':self.pk})
+
+    @models.permalink
+    def get_delete_url(self):
+        return ('article_delete', (), {'pk':self.pk})
+
+    @models.permalink
+    def get_undelete_url(self):
+        return ('article_undelete', (), {'pk':self.pk})
+    
+    @models.permalink
+    def get_deepdelete_url(self):
+        return ('article_deep_delete', (), {'pk':self.pk, 'deepdelete':True})
 
     def get_categories(self):
         return self.po_type.all()
@@ -137,3 +153,16 @@ class CommentMeta(models.Model):
     def __unicode__(self):
         return str(self.meta_key)
 
+
+class Visit(models.Model):
+    '''通过 user ip date 三个元素共同判断访问者一天访问一次'''
+    # 博主
+    user = models.ForeignKey(UserProfile)
+    ip = models.IPAddressField(u'Visitor IP', max_length=16)
+    date = models.DateField(u'上次访问时间', auto_now=True)
+
+    class Meta:
+        ordering = ['-date']
+
+    def __unicode__(self):
+        return 'visitor\' ip :%s' % self.ip

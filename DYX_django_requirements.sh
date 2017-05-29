@@ -23,19 +23,51 @@ rm -rf $BuildDir
 mkdir $BuildDir	
 cd $BuildDir
 
+os=$(cat /etc/issue)
+
 # Before Installation, we need some download tools
 which pip > /dev/null
 if [ "$?" != "0" ]; then
-    sudo apt-get install -y python-pip python-dev
+	if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+		sudo pacman -S --noconfirm python-pip
+	elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+    	sudo apt-get install -y python-pip
+	fi
 fi
 
 which virtualenv > /dev/null
 if [ "$?" != "0" ]; then
-    sudo apt-get install -y python-virtualenv python-setuptools
+	if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+		sudo pacman -S --noconfirm python-virtualenv python-setuptools
+	elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+    	sudo apt-get install -y python-virtualenv python-setuptools
+	fi
 fi
 
 # git-flow
-sudo apt-get install git-flow
+if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+	##
+	# PIL : make need freetype/freetype.h
+	if [ ! -d "/usr/include/freetype" ]; then
+		sudo ln -s /usr/include/freetype2 /usr/include/freetype
+	fi
+	#
+	which git > /dev/null
+	if [ "$?" != "0" ]; then
+		sudo pacman -S --noconfirm git
+	fi
+elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+	sudo apt-get install -y git-flow python-dev
+	#sudo apt-get install -y mysql-server mysql-client apache2
+    #sudo apt-get install -y libapache2-mod-wsgi
+    # ubuntu install python-mysqldb
+    #sudo apt-get install -y python-mysqldb
+    # for 'pip install mysql-python': sh: 1: mysql_config: not found
+    #sudo apt-get install -y libmysqld-dev libmysqlclient-dev
+fi
+
+# pip install mysql-python
+#pip install mysql-python
 
 # 缺少Python.h
 sudo apt-get install python-dev
@@ -105,6 +137,14 @@ if [ "$?" != "0" ]; then
     pip install ipython
 else
     echo "已安装ipython" | tee install.log
+fi
+
+# 7 requests
+echo $packages | grep -i requests > /dev/null
+if [ "$?" != "0" ]; then
+    pip install requests
+else
+    echo "已安装requests" | tee install.log
 fi
 
 # Clear

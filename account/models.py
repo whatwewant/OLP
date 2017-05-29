@@ -8,6 +8,7 @@ class UserProfile(models.Model):
     nickname = models.CharField(max_length=30, default=u'Just arrived')
     integral = models.IntegerField(null=False, default=0)
     registration = models.BooleanField(default=False)
+    register_date = models.DateField(u'注册时间', auto_now_add=True)
     blog_num = models.IntegerField(u'文章数量', default=0)
     grade = models.CharField(u'等级', max_length=9, default='--- --- ---')
     visits = models.IntegerField(u'访问量', default=0)
@@ -17,12 +18,18 @@ class UserProfile(models.Model):
     #                                  height_field=100, width_field=100,
                                       max_length=255)
 
-    def __unicode__(self):
-        return u'user name is %s, id = %s' %(self.user.username, self.id)
-
     class Meta:
         verbose_name = _('UserProfile')
         verbose_name_plural = _('UserProfiles')
+
+    def __unicode__(self):
+        return u'user name is %s, id = %s' %(self.user.username, self.id)
+
+    # 获取本作者家目录提交的search
+    @models.permalink
+    def get_search_url(self):
+        return ('search', (), {'authorname':self.user.username})
+
 
 class UserMeta(models.Model):
     user_id = models.ForeignKey(UserProfile)
@@ -37,6 +44,7 @@ class UserMeta(models.Model):
 # @TODO
 class UserInfo(models.Model):
     # @TODO
+    name = models.CharField(u'真实姓名', max_length=255, null=True)
     sex = models.CharField(u'性别', default='None', max_length='5')
     age = models.IntegerField(u'年龄', default=0, max_length=3)
     userprofile = models.ForeignKey(UserProfile)
@@ -57,10 +65,15 @@ class UserInfo(models.Model):
 
 class UserLoginHistory(models.Model):
     user = models.ForeignKey(User)
-    date = models.DateField(u'当前时间', auto_now_add=True)
+    date = models.DateTimeField(u'当前时间', auto_now=True)
     login_ip = models.CharField(u'当前登入ip', max_length=255, null=True)
     login_address = models.CharField(u'当前地点', max_length=255, default=u'未知')
+
+    class Meta:
+        ordering = ['-date']
     
     def __unicode__(self):
 
-        return u'{username}\'s Detailed User Login Histories'.format(username=self.userprofile.user.username)
+        return u'{username}\'s Detailed User Login Histories'.format(username=self.user.username)
+
+
