@@ -3,13 +3,19 @@
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-
-import json, os, datetime, time
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
 from django.core.mail import send_mail
+
+from blog.models import Post, Category
+from account.models import UserProfile
+from links.models import Links
+
+from datetime import date
+import json, os, datetime, time
+
+import re
 
 @login_required(login_url='sign_in')
 def upload_image(request):
@@ -65,8 +71,37 @@ def ke_upload_image(request):
                 destination.write(chunk)
 
         return HttpResponse(json.dumps(
-            {'error':0, 'url':save_url+new_file}
+            {'error': 0, 'url': save_url+new_file}
             ))
+    
+
+def store_image(filetype, username, file):
+    ext_allowed = ['gif', 'jpg', 'jpeg', 'png']
+    max_size = 2621440
+    save_dir = filetype + '/'
+    save_path = settings.MEDIA_ROOT+save_dir
+    # save_path = settings.STATIC_URL+save_dir
+    # print save_dir, save_path, save_url
+    if file.size > max_size:
+        return HttpResponse(json.dumps(
+            {'error':1, 'message':u'上传的文件大小不能超过2.5MB'}
+            ))
+
+    if not os.path.isdir(save_path):
+        os.makedirs(save_path)
+
+    ext = file.name.split('.').pop()
+    
+    if ext not in ext_allowed:
+        return ('', None)
+
+    new_file = '%s-%s.%s' % (username, int(time.time()), ext)
+
+    #with open(save_path+new_file, 'wb+') as destination:
+    #    for chunk in file.chunks():
+    #        destination.write(chunk)
+
+    return ('/'+save_path+new_file, new_file)
 
 @login_required(login_url='sign_in')
 @csrf_exempt
@@ -130,3 +165,38 @@ def send_one_mail(request):
             return_message = {'error':0, 'message':'发送成功'}
         return HttpResponse(json.dumps(return_message))
     return render(request, '', {})
+
+def html_tags_filter(html):
+    '''
+        过滤html标签
+        Example : <li>as<span>pq</span></li>
+        return : aspq
+    '''
+    str = re.sub(r'</?\w+[^>]*>', '', html).replace(' ', '').replace('\n', '')
+
+    return str
+
+def rename_file_by_time(filetype, username, file):
+    ext_allowed = ['gif', 'jpg', 'jpeg', 'png']
+    max_size = 2621440
+    save_dir = filetype + '/'
+    save_path = settings.MEDIA_ROOT+save_dir
+    # save_path = settings.STATIC_URL+save_dir
+    # print save_dir, save_path, save_url
+    if file.size > max_size:
+        return HttpResponse(json.dumps(
+            {'error':1, 'message':u'上传的文件大小不能超过2.5MB'}
+            ))
+
+    if not os.path.isdir(save_path):
+        os.makedirs(save_path)
+
+    ext = file.name.split('.').pop()
+    
+    if ext not in ext_allowed:
+        return ('', None)
+
+    new_file = '%s-%s.%s' % (username, int(time.time()), ext)
+
+    return ('/'+save_path+new_file, new_file)
+

@@ -1,11 +1,19 @@
 # -*- coding:utf-8 -*-
+from __future__ import unicode_literals, absolute_import
+
 import re
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+import django.forms as forms
+
 from account.models import UserProfile, UserInfo, UserLoginHistory
-from datetime import date
+from utils.utils import rename_file_by_time
+from utils.shortcuts import get_anonymous
+import time
+
+from blog.models import VisitBlog
 
 # from utils import transform_ip_to_address
 
@@ -17,13 +25,14 @@ def sign_in(request):
     '''登录'''
     # 已经登入，直接跳转到主页
     if request.user.is_authenticated():
-        return redirect('homepage')
+        return redirect('index')
 
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         login_ip = request.META['REMOTE_ADDR']
-        login_date = date.today()
+        login_date = time.ctime
+        print password
         # login_address = transform_ip_to_address(login_ip)
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -32,9 +41,13 @@ def sign_in(request):
                 UserLoginHistory.objects.create(
                     user=user,
                     login_ip=login_ip,
-                #    login_address=login_address,
-                    date=login_date)
-                return redirect('blog_index', request.user.username)
+                    # login_address=login_address,
+                    date=login_date
+                    )
+
+                if request.GET.get('next'):
+                    return redirect(request.GET.get('next'))
+                return redirect('blog_author', request.user.username)
             error = u'用户没有启用'
             return render(request, 'account/sign_in.html', {'error' : error})
         error = u'用户名或密码错误'
@@ -51,6 +64,18 @@ def handle_uploaded_file(file, filename):
 # @TODO
 def sign_up(request):
     '''注册'''
+    # 禁用的名字
+    forbidden_name = ['upload', 'uploadimage', 
+                      'blog', 'admin', 'administor',
+                      '', ' ', 
+                      'sign_in', 'sign_up', 'sign_out',
+                      'login', 'register',
+                      'media', 'static',
+                      'loginhistory',
+                      'anonymous',
+                     ]
+    forbidden_name_error = '该用户名已存在'
+    #
     if request.method == "POST":
 
         username = request.POST.get("username").strip()
@@ -59,28 +84,33 @@ def sign_up(request):
         re_password = request.POST.get("dopassword")
         nickname = request.POST.get("nickname").strip()
 
-        if not (len(username) >= 3 and len(username) <= 10):
+        print password
+        print re_password
+
+        if not (len(username) >= 3 and len(username) <= 20):
             return render(request, "account/sign_up.html",
-                    {"error": u"用户名只能是3-10个字符"})
+                    {"error": u"用户名只能是3-20个字符"})
         name = re.compile(ur'[a-zA-Z0-9_]|[\u4e00-\u9fa5]+$')
         if not name.match(unicode(username)):
             return render(request, "account/sign_up.html",
                     {"error": u'用户名只能是数字、英文字符、下划线和汉字'})
-        if User.objects.filter(username = username).exists():
+        if username in forbidden_name or User.objects.filter(username = username).exists():
             return render(request, "account/sign_up.html",
                     {"error": u"用户名已经存在"})
         if not(len(nickname) >= 2 and len(nickname) <= 10):
             return render(request, "account/sign_up.html",
                     {"error": u"昵称只能是2-10个字符"})
         # @TODO
-        name = re.compile(ur'^[_A-Za-z0-9\u4e00-\u9fa5]+$')
-        if not name.match(unicode(nickname)):
-            return render(request, "account/sign_up.html",
-                    {"error": u'ni cheng 只能是数字、英文字符、下划线和汉字'})
-        mail = re.compile("[^\._-][\w\.-]+@(?:[A-Za-z0-9]+\.)+[A-Za-z]+$")
-        if not mail.match(email):
-            return render(request, "account/sign_up.html",
-                    {"error": u"无效的邮箱格式"})
+        #name = re.compile(ur'^[_A-Za-z0-9\u4e00-\u9fa5]+$')
+        #if not name.match(unicode(nickname)):
+        #    return render(request, "account/sign_up.html",
+        #            {"error": u'ni cheng 只能是数字、英文字符、下划线和汉字'})
+        if name == None or name == '':
+            return render(request, 'account/sign_up.html', {'error': u'昵称不能为空'})
+        #mail = re.compile("[^\._-][\w\.-]+@(?:[A-Za-z0-9]+\.)+[A-Za-z]+$")
+        #if not mail.match(email):
+        #    return render(request, "account/sign_up.html",
+        #            {"error": u"无效的邮箱格式"})
         if password != re_password:
             return render(request, "account/sign_up.html",
                     {"error": u"两次输入的密码不一致"})
@@ -88,9 +118,22 @@ def sign_up(request):
                 password=password, email=email)
         UserProfile.objects.create(user=user,
                 nickname=nickname)
-
+        # auto sign in 
+        user = authenticate(username=username, password=password)
         login(request, user)
-        return redirect('blog_index', request.user.username)
+
+        # login history
+        login_ip = request.META['REMOTE_ADDR']
+        login_date = time.ctime
+        # login_address = transform_ip_to_address(login_ip)
+        UserLoginHistory.objects.create(
+                    user=user,
+                    login_ip=login_ip,
+                    # login_address=login_address,
+                    date=login_date
+                    )
+
+        return redirect('blog_author', request.user.username)
         #return redirect('sign_in')
     before = request.GET.get("before", "/")
     return render(request, "account/sign_up.html", {"before": before})
@@ -119,16 +162,20 @@ def change_password(request):
         return redirect('index')
     return redirect('index')
 
-@login_required(login_url='sign_up')
-def user_info(request):
+@login_required(login_url='sign_in')
+def user_info(request, username=None):
     '''获取/修改个人信息'''
     # if not request.user.is_authenticated():
     #    return redirect('sign_up')
 
     userprofile = request.user.userprofile
     userinfo, userinfo_created = UserInfo.objects.get_or_create(userprofile=userprofile)
+    all_visits = VisitBlog.objects.filter(author=userprofile).count()
+    all_visitors = VisitBlog.objects.filter(author=userprofile).exclude(visitor=get_anonymous())[:9]
+    # userinfo = UserInfo.objects.get(userprofile=userprofile)
     if request.method == 'POST':
         # @TODO
+        name = request.POST.get('name')
         sex = request.POST.get('sex')
         age = request.POST.get('age')
         hometown = request.POST.get('hometown')
@@ -141,17 +188,27 @@ def user_info(request):
         recovery_email = request.POST.get('recovery_email')
         web_site = request.POST.get('web_site')
 
+        userinfo.name = name
         userinfo.sex = sex
         userinfo.age = age
         userinfo.hometown = hometown
         userinfo.zip_code = zip_code
-        userinfo.qq = qq
-        userinfo.phone = phone
         userinfo.country = country
         userinfo.country_code = country_code
         userinfo.language = language
         userinfo.recovery_email = recovery_email
         userinfo.web_site = web_site
+        
+        try:
+            userinfo.qq = int(qq)
+        except ValueError:
+            pass
+
+        try:
+            userinfo.phone = int(phone)
+        except ValueError:
+            pass
+
         userinfo.save()
         
         # userinfo.sex = sex
@@ -185,13 +242,55 @@ def user_info(request):
         #        userinfo_dict[key] = value
         #     
         #userinfo.save()
-        return render(request, 'account/user_info.html', {'userinfo':userinfo})
-    return render(request, 'account/user_info.html', {'userinfo':userinfo})
+        return render(request, 'user/user_info.html', {'userinfo':userinfo, 
+                                                       'user':userprofile,
+                                                       'author':userprofile,
+                                                       'authenticated':True,
+                                                       'permission':True,
+                                                       'all_visits': all_visits,
+                                                       'all_visit': all_visitors,
+                                                      })
+    return render(request, 'user/user_info.html', {'userinfo':userinfo,
+                                                   'user':userprofile,
+                                                   'author':userprofile,
+                                                   'authenticated':True,
+                                                   'permission':True,
+                                                   'all_visits': all_visits,
+                                                   'all_visit': all_visitors,
+                                                  })
 
 @login_required(login_url='sign_in')
-def get_user_login_history(request):
+def get_user_login_history(request, username=None):
     '''登入历史'''
-    user = request.user.userprofile.user
-    history = UserLoginHistory.objects.filter(user=user)[:10]
-    return render(request, 'account/login_history.html', {'history': history})
+    author = request.user.userprofile
+    user = author.user
+    histories = UserLoginHistory.objects.filter(user=user)[:10]
+    all_visits = VisitBlog.objects.filter(author=author).count()
+    all_visitors = VisitBlog.objects.filter(author=author).exclude(visitor=get_anonymous())[:9]
+    return render(request, 'user/user_login_history.html', {'histories': histories,
+                                                            'user':author,
+                                                            'author':author,
+                                                            'authenticated':True,
+                                                            'permission':True,
+                                                            'all_visits': all_visits,
+                                                            'all_visit': all_visitors,
+                                                           })
 
+@login_required(login_url='sign_in')
+def upload_portrait(request, username):
+    # @TODO .............
+    if request.method == 'POST':
+        user = request.user.userprofile
+        # form = forms.ImageField(request.POST, request.FILES)
+        filedata = request.FILES.get('portrait_image', None)
+        print filedata.name.split('.').pop()
+        if filedata != None and filedata.size < 2097152 and filedata.name.split('.').pop() in ['jpg', 'png', 'jpeg', 'gif']:
+            url, filename = rename_file_by_time('head_portrait', user.user.username, filedata)
+            if filename != None:
+                filedata.name = filename
+                user.head_portrait = filedata
+                user.save()
+
+            return redirect('blog_author', user.user.username)
+
+    return redirect('blog_author', user.user.username)

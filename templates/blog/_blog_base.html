@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script src="{{ STATIC_URL }}js/blog.min.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/blog.min.css" />
+{% endblock %}
+
+{% block body %}
+<!-- nav bar left side begin -->
+{%include 'blog/_nav_bar_left.html'%}
+<!-- nav bar left side end -->
+
+<!-- nav bar right side begin -->
+{%include 'blog/_nav_bar_right.html'%}
+<!-- nav bar right side end -->
+{% endblock %}

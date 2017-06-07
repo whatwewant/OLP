@@ -1,0 +1,15 @@
+<div class="row">
+    <p class="navbar-text navbar-right" >
+        <button class="daytimemode" type="button">白天</button>
+        <button class="nightmode" type="button">夜间</button>
+        {% if not authenticated %}
+        {%include 'account/_sign_in.html'%}
+        &ensp;&&ensp;
+        {%include 'account/_sign_up.html'%}
+        {% else %}
+        {%include 'account/_user_info.html'%}
+        &ensp;&&ensp;
+        {%include 'account/_sign_out.html'%}
+        {% endif %}
+    </p>
+</div>

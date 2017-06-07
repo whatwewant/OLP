@@ -21,12 +21,47 @@ class Category(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('category', (), {'pk':self.pk})
+        return ('category', (), {'authorname':self.author.user.username, 'pk':self.pk})
     
     # 文章数统计
     def get_post_count(self):
-        return self.post_set.count()
+        return self.post_set.filter(show=True).count()
 
+class Visit(models.Model):
+    '''
+        用途两种:
+            1、单篇文章的ManyToMany
+            (Error, only 1) 2、对博客的访问
+        通过 user ip date 三个元素共同判断访问者同一个博客一天访问一次
+        通过 user post ip date 三个元素共同判断访问者同一篇文章一天访问一次
+    '''
+    # 访问者
+    visitor = models.ForeignKey(UserProfile)
+    date_visited = models.DateField(u'访问时间', auto_now_add=True)
+    ip = models.IPAddressField(u'Visitor IP', max_length=16)
+    post_id = models.CharField(u'保存文章id', max_length=128)
+
+    class Meta:
+        ordering = ['-date_visited']
+
+    def __unicode__(self):
+        return '%s at %s' % (self.visitor.user.username, self.date_visited)
+
+class VisitBlog(models.Model):
+    '''
+        博客访问
+    '''
+    author = models.ForeignKey(UserProfile, related_name='author')
+    visitor = models.ForeignKey(UserProfile, related_name='visitor')
+    date_visited = models.DateField(auto_now_add=True)
+    ip = models.IPAddressField(max_length=16)
+    
+    class Meta:
+        ordering = ['-date_visited']
+
+    def __unicode__(self):
+        return '%s visited %s' % (self.visitor, self.date_visited)
+    
 
 class Post(models.Model):
     '''blog '''
@@ -62,6 +97,11 @@ class Post(models.Model):
                                 blank=True, null=True)
     # 默认显示， 用于删除文章进入垃圾箱
     show = models.BooleanField(default=True)
+    # 单篇文章的访问
+    visit = models.ManyToManyField(Visit, through='PostToVisit', blank=True, null=True)
+    # @TODO 单篇文章的访问次数，用于排序，不知道如何用一个manytomany字段排序
+    visits = models.IntegerField(u'访问次数', default=0)
+    collected = models.IntegerField(u'被收藏次数', default=0)
 
     def __unicode__(self):
         return self.title
@@ -74,7 +114,27 @@ class Post(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('post', (), 
-                {'author':self.author.user.username, 'pk':self.pk})
+                {'authorname':self.author.user.username, 'pk':self.pk})
+
+    @models.permalink
+    def get_edit_url(self):
+        return ('article_edit', (), {'pk':self.pk})
+
+    @models.permalink
+    def get_delete_url(self):
+        return ('article_delete', (), {'pk':self.pk})
+
+    @models.permalink
+    def get_undelete_url(self):
+        return ('article_undelete', (), {'pk':self.pk})
+    
+    @models.permalink
+    def get_deepdelete_url(self):
+        return ('article_deep_delete', (), {'pk':self.pk, 'deepdelete':True})
+
+    @models.permalink
+    def get_collect_url(self):
+        return ('article_collect', (), {'authorname':self.author.user.username, 'pk':self.pk})
 
     def get_categories(self):
         return self.po_type.all()
@@ -85,6 +145,9 @@ class Post(models.Model):
     def get_excerpt_of_article(self):
         return self.excerpt
 
+    def get_visit_count(self):
+        return self.visit.count()
+
     # 重载delete方法
 
 
@@ -94,6 +157,17 @@ class PostToCategory(models.Model):
     category = models.ForeignKey(Category)
     date_joined = models.DateField(auto_now_add=True)
 
+class PostToVisit(models.Model):
+    post = models.ForeignKey(Post)
+    visit = models.ForeignKey(Visit)
+    date_visited = models.DateField(auto_now_add=True)
+
+class UserProfileToVisit(models.Model):
+    # 被访问的对象
+    author = models.ForeignKey(UserProfile)
+    # 访问的模型
+    visit = models.ForeignKey(Visit)
+    date_visited = models.DateField(auto_now_add=True)
 
 class PostMeta(models.Model):
 
@@ -137,3 +211,25 @@ class CommentMeta(models.Model):
     def __unicode__(self):
         return str(self.meta_key)
 
+
+
+class CollectArticle(models.Model):
+    '''文章收藏'''
+    # 收藏者
+    user =  models.ForeignKey(UserProfile)
+    # 文章主人/作者
+    # @TODO 
+    # author =  models.ForeignKey(UserProfile)
+    authorname = models.CharField(u'作者名字', max_length=255)
+    post = models.ForeignKey(Post)
+    date = models.DateField(u'收藏时间', auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date']
+    
+    def __unicode__(self):
+        return '%s\'s CollectArticle' % self.user.user.username
+
+    @models.permalink
+    def get_delete_url(self):
+        return ('delete_collect', (), {'authorname':self.user.user.username, 'pk':self.pk})

@@ -1,49 +1,9 @@
-{% extends 'base.html' %}
-{% load pagination_tags %}
+{% extends "blog/_nav_bar_right_and_blog_base.html" %}
 
-{% block title %}在线交流--个人博客{% endblock %}
+{% block title %} {{ current_category.name }} - {{ author.nickname }}{% endblock %}
 
-{% block script%}
-<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel = "stylesheet">
-<link href="{{ STATIC_URL }}css/myblog.css" rel="stylesheet">
-{% endblock %}
-    
-{% block body %}
-        <div class = "container" id="page-up">
-            <div id="up-left">
-                <h1 class="page-header">
-                    Personal blog
-                </h1>
-            </div>
-            
-            <div id="up-right">
-                    {% include 'blog/_nav_bar.html'%}
-            </div>
-        {% if not authenticated %}
-        {% include 'account/_sign_in.html' %}
-        {% else %}
-        {% include 'account/_user_info.html' %}
-        {% endif%}
-        <div class = "container" id="page-mid">
-            <div id="page-mid-left">
-                {% autopaginate articles %}
-				{% for article in articles %}
-                  {% include 'blog/_article.html' %}
-				{% endfor %}
-                {% paginate %}
-            </div>
-            
-            <div id="page-mid-right">
-                <div class = "container"id="mid-right-up">
-                    
-                </div>
-                
-                <div id="mid-right-down">
-                     {% include 'blog/_resource.html' %}
-                     {% include 'blog/_blog_category.html' %} 
-                </div>
-                </div>
-        
-            </div>
-        </div>
+{% block page %}
+<!-- section blog index begin -->
+{%include 'blog/_blog_category.html'%}
+<!-- section blog index end -->
 {% endblock %}

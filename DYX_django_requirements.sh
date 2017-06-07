@@ -23,19 +23,68 @@ rm -rf $BuildDir
 mkdir $BuildDir	
 cd $BuildDir
 
+os=$(cat /etc/issue)
+
 # Before Installation, we need some download tools
 which pip > /dev/null
 if [ "$?" != "0" ]; then
-    sudo apt-get install -y python-pip python-dev
+	if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+		sudo pacman -S --noconfirm python-pip
+	elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+    	sudo apt-get install -y python-pip
+	fi
 fi
 
 which virtualenv > /dev/null
 if [ "$?" != "0" ]; then
-    sudo apt-get install -y python-virtualenv python-setuptools
+	if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+		sudo pacman -S --noconfirm python-virtualenv python-setuptools
+	elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+    	sudo apt-get install -y python-virtualenv python-setuptools
+	fi
 fi
 
+which sqlitebrowser > /dev/null
+if [ "$?" != "0" ]; then
+	if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+		sudo pacman -S --noconfirm sqlitebrowser
+	elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+    	sudo apt-get install -y sqlitebrowser
+	fi
+fi
+
+
 # git-flow
-sudo apt-get install git-flow
+if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+	##
+	# PIL : make need freetype/freetype.h
+	if [ ! -d "/usr/include/freetype" ]; then
+		sudo ln -s /usr/include/freetype2 /usr/include/freetype
+	fi
+	#
+	which git > /dev/null
+	if [ "$?" != "0" ]; then
+		sudo pacman -S --noconfirm git
+	fi
+elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+	sudo apt-get install -y git-flow python-dev
+	#sudo apt-get install -y mysql-server mysql-client apache2
+    #sudo apt-get install -y libapache2-mod-wsgi
+    # ubuntu install python-mysqldb
+    #sudo apt-get install -y python-mysqldb
+    # for 'pip install mysql-python': sh: 1: mysql_config: not found
+    #sudo apt-get install -y libmysqld-dev libmysqlclient-dev
+fi
+
+# libmemcached-dev For pylibmic lack of 'memcached.h'
+if [ "$(echo $os | grep -i 'arch' | wc -l)" != "0" ]; then
+	sudo pacman -S --noconfirm libmemcached-dev
+elif [ "$(echo $os | grep -i 'ubuntu' | wc -l)" != "0" ]; then
+    sudo apt-get install -y libmemcached-dev
+fi
+
+# pip install mysql-python
+#pip install mysql-python
 
 # 缺少Python.h
 sudo apt-get install python-dev
@@ -106,6 +155,55 @@ if [ "$?" != "0" ]; then
 else
     echo "已安装ipython" | tee install.log
 fi
+
+# 7 requests
+echo $packages | grep -i requests > /dev/null
+if [ "$?" != "0" ]; then
+    pip install requests
+else
+    echo "已安装requests" | tee install.log
+fi
+
+# 8 uwsgi
+echo $packages | grep -i uwsgi > /dev/null
+if [ "$?" != "0" ]; then
+    pip install uwsgi
+else
+    echo "已安装uwsgi" | tee install.log
+fi
+
+# 9 flup
+echo $packages | grep -i flup > /dev/null
+if [ "$?" != "0" ]; then
+    pip install flup
+else
+    echo "已安装flup" | tee install.log
+fi
+
+# 10 python-memcached
+echo $packages | grep -i python-memcached > /dev/null
+if [ "$?" != "0" ]; then
+    pip install python-memcached
+else
+    echo "已安装python-memcached" | tee install.log
+fi
+
+# 11 pylibmc
+echo $packages | grep -i pylibmc > /dev/null
+if [ "$?" != "0" ]; then
+    pip install pylibmc
+else
+    echo "已安装pylibmc" | tee install.log
+fi
+
+# 12 BeautifulSoup for JianShu
+echo $packages | grep -i BeautifulSoup4 > /dev/null
+if [ "$?" != "0" ]; then
+    pip install pylibmc
+else
+    echo "已安装BeautifulSoup4" | tee install.log
+fi
+
 
 # Clear
 cd $CurrentDir

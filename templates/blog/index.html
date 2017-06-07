@@ -1,13 +1,9 @@
-{% extends 'blog/blog_base_bar.html' %}
-{% block title %}在线交流--个人博客{% endblock %}
+{% extends "blog/_nav_bar_right_and_blog_base.html" %}
 
-{% load pagination_tags %}
+{% block title %} {{ author.nickname }} {% endblock %}
 
-
-{% block page_mid_left%}
-    {% autopaginate articles %}
-    {% for article in articles %}
-    {% include 'blog/_article.html' %}
-    {% endfor %}
-    {% paginate %}
+{% block page %}
+<!-- section blog index begin -->
+{%include 'blog/_blog_index.html'%}
+<!-- section blog index end -->
 {% endblock %}

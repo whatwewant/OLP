@@ -1,0 +1,24 @@
+<div class="">
+    <div class="table-responsive">
+          <table class="table table-hover">
+            <tr>
+                <td>等级:</td><td>{{ author.grade }}</td>
+            </tr>
+            <tr>
+                <td>积分:</td><td>{{ author.integral }}</td>
+            </tr>
+            <tr>
+                <td>文章:</td><td>{{ author.post_set.count }}</td>
+            </tr>
+            <tr>
+                <td>访问:</td><td>{{ all_visits }}</td>
+            </tr>
+            <tr>
+                <td>排名:</td><td>{{ author.rank }}</td>
+            </tr>
+            <tr>
+                <td>注册时间:</td><td>{{ author.register_date }}</td>
+            </tr>
+          </table>
+    </div>
+</div>

@@ -1,31 +1,68 @@
-{% extends 'base.html' %}
-
-{% block title %}青岛大学在线学习交流平台{% endblock %}
+{% extends "base.html" %}
 
 {% block script %}
-<link href ="{{ STATIC_URL }}css/Page.css" rel="stylesheet">
-<link href="{{ STATIC_URL }}css/nav.css" rel="stylesheet">
-<link href= "{{ STATIC_URL }}css/bootstrap.css" rel = "stylesheet">
+{% load static %}
+<script src="{% static 'js/editor/kindeditor-min.js' %}"></script>
+<script src="{% static 'js/blog.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/blog.min.css' %}" />
 {% endblock %}
 
+{% block title %}温暖手心的太阳{% endblock %}
+
 {% block body %}
-<div id="whole_container">
-    <div id="page-up">
-         {% include '_index/_index_top_bar.html' %}
-    </div>
+<!-- nav bar left side begin -->
+{%include 'blog/_nav_bar_left.html'%}
+<!-- nav bar left side end -->
 
-    <div class="container" id = "page-mid-and-down">
-        <div id="page-mid">
-            {% include '_index/_page_mid.html' %}
-        </div>
+<!-- nav bar right side begin -->
 
-       <div id="page-down">
-            {% include '_index/_page_down.html' %} 
-       </div>
-    </div>
+<div class="container">
     
-    <p id="pright">
-            <a href="#" target="_self">返回顶部</a>
-    </p>
+    <!-- right_top for sign in/up/out begin -->
+    {%include 'blog/_nav_bar_right_top.html'%}
+    <!-- right_top for sign in/up/out end -->
+    
+    <!-- home beigin -->
+    <div class="row">
+        <!-- home section 1 begin -->
+        <div class="col-md-3 bigblock">
+            <div class="cover-img" style="background-image:url({{ STATIC_URL }}images/2.jpg);height:100%;width:100%;"></div>
+            <!-- 1 -->
+        </div>
+        <!-- home section 1 end -->
+        
+        <div class="col-md-1">
+        </div>
+        
+        <!-- home section 2 begin -->
+        <div class="col-md-6 bigblock" style="margin: 0 40px 0 -100px;">
+            {%include '_index/_blog_articles_in_a_page.html'%}
+        </div>
+        <!-- home section 2 end -->
+        
+        <div class="col-md-0">
+        </div>
+        
+        <!-- home section 3 begin -->
+        <div class="col-md-2">
+            <!-- 3 -->
+            <div class="row sort bigblock">
+                {%include '_index/_index_hot_read_articles_in_a_page.html'%}
+            </div>
+            
+            <div class="row sort bigblock marginTop-3">
+                {%include '_index/_index_hot_users.html'%}
+            </div>
+        </div>
+        <!-- home section 3 end -->
+    </div>
+    <!-- home end -->
+    
+    <div class="row footer center">
+        &copy;2014 Potter
+    </div>
 </div>
+    
+<!-- nav bar right side end -->
 {% endblock %}

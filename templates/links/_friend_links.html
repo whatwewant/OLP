@@ -1,0 +1,34 @@
+    
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="row head-title">
+        <h1>{{ author.user.username.capitalize }}'s Friend Links</h1>   
+    </div>
+                <table class="table">
+                {% for friend_link in friend_links %}
+                <tr>
+                    <td><a href="{{ friend_link.url }}">{{ friend_link.name }}</a></td>:
+                    <td>{{ friend_link.description }}
+                        {% if permission %}
+                        <form style="display:inline;" action="{{ friend_link.get_absolute_url }}" method="post">
+                            {% csrf_token %}
+                            <span><button class="btn btn-default navbar-right data-delete"><span class="glyphicon glyphicon-remove-circle" title="删除"></button></span>
+                        </form>
+                        {% endif %}
+                    </td>  
+                </tr>
+                {% empty %}
+                <h3>Sorry, {{author.nickname}} have not had any friend links yet.</h3>
+                {% endfor %}
+                    
+                </table>
+                {% if permission %}
+                <button type="button" class="btn btn-primary btn-lg navbar-right" data-toggle="modal" data-target="#friendLinks">Add Friend Link</button>
+                {%include 'links/_friend_links_modal.html'%}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>

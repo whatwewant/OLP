@@ -1,0 +1,19 @@
+    
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 bigblock">
+            <div class="row">
+                <div class="row head-title">
+        <h1>{{ author.user.username.capitalize }}'s Personal Information</h1>   
+    </div>
+                <table class="table">
+                {% for history in histories %}
+                <tr>
+                    <td>{{ history.date }}</td><td>{{ history.login_ip }}</td><td>{{ history.login_address }}</td>    
+                </tr>
+                {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>

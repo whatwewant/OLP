@@ -1,39 +1,9 @@
-{% extends "blog/blog_base.html" %}
+{% extends "blog/_nav_bar_right_and_blog_base.html" %}
 
-{% block title %} Write Page {% endblock %}
+{% block title %} Write Page - {{ author.nickname }}{% endblock %}
 
-{% block script %}
-<script src="{{ STATIC_URL }}js/editor/kindeditor-all.js"></script>
-<script src="{{ STATIC_URL }}js/edit.js"></script>
-{% endblock %}
-
-{% block page_mid_left%}
-<div id="container">
-	<div id="editText">
-	<form action="" method="post">
-		{% csrf_token %}
-		<div>
-			<p> Title: </p>
-			<input type="text" name="title" id="title" />
-			<span class="error" style="display:none">* Cannot Be Empty.</span>
-		</div>
-		<div>
-			<p> Content: </p>
-			<textarea id="content" style="width: 700px; height: 400px;" name="content"></textarea>
-			<span class="error" style="display:none">* Cannot Be Empty.</span>
-		</div>
-		<div>
-			<p> Category: </p>
-            <input type="text" style="width: 700px;" name="category" id="content_type" /><span>(以,隔开)</span>
-			<span class="error" style="display:none">* Cannot Be Empty.</span>
-		</div>
-		<div>
-			<p> Content-Excerpt: </p>
-			<textarea name="excerpt" id="excerpt" style="width: 700px; height: 100px"></textarea>
-			<span class="error" style="display:none">* Cannot Be Empty.</span>
-		</div>
-		<input type="submit" value="发布" />
-	</form>
-	</div>
-<div>
+{% block page %}
+<!-- section blog write begin -->
+{%include 'blog/_blog_write.html'%}
+<!-- section blog write end -->
 {% endblock %}

@@ -22,13 +22,13 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Shanghai'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -108,6 +108,12 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '/var/tmp/django_cache',
+    }
+}
 
 ROOT_URLCONF = 'OLP.urls'
 
@@ -129,11 +135,14 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.markup',
     'south',
     'linaro_django_pagination',
+    'home',
     'account',
     'blog',
     'links',
+    'utils',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -154,7 +163,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',)
 
 # default value 20
-PAGINATION_DEFAULT_PAGINATION = 2
+PAGINATION_DEFAULT_PAGINATION = 5
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -198,33 +207,33 @@ EMAIL_HOST_USER = 'onlinemultiblog@126.com'
 EMAIL_HOST_PASSWORD = '15764231503'
 EMAIL_PORT = 25 # 126 port
 
-if DEBUG:
-    INTERNAL_IPS = ('127.0.0.1',)
-    MIDDLEWARE_CLASSES += (
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
-
-    )
-
-    INSTALLED_APPS += (
-        'debug_toolbar',
-    )
-
-    DEBUG_TOOLBAR_PANELS = (
-        'debug_toolbar.panels.versions.VersionsPanel',
-        'debug_toolbar.panels.timer.TimerPanel',
-        #'debug_toolbar.panels.setting.SettingsPanel',
-        'debug_toolbar.panels.headers.HeadersPanel',
-        'debug_toolbar.panels.signals.SignalsPanel',
-        #'debug_toolbar.panels.profiling.ProfilingDebugPanel',
-        'debug_toolbar.panels.request.RequestPanel',
-        'debug_toolbar.panels.templates.TemplatesPanel',
-        'debug_toolbar.panels.cache.CachePanel',
-        'debug_toolbar.panels.sql.SQLPanel',
-        #'debug_toolbar.panels.loggers.LoggingPanel',
-    )
-
-    DEBUG_TOOLBAR_CONFIG = {
-        #'DISABLE_PANELS' : False,
-    }
+# if DEBUG:
+#    INTERNAL_IPS = ('127.0.0.1',)
+#    MIDDLEWARE_CLASSES += (
+#        'debug_toolbar.middleware.DebugToolbarMiddleware',
+#
+#    )
+#
+#    INSTALLED_APPS += (
+#        'debug_toolbar',
+#    )
+#
+#    DEBUG_TOOLBAR_PANELS = (
+#        'debug_toolbar.panels.versions.VersionsPanel',
+#        'debug_toolbar.panels.timer.TimerPanel',
+#        #'debug_toolbar.panels.setting.SettingsPanel',
+#        'debug_toolbar.panels.headers.HeadersPanel',
+#        'debug_toolbar.panels.signals.SignalsPanel',
+#        #'debug_toolbar.panels.profiling.ProfilingDebugPanel',
+#        'debug_toolbar.panels.request.RequestPanel',
+#        'debug_toolbar.panels.templates.TemplatesPanel',
+#        'debug_toolbar.panels.cache.CachePanel',
+#        'debug_toolbar.panels.sql.SQLPanel',
+#        #'debug_toolbar.panels.loggers.LoggingPanel',
+#    )
+#
+#    DEBUG_TOOLBAR_CONFIG = {
+#        #'DISABLE_PANELS' : False,
+#    }
 
 DATABASE_ENGINE = 'sqlite3'

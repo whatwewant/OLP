@@ -1,0 +1,9 @@
+{% extends "blog/_nav_bar_right_and_blog_base.html" %}
+
+{% block title %} Friend Links - {{ author.nickname }}{% endblock %}
+
+{% block page %}
+<!-- section blog Friend Links begin -->
+{%include 'links/_friend_links.html'%}
+<!-- section blog Friend Links end -->
+{% endblock %}

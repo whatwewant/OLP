@@ -1,0 +1,15 @@
+<div class="sort bigblock">
+    <h2 class="subtitle center">文章分类</h2>
+     <div class="table-responsive">
+    <table class="table table-hover">
+    {% for category in categories %}
+        <tr>
+            <td>
+                <a href="{{ category.get_absolute_url | safe }}">{{ category.name}}</a>
+            </td>
+            <td>{{ category.get_post_count }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    </div>
+</div>

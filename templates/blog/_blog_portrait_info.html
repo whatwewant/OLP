@@ -1,0 +1,22 @@
+<div class="">
+    <div class="btn-group center" style="margin-left: 30%;">
+        <button type="button" class="btn btn-default daytime" >{{ author.nickname }}</button>
+        {% if permission %}
+        <button type="button" class="btn btn-default dropdown-toggle daytime" data-toggle="dropdown">&ensp;  
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        
+        <ul class="dropdown-menu daytime" role="menu">
+            <li><a href="{%url 'user_info' user.user.username %}">个人信息</a></li>
+            <li><a href="{%url 'history' user.user.username %}">登录历史</a></li>
+            <li><a href="">主页</a></li>
+            <li><a href="">系统消息</a></li>
+            <li class="divider"></li>
+            <li><a href="">友链</a></li>
+        </ul>
+        {% endif %}
+    </div>
+</div>
+
+        
